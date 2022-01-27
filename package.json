@@ -6,7 +6,8 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "storybook": "nuxt storybook"
   },
   "dependencies": {
     "core-js": "^3.19.3",
@@ -17,7 +18,8 @@
     "webpack": "^4.46.0"
   },
   "devDependencies": {
+    "@nuxtjs/storybook": "^4.2.0",
     "@nuxtjs/tailwindcss": "^4.2.1",
-    "postcss": "^8.4.4"
+    "postcss": "^8.4.5"
   }
 }
