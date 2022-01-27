@@ -10,7 +10,7 @@ export const Default = (args) => ({
     },
   },
   template: `
-    <BaseButton v-bind="$prop">{{text}}</BaseButton>
+    <BaseButton v-bind="$props">{{text}}</BaseButton>
   `,
 });
 
@@ -18,8 +18,18 @@ Default.argTypes = {
   default: {
     control: "text",
   },
+  type: {
+    control: "select",
+    options: ["button", "submit"],
+  },
+  theme: {
+    control: "select",
+    options: ["primary", "secondary", "tertiary"],
+  },
 };
 
 Default.args = {
   default: "Subscribe Now",
+  type: "button",
+  theme: "primary",
 };
