@@ -1,6 +1,7 @@
 export { default as NuxtLogo } from '../../components/NuxtLogo.vue'
 export { default as Tutorial } from '../../components/Tutorial.vue'
 export { default as BaseButton } from '../../components/base/BaseButton.vue'
+export { default as BaseInput } from '../../components/base/BaseInput.vue'
 
 // nuxt/nuxt.js#8607
 function wrapFunctional(options) {
