@@ -1,35 +1,45 @@
 export default {
-  title: "Base/Button",
+  title: "Base components/Button",
 };
 
 export const Default = (args) => ({
   props: Object.keys(args),
+  data() {
+    return {
+      clicked: 0,
+    };
+  },
   computed: {
-    text() {
+    buttonText() {
       return this.default;
     },
   },
+  methods: {
+    handleClick() {
+      this.clicked++;
+    },
+  },
   template: `
-    <BaseButton v-bind="$props">{{text}}</BaseButton>
-  `,
+  <div>
+    <BaseButton :type="type" @click="handleClick">{{buttonText}}</BaseButton>
+    
+    <p class="mt-12">Clicked: {{clicked}}</p>
+  </div>`,
 });
 
 Default.argTypes = {
   default: {
-    control: "text",
+    type: "string",
   },
   type: {
-    control: "select",
-    options: ["button", "submit"],
-  },
-  theme: {
-    control: "select",
-    options: ["primary", "secondary", "tertiary"],
+    control: {
+      type: "select",
+      options: ["button", "submit"],
+    },
   },
 };
 
 Default.args = {
-  default: "Subscribe Now",
+  default: "Click me",
   type: "button",
-  theme: "primary",
 };

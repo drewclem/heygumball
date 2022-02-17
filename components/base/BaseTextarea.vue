@@ -4,12 +4,12 @@
       <slot name="label" /> <span v-if="required">*</span>
     </label>
 
-    <input
+    <textarea
       :id="_uid"
       class="border border-gray-300 rounded-md p-2"
-      :type="type"
       :placeholder="placeholder"
       :required="required"
+      :rows="rows"
       v-on="listeners"
       @input="$emit('input', $event.target.value)"
     />
@@ -24,20 +24,9 @@ export default {
     event: "input",
   },
   props: {
-    type: {
-      type: String,
-      default: "text",
-      validator: (value) => {
-        const validProps = [
-          "text",
-          "email",
-          "tel",
-          "url",
-          "search",
-          "password",
-        ];
-        return validProps.includes(value);
-      },
+    rows: {
+      type: Number,
+      default: 4,
     },
     placeholder: {
       type: String,

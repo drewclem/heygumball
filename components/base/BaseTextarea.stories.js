@@ -1,5 +1,5 @@
 export default {
-  title: "Base components/Input",
+  title: "Base components/Textarea",
 };
 
 export const Default = (args) => ({
@@ -16,9 +16,9 @@ export const Default = (args) => ({
   },
   template: `
   <div>
-    <BaseInput v-bind="$props" v-model="value">
+    <BaseTextarea v-bind="$props" v-model="value">
       <template v-slot:label>{{label}}</template>
-    </BaseInput>
+    </BaseTextarea>
     <p class="mt-8">v-model: {{value}}</p>
   </div>
   `,
@@ -31,13 +31,20 @@ Default.argTypes = {
   placeholder: {
     control: "text",
   },
+  rows: {
+    control: {
+      type: "number",
+      range: { min: 1, max: 10, step: 1 },
+    },
+  },
   required: {
     control: "boolean",
   },
 };
 
 Default.args = {
-  default: "First Name",
-  placeholder: "Enter your first name",
+  default: "Message",
+  placeholder: "What's on your mind today?",
+  rows: 4,
   required: false,
 };

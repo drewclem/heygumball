@@ -14,8 +14,6 @@ export default {
     theme: {
       type: String,
       default: "primary",
-      validator: (value) =>
-        ["primary", "secondary", "tertiary"].includes(value),
     },
   },
 };
@@ -23,29 +21,13 @@ export default {
 
 <style lang="postcss" scoped>
 .btn {
-  @apply px-4 py-1 rounded-md shadow transform ease-in-out duration-150 border-2 border-transparent;
+  @apply px-5 py-1 rounded transition duration-150 ease-in-out;
 
   &.btn-primary {
-    @apply bg-red-600 text-white;
+    @apply bg-green-500 text-white;
 
     &:hover {
-      @apply bg-red-700;
-    }
-  }
-
-  &.btn-secondary {
-    @apply bg-blue-700 text-white;
-
-    &:hover {
-      @apply bg-blue-800;
-    }
-  }
-
-  &.btn-tertiary {
-    @apply border-blue-700 text-blue-700;
-
-    &:hover {
-      @apply bg-blue-700 bg-opacity-75 text-white;
+      @apply bg-green-600;
     }
   }
 }
