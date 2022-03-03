@@ -7,7 +7,7 @@
         </div>
 
         <div class="flex flex-col space-y-6">
-          <BaseHeading size="h1">You're in high demand.</BaseHeading>
+          <BaseHeading size="h1">You're in<br />high demand.</BaseHeading>
           <BaseText class="lg:w-3/4">
             Take control of managing and scheduling your booking requests, easily.
           </BaseText>
@@ -76,10 +76,22 @@
     </section>
 
     <section class="narrow-wrapper mb-20">
-      <div
-        class="grid grid-cols-1 space-y-16 lg:space-y-0 lg:grid-cols-3 lg:space-x-24 items-center"
-      >
-        <div class="flex flex-col space-y-8 col-span-1">
+      <div class="grid grid-cols-1 lg:grid-cols-2 space-y-10 lg:space-y-0 items-center">
+        <div class="grid grid-cols-2 gap-4 lg:order-last">
+          <div class="lg:w-3/4 lg:border-l border-gray-200 lg:px-6 mb-8 lg:mb-0">
+            <IconReply class="w-8 h-8 mb-4" />
+            <BaseHeading class="mb-2" size="h5" tag="h3">One-click reply</BaseHeading>
+            <BaseText>Reply to requests easily with a single click.</BaseText>
+          </div>
+
+          <div class="lg:w-3/4 lg:border-l border-gray-200 lg:pl-6">
+            <IconSorting class="w-8 h-8 mb-4" />
+            <BaseHeading class="mb-2" size="h5" tag="h3">Backlog Sorting</BaseHeading>
+            <BaseText>View requests by date, keyword, or all at once. Your pick!</BaseText>
+          </div>
+        </div>
+
+        <div class="flex flex-col space-y-8 lg:w-3/4">
           <div>
             <BaseHeading class="mb-3" size="h4" tag="h2">Ready to get started?</BaseHeading>
             <BaseText>
@@ -89,20 +101,6 @@
 
           <div>
             <BaseButton href="/">Create an Account</BaseButton>
-          </div>
-        </div>
-
-        <div class="grid lg:grid-cols-2 lg:gap-4 lg:col-span-2">
-          <div class="lg:w-3/4 lg:border-l border-gray-200 lg:px-6 mb-8 lg:mb-0">
-            <IconReply class="w-8 h-8 mb-4" />
-            <BaseHeading class="mb-2" size="h5" tag="h3">One-click reply</BaseHeading>
-            <BaseText>Reply to requests easily with a single click.</BaseText>
-          </div>
-
-          <div class="lg:w-3/4 lg:border-l border-gray-200 lg:px-6">
-            <IconSorting class="w-8 h-8 mb-4" />
-            <BaseHeading class="mb-2" size="h5" tag="h3">Backlog Sorting</BaseHeading>
-            <BaseText>View requests by date, keyword, or all at once. Your pick!</BaseText>
           </div>
         </div>
       </div>
