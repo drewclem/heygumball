@@ -4,29 +4,6 @@ html {
   scroll-behavior: smooth;
 }
 
-body {
-  @apply font-display overflow-x-hidden;
-}
-
-*:focus-visible {
-  outline-color: #6fcfc9;
-  outline-style: auto;
-  outline-offset: 3px;
-  outline-width: 2px;
-}
-
 *:hover {
   @apply transition duration-150 ease-in-out;
-}
-
-.base-wrapper {
-  @apply container mx-auto px-4;
-
-  max-width: 960px;
-}
-
-@screen lg {
-  .base-wrapper {
-    @apply px-0;
-  }
 }

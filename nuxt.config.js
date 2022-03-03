@@ -29,15 +29,15 @@ export default {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    '~/plugins/wicg-inert.client.js'
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    // https://go.nuxtjs.dev/eslint
-    '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
   ],
@@ -46,6 +46,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    'portal-vue/nuxt'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -55,5 +56,23 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {   
+    extend(config, { isClient }) {
+    if (isClient) {
+      config.devtool = 'source-map';
+    }
+
+    const svgRule = config.module.rules.find((rule) => rule.test.test('.svg'));
+
+    svgRule.test = /\.(png|jpe?g|gif|webp)$/;
+
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['babel-loader', 'vue-svg-loader'],
+    });
+
+    config.node = {
+      fs: 'empty',
+    };
+  },},
 }
