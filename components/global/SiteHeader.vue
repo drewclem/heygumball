@@ -1,7 +1,7 @@
 <template>
-  <header class="container mx-auto z-50 top-0 w-full flex items-center justify-between p-4">
+  <header class="base-wrapper z-50 top-0 w-full flex items-center justify-between p-4">
     <div>
-      <nuxt-link to="/" class="block w-40">
+      <nuxt-link to="/" class="block w-40 lg:w-48">
         <GumballLogo class="w-full" />
       </nuxt-link>
     </div>
@@ -59,7 +59,7 @@
                   </ul>
                 </nav>
 
-                <nuxt-link to="/">
+                <nuxt-link to="/" class="block w-1/2">
                   <GumballLogo class="w-full" />
                 </nuxt-link>
               </div>
@@ -85,21 +85,6 @@
       GumballLogo,
       MenuIcon,
       Portal,
-    },
-    props: {
-      nav: {
-        type: Array,
-        required: true,
-      },
-      logo: {
-        type: Object,
-        required: true,
-        default: () => {},
-      },
-      contact: {
-        type: Array,
-        default: () => [],
-      },
     },
     computed: {
       ...mapState('global', ['isMobileMenuOpen', 'pageHasModalOpen', 'loaded']),

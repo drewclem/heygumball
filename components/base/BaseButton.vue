@@ -29,7 +29,7 @@
 
 <style lang="postcss" scoped>
   .btn {
-    @apply px-3 py-0.5 font-semibold text-center rounded border-2 border-transparent;
+    @apply px-3 py-0.5 font-monts text-center rounded border-2 border-transparent;
 
     &.btn-primary {
       @apply bg-red-500 text-white;

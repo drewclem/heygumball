@@ -1,9 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;700&family=Montserrat:wght@600;700&display=swap');
 
 html {
   scroll-behavior: smooth;
 }
 
+body {
+  @apply font-body;
+}
+
 *:hover {
   @apply transition duration-150 ease-in-out;
+}
+
+.base-wrapper {
+  @apply container mx-auto px-4;
+}
+
+.narrow-wrapper {
+  @apply max-w-5xl mx-auto px-4;
+}
+
+@screen lg {
+  .base-wrapper,
+  .narrow-wrapper {
+    @apply px-0;
+  }
 }
