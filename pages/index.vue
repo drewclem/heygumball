@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <h1>Heygumball</h1>
-  </div>
+  <Tutorial />
 </template>
 
 <script>
 export default {
-  name: 'App',
-};
+  name: 'IndexPage',
+}
 </script>
