@@ -58,7 +58,7 @@ h6 {
 
 @screen md {
   .h1 {
-    @apply text-[144px] mb-8;
+    @apply text-5xl mb-8;
   }
 
   .h2 {

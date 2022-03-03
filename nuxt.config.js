@@ -2,6 +2,11 @@ export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
+  storybook: {
+    port: 4000,
+    stories: ['~/components/**/*.stories.js'],
+  },
+
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
