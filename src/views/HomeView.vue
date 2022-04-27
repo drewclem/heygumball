@@ -11,10 +11,9 @@
           </div>
 
           <div class="flex flex-col space-y-6">
-            <BaseHeading size="h1">You're in<br />high demand.</BaseHeading>
+            <BaseHeading size="h1">Drop Calendar <br />Management</BaseHeading>
             <BaseText class="lg:w-3/4">
-              Take control of managing and scheduling your booking requests,
-              easily.
+              Schedule and Manage your booking calendar better with Heygumball
             </BaseText>
 
             <div>
@@ -27,8 +26,8 @@
       <section class="narrow-wrapper my-24 lg:my-52">
         <BaseHeading size="h2" class="text-center">
           The world's
-          <span class="text-green-500 underline">first</span> limited window
-          requests management tool.
+          <span class="text-green-500 underline">first</span> drop calendar
+          management tool.
         </BaseHeading>
 
         <div class="max-w-3xl mx-auto">

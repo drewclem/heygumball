@@ -17,14 +17,14 @@ body {
 }
 
 .base-wrapper {
-  @apply container mx-auto px-4;
+  @apply container mx-auto  px-6;
 }
 
 .narrow-wrapper {
-  @apply max-w-5xl mx-auto px-4;
+  @apply max-w-5xl mx-auto  px-6;
 }
 
-@screen lg {
+@screen xl {
   .base-wrapper,
   .narrow-wrapper {
     @apply px-0;

@@ -34,14 +34,22 @@ export default {
 
 <style lang="postcss" scoped>
 .btn {
-  @apply px-3 py-0.5 font-monts text-center rounded border-2 border-transparent;
+  @apply px-3 py-0.5 font-monts text-center rounded border-2 border-transparent transition duration-150 ease-in-out;
 }
 .btn-primary {
   @apply bg-red-500 text-white;
 }
 
+.btn-primary:hover {
+  @apply bg-red-600;
+}
+
 .btn-secondary {
   @apply border-blue-500 text-blue-500;
+}
+
+.btn-secondary:hover {
+  @apply bg-blue-500 bg-opacity-10;
 }
 
 @screen lg {

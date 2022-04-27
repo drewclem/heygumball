@@ -1,6 +1,6 @@
 <template>
   <header
-    class="base-wrapper z-50 top-0 w-full flex items-center justify-between p-4"
+    class="base-wrapper z-50 top-0 w-full flex items-center justify-between p-4 mb-12"
   >
     <div id="top">
       <router-link to="/" class="block w-40 lg:w-48">
@@ -82,6 +82,7 @@
 <script>
 import BaseButton from "@/components/base/BaseButton.vue";
 import GumballLogo from "@/components/global/GumballLogo.vue";
+import MenuIcon from "@/components/icons/MenuIcon.vue";
 // import { mapState } from "vuex";
 // import { Portal } from "portal-vue";
 
@@ -92,6 +93,7 @@ export default {
   components: {
     BaseButton,
     GumballLogo,
+    MenuIcon,
   },
   computed: {
     // ...mapState("global", ["isMobileMenuOpen", "pageHasModalOpen", "loaded"]),

@@ -1,7 +1,9 @@
 <template>
   <div>
     <SiteHeader />
+
     <slot />
+
     <footer class="bg-gray-50 py-8">
       <a href="#top">
         <GumballLogo class="w-56 mx-auto" />
