@@ -1,14 +1,18 @@
 <template>
-  <header class="base-wrapper z-50 top-0 w-full flex items-center justify-between p-4">
-    <div>
-      <nuxt-link to="/" class="block w-40 lg:w-48">
+  <header
+    class="base-wrapper z-50 top-0 w-full flex items-center justify-between p-4"
+  >
+    <div id="top">
+      <router-link to="/" class="block w-40 lg:w-48">
         <GumballLogo class="w-full" />
-      </nuxt-link>
+      </router-link>
     </div>
 
     <nav class="hidden lg:flex font-body items-center">
       <BaseButton href="/" theme="secondary">Sign in</BaseButton>
-      <BaseButton class="ml-6" href="/" theme="primary">Create an Account</BaseButton>
+      <BaseButton class="ml-6" href="/" theme="primary"
+        >Create an Account</BaseButton
+      >
     </nav>
 
     <div class="mobile lg:hidden">
@@ -25,7 +29,9 @@
         <Portal to="mobile-menu">
           <div
             :class="`z-50 fixed lg:hidden inset-0 bg-black transition duration-150 ${
-              isMobileMenuOpen ? 'bg-opacity-75' : 'bg-opacity-0 pointer-events-none'
+              isMobileMenuOpen
+                ? 'bg-opacity-75'
+                : 'bg-opacity-0 pointer-events-none'
             }`"
             :inert="!isMobileMenuOpen"
             @keydown.esc="closeMenu"
@@ -47,21 +53,23 @@
                 </button>
               </div>
 
-              <div class="flex flex-col justify-between h-screen w-full bg-white p-6">
+              <div
+                class="flex flex-col justify-between h-screen w-full bg-white p-6"
+              >
                 <nav class="" role="navigation">
                   <ul>
                     <li>
-                      <nuxt-link to="/">Sign In</nuxt-link>
+                      <router-link to="/">Sign In</router-link>
                     </li>
                     <li>
-                      <nuxt-link to="/">Create an Account</nuxt-link>
+                      <router-link to="/">Create an Account</router-link>
                     </li>
                   </ul>
                 </nav>
 
-                <nuxt-link to="/" class="block w-1/2">
+                <router-link to="/" class="block w-1/2">
                   <GumballLogo class="w-full" />
-                </nuxt-link>
+                </router-link>
               </div>
             </div>
           </div>
@@ -72,54 +80,53 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
-  import { Portal } from 'portal-vue'
+import BaseButton from "@/components/base/BaseButton.vue";
+import GumballLogo from "@/components/global/GumballLogo.vue";
+// import { mapState } from "vuex";
+// import { Portal } from "portal-vue";
 
-  import GumballLogo from '~/assets/Gumball-logo.svg?inline'
-  import MenuIcon from '~/assets/icons/menu-icon.svg?inline'
-  import CloseIcon from '~/assets/icons/close-icon.svg?inline'
+// import MenuIcon from "~/assets/icons/menu-icon.svg?inline";
+// import CloseIcon from "~/assets/icons/close-icon.svg?inline";
 
-  export default {
-    components: {
-      CloseIcon,
-      GumballLogo,
-      MenuIcon,
-      Portal,
+export default {
+  components: {
+    BaseButton,
+    GumballLogo,
+  },
+  computed: {
+    // ...mapState("global", ["isMobileMenuOpen", "pageHasModalOpen", "loaded"]),
+    isHomePage() {
+      return this.$route.fullPath === "/";
     },
-    computed: {
-      ...mapState('global', ['isMobileMenuOpen', 'pageHasModalOpen', 'loaded']),
-      isHomePage() {
-        return this.$route.fullPath === '/'
-      },
-    },
-    watch: {
-      $route(to, from) {
-        this.closeMenu()
-      },
-    },
-    methods: {
-      async openMobileMenu() {
-        await this.$store.commit('global/isMobileMenuOpen', true)
-        await this.$nextTick()
-        await this.$nextTick()
+  },
+  watch: {
+    // $route(to, from) {
+    //   this.closeMenu();
+    // },
+  },
+  methods: {
+    async openMobileMenu() {
+      await this.$store.commit("global/isMobileMenuOpen", true);
+      await this.$nextTick();
+      await this.$nextTick();
 
-        this.$refs.closeButtonRef?.focus()
-      },
-      async closeMenu(e) {
-        await this.$store.commit('global/isMobileMenuOpen', false)
-        await this.$nextTick()
-        await this.$nextTick()
-      },
+      this.$refs.closeButtonRef?.focus();
     },
-  }
+    async closeMenu() {
+      await this.$store.commit("global/isMobileMenuOpen", false);
+      await this.$nextTick();
+      await this.$nextTick();
+    },
+  },
+};
 </script>
 
 <style lang="postcss">
-  nav ul li div a {
-    @apply tracking-wider;
-  }
+nav ul li div a {
+  @apply tracking-wider;
+}
 
-  .nuxt-link-exact-active {
-    @apply opacity-100;
-  }
+.nuxt-link-exact-active {
+  @apply opacity-100;
+}
 </style>
