@@ -12,6 +12,7 @@
     "core-js": "^3.8.3",
     "postcss": "^8.4.12",
     "tailwindcss": "^3.0.23",
+    "uuid": "^8.3.2",
     "vue": "^3.2.13",
     "vue-router": "4"
   },
@@ -28,7 +29,8 @@
   "eslintConfig": {
     "root": true,
     "env": {
-      "node": true
+      "node": true,
+      "vue/setup-compiler-macros": true
     },
     "extends": [
       "plugin:vue/vue3-essential",

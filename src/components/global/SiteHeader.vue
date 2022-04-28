@@ -9,10 +9,10 @@
     </div>
 
     <nav class="hidden lg:flex font-body items-center">
-      <BaseButton href="/" theme="secondary">Sign in</BaseButton>
-      <BaseButton class="ml-6" href="/" theme="primary"
-        >Create an Account</BaseButton
-      >
+      <BaseButton href="/sign-in" theme="secondary">Sign in</BaseButton>
+      <BaseButton class="ml-6" href="/create-an-account" theme="primary">
+        Create an Account
+      </BaseButton>
     </nav>
 
     <div class="mobile lg:hidden">
@@ -59,10 +59,12 @@
                 <nav class="" role="navigation">
                   <ul>
                     <li>
-                      <router-link to="/">Sign In</router-link>
+                      <router-link to="/sign-in">Sign In</router-link>
                     </li>
                     <li>
-                      <router-link to="/">Create an Account</router-link>
+                      <router-link to="/create-an-account">
+                        Create an Account
+                      </router-link>
                     </li>
                   </ul>
                 </nav>

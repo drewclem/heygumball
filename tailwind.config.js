@@ -2,7 +2,7 @@ module.exports = {
   content: ["./src/**/*.{vue,js}"],
   theme: {
     fontFamily: {
-      monts: ["Montserrat", "Arial", "sans-serif"],
+      display: ["Inter", "Arial", "sans-serif"],
       body: ["Hind", "sans-serif"],
     },
     extend: {
@@ -15,7 +15,8 @@ module.exports = {
           500: "#1E8AB9",
         },
         green: {
-          500: "#2A9F28",
+          500: "#3F9E82",
+          600: "#3A8F76",
         },
         black: "#1E1E1E",
       },

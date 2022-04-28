@@ -11,24 +11,39 @@
           </div>
 
           <div class="flex flex-col space-y-6">
-            <BaseHeading size="h1">Drop Calendar <br />Management</BaseHeading>
+            <BaseHeading size="h1">Do great work. Stay busy.</BaseHeading>
             <BaseText class="lg:w-3/4">
-              Schedule and Manage your booking calendar better with Heygumball
+              Manage your appointment &amp; booking requests better with
+              Heygumball&apos;s calendar drop and management tool.
             </BaseText>
 
             <div>
-              <BaseButton href="/" theme="primary">Get Started</BaseButton>
+              <BaseButton href="/create-an-account" theme="primary">
+                Get Started
+              </BaseButton>
             </div>
           </div>
         </div>
       </section>
 
       <section class="narrow-wrapper my-24 lg:my-52">
-        <BaseHeading size="h2" class="text-center">
-          The world's
-          <span class="text-green-500 underline">first</span> drop calendar
-          management tool.
-        </BaseHeading>
+        <div>
+          <BaseHeading size="h2" class="lg:text-center mb-8">
+            Control
+            <span class="text-green-500 underline">when</span> and
+            <span class="text-blue-500 underline">how</span> your clients can
+            request appointments.
+          </BaseHeading>
+
+          <BaseText
+            class="text-lg lg:text-2xl max-w-4xl mx-auto lg:text-center"
+          >
+            Heygumball allows you to direct your clients to a single point of
+            contact when it comes to requesting an appointment with you. We give
+            <span class="italic font-semibold">you</span> the ability to decide
+            and schedule when that window for booking is open.
+          </BaseText>
+        </div>
 
         <div class="max-w-3xl mx-auto">
           <div class="grid lg:grid-cols-2 gap-12 items-center my-20 lg:my-48">
@@ -124,7 +139,9 @@
             </div>
 
             <div>
-              <BaseButton href="/">Create an Account</BaseButton>
+              <BaseButton href="/create-an-account">
+                Create an Account
+              </BaseButton>
             </div>
           </div>
         </div>

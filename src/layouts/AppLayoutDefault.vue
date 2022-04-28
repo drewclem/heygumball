@@ -1,8 +1,10 @@
 <template>
-  <div>
+  <div class="flex flex-col min-h-screen">
     <SiteHeader />
 
-    <slot />
+    <main class="flex-grow">
+      <slot />
+    </main>
 
     <footer class="bg-gray-50 py-8">
       <a href="#top">
