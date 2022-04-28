@@ -62,7 +62,7 @@ export default {
 
 @screen lg {
   .btn {
-    @apply px-6 py-1;
+    @apply px-6;
   }
 }
 </style>
