@@ -11,7 +11,11 @@
           </div>
 
           <div class="flex flex-col space-y-6">
-            <BaseHeading size="h1">Do great work. Stay busy.</BaseHeading>
+            <BaseHeading size="h1">
+              Do great work.<br />
+              Stay busy.
+            </BaseHeading>
+
             <BaseText class="lg:w-3/4">
               Manage your appointment &amp; booking requests better with
               Heygumball&apos;s calendar drop and management tool.
@@ -46,9 +50,11 @@
           <div class="grid lg:grid-cols-2 gap-12 items-center my-20 lg:my-48">
             <div class="flex flex-col space-y-3">
               <ScheduleGraphic class="w-1/2 lg:hidden mx-auto mb-4" />
+
               <BaseHeading class="text-blue-500" size="h3">
                 Schedule when your books are open
               </BaseHeading>
+
               <BaseText>
                 Do you know when you'll be booking next? Get ahead of the curve
                 by scheduling your Heygumball form to be live and open to the
@@ -57,6 +63,7 @@
                 close itself when it's time has lapsed.
               </BaseText>
             </div>
+
             <div class="hidden lg:block">
               <ScheduleGraphic class="w-full" />
             </div>
@@ -66,8 +73,10 @@
             <div class="hidden lg:block">
               <SearchGraphic class="w-full" />
             </div>
+
             <div class="flex flex-col space-y-3">
               <SearchGraphic class="w-1/2 lg:hidden mx-auto mb-4" />
+
               <BaseHeading class="text-blue-500" size="h3">
                 Search, filter, &amp; tag your backlog
               </BaseHeading>
@@ -84,9 +93,11 @@
           <div class="grid lg:grid-cols-2 gap-12 items-center my-20 lg:my-48">
             <div class="flex flex-col space-y-3">
               <ReviewGraphic class="w-1/2 lg:hidden mx-auto mb-4" />
-              <BaseHeading class="text-blue-500" size="h3"
-                >Review &amp; respond to requests</BaseHeading
-              >
+
+              <BaseHeading class="text-blue-500" size="h3">
+                Review &amp; respond to requests
+              </BaseHeading>
+
               <BaseText>
                 Review and respond to prospective requests from the easy-to-use
                 dashboard. Mark requests as denied, approved, contacted, or
@@ -95,6 +106,7 @@
                 that made the cut and start filling up your calendar!
               </BaseText>
             </div>
+
             <div class="hidden lg:block">
               <ReviewGraphic class="w-full" />
             </div>
@@ -111,29 +123,33 @@
               class="lg:w-3/4 lg:border-l border-gray-200 lg:px-6 mb-8 lg:mb-0"
             >
               <IconReply class="w-8 h-8 mb-4" />
-              <BaseHeading class="mb-2" size="h5" tag="h3"
-                >One-click reply</BaseHeading
-              >
+
+              <BaseHeading class="mb-2" size="h5" tag="h3">
+                One-click reply
+              </BaseHeading>
+
               <BaseText>Reply to requests easily with a single click.</BaseText>
             </div>
 
             <div class="lg:w-3/4 lg:border-l border-gray-200 lg:pl-6">
               <IconSorting class="w-8 h-8 mb-4" />
-              <BaseHeading class="mb-2" size="h5" tag="h3"
-                >Backlog Sorting</BaseHeading
-              >
-              <BaseText
-                >View requests by date, keyword, or all at once. Your
-                pick!</BaseText
-              >
+
+              <BaseHeading class="mb-2" size="h5" tag="h3">
+                Backlog Sorting
+              </BaseHeading>
+
+              <BaseText>
+                View requests by date, keyword, or all at once. Your pick!
+              </BaseText>
             </div>
           </div>
 
           <div class="flex flex-col space-y-8 lg:w-3/4">
             <div>
-              <BaseHeading class="mb-3" size="h4" tag="h2"
-                >Ready to get started?</BaseHeading
-              >
+              <BaseHeading class="mb-3" size="h4" tag="h2">
+                Ready to get started?
+              </BaseHeading>
+
               <BaseText>
                 Sign up today and see how much better managing your booking
                 requests can be!

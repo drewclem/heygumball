@@ -3,22 +3,26 @@
     <div
       class="max-w-3xl mx-auto px-6 xl:px-0 grid lg:grid-cols-2 gap-24 items-center"
     >
-      <form>
-        <BaseHeading class="mb-5" size="h4" tag="h1"
-          >Create an account</BaseHeading
-        >
+      <form @submit.prevent="handleSignup({ fullName, email, password })">
+        <BaseHeading class="mb-5" size="h4" tag="h1">
+          Create an account
+        </BaseHeading>
 
         <div class="flex flex-col space-y-6">
-          <BaseInput v-model="form.fullName">Full Name</BaseInput>
+          <BaseInput v-model="fullName" required>Full Name</BaseInput>
 
-          <BaseInput inputType="email" v-model="form.email">Email</BaseInput>
+          <BaseInput inputType="email" v-model="email" required>
+            Email
+          </BaseInput>
 
-          <BaseInput inputType="password" v-model="form.password">
+          <BaseInput inputType="password" v-model="password" required>
             Password
           </BaseInput>
 
           <div class="text-right">
-            <BaseButton theme="tertiary">Create Account</BaseButton>
+            <BaseButton type="submit" theme="tertiary"
+              >Create Account</BaseButton
+            >
           </div>
         </div>
       </form>
@@ -29,28 +33,33 @@
 </template>
 
 <script>
+import { defineComponent, ref } from "vue";
+import { handleSignup } from "@/vuetils/useAuth";
+
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 import CreateAccount from "@/components/svg/CreateAccount.vue";
 
-export default {
+export default defineComponent({
+  name: "CreateAnAccount",
   components: {
     BaseButton,
     BaseHeading,
     BaseInput,
     CreateAccount,
   },
-  data() {
+  setup() {
+    const fullName = ref("");
+    const email = ref("");
+    const password = ref("");
+
     return {
-      form: {
-        fullName: "",
-        email: "",
-        password: "",
-      },
+      fullName,
+      email,
+      password,
+      handleSignup,
     };
   },
-};
+});
 </script>
-
-<style lang="scss" scoped></style>

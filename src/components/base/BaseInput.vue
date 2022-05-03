@@ -32,14 +32,14 @@ defineProps({
       const validProps = ["text", "email", "tel", "url", "search", "password"];
       return validProps.includes(value);
     },
-    placeholder: {
-      type: String,
-      default: "",
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
+  },
+  placeholder: {
+    type: String,
+    default: "",
+  },
+  required: {
+    type: Boolean,
+    default: false,
   },
 });
 defineEmits(["update:modelValue"]);
