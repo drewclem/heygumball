@@ -6,10 +6,11 @@ import App from "./App.vue";
 
 // supabase auth
 import { supabase } from "./supabase";
-import { userSession } from "@/vuetils/useAuth";
+import useAuthUser from "@/vuetils/useAuth";
 
 createApp(App).use(router).use(createPinia()).mount("#app");
 
 supabase.auth.onAuthStateChange((event, session) => {
-  userSession.value = session;
+  const { user } = useAuthUser();
+  user.value = session?.user || null;
 });

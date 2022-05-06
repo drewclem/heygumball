@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import useAuthUser from "@/vuetils/useAuth";
 
 const routes = [
   {
@@ -30,6 +31,18 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to) => {
+  const { isLoggedIn } = useAuthUser();
+
+  if (
+    !isLoggedIn() &&
+    to.meta.requiresAuth &&
+    !Object.keys(to.query).includes("fromEmail")
+  ) {
+    return { name: "CreateAnAccount" };
+  }
 });
 
 export default router;

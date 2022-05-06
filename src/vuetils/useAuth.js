@@ -1,70 +1,70 @@
 import { ref } from "vue";
 import { supabase } from "../supabase";
 
-const userSession = ref();
+const user = ref();
 
-async function handleLogin(credentials) {
-  try {
-    const { error } = await supabase.auth.signIn({
-      email: credentials.email,
-      password: credentials.password,
-    });
+export default function useAuthUser() {
+  const handleLogin = async (credentials) => {
+    try {
+      const { error } = await supabase.auth.signIn({
+        email: credentials.email,
+        password: credentials.password,
+      });
 
-    if (error) {
-      alert("Error logging in: " + error.message);
-    }
-  } catch (error) {
-    alert(error.error_description || error);
-  }
-}
-
-async function handleSignup(credentials) {
-  try {
-    const { fullName, email, password } = credentials;
-
-    const { error } = await supabase.auth.signUp(
-      {
-        email,
-        password,
-      },
-      {
-        data: {
-          full_name: fullName,
-        },
+      if (error) {
+        alert("Error logging in: " + error.message);
       }
-    );
-
-    if (error) {
-      alert(error.message);
-      console.error(error, error.message);
-      return;
+    } catch (error) {
+      alert(error.error_description || error);
     }
-    alert("Signup successful, confirmation mail should be sent soon!");
-  } catch (err) {
-    alert("Fatal error signing up");
-    console.error("signup error", err);
-  }
-}
+  };
 
-/**
- * Handles logging a user out of a supabase session
- */
-async function handleLogout() {
-  console.log("logging out");
-  try {
+  const handleSignup = async (credentials) => {
+    try {
+      const { fullName, email, password } = credentials;
+
+      const { error } = await supabase.auth.signUp(
+        {
+          email,
+          password,
+        },
+        {
+          data: {
+            full_name: fullName,
+          },
+        }
+      );
+
+      if (error) {
+        alert(error.message);
+        console.error(error, error.message);
+        return;
+      }
+      alert("Signup successful, confirmation mail should be sent soon!");
+    } catch (err) {
+      alert("Fatal error signing up");
+      console.error("signup error", err);
+    }
+  };
+
+  /**
+   * Handles logging a user out of a supabase session
+   */
+  const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
 
-    if (error) {
-      alert("Error signing out");
-      console.error("Error", error);
-      return;
-    }
+    if (error) throw error;
+  };
 
-    alert("You have signed out!");
-  } catch (err) {
-    alert("Unknown error signing out");
-    console.error("Error", err);
-  }
+  const isLoggedIn = () => {
+    return !!user.value;
+  };
+
+  return {
+    user,
+    handleLogin,
+    handleLogout,
+    handleSignup,
+    isLoggedIn,
+  };
 }
-
-export { userSession, handleLogin, handleLogout, handleSignup };

@@ -9,10 +9,15 @@
     </div>
 
     <nav class="hidden lg:flex font-body items-center">
-      <BaseButton href="/sign-in" theme="secondary">Sign in</BaseButton>
+      <BaseButton v-if="!user" href="/sign-in" theme="secondary"
+        >Sign in</BaseButton
+      >
+
+      <p v-else>{{ user.user_metadata.full_name }}</p>
       <BaseButton class="ml-6" href="/create-an-account" theme="primary">
         Create an Account
       </BaseButton>
+      <button v-if="user" class="ml-6" @click="handleLogout">Log Out</button>
     </nav>
 
     <div class="mobile lg:hidden">
@@ -82,6 +87,7 @@
 </template>
 
 <script>
+import useAuthUser from "@/vuetils/useAuth";
 import BaseButton from "@/components/base/BaseButton.vue";
 import GumballLogo from "@/components/global/GumballLogo.vue";
 import MenuIcon from "@/components/icons/MenuIcon.vue";
@@ -96,6 +102,14 @@ export default {
     BaseButton,
     GumballLogo,
     MenuIcon,
+  },
+  setup() {
+    const { user, handleLogout } = useAuthUser();
+
+    return {
+      user,
+      handleLogout,
+    };
   },
   computed: {
     // ...mapState("global", ["isMobileMenuOpen", "pageHasModalOpen", "loaded"]),

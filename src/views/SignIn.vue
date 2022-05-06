@@ -26,7 +26,7 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import { handleLogin } from "@/vuetils/useAuth";
+import useAuthUser from "@/vuetils/useAuth";
 
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
@@ -45,6 +45,8 @@ export default defineComponent({
     const email = ref("");
     const password = ref("");
 
+    const { handleLogin } = useAuthUser();
+
     return {
       email,
       password,
@@ -53,5 +55,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="scss" scoped></style>
