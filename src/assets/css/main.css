@@ -20,7 +20,7 @@ body {
 }
 
 .base-wrapper {
-  @apply container mx-auto  px-6;
+  @apply container mx-auto px-6;
 }
 
 .narrow-wrapper {

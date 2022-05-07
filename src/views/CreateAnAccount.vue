@@ -3,13 +3,13 @@
     <div
       class="max-w-3xl mx-auto px-6 xl:px-0 grid lg:grid-cols-2 gap-24 items-center"
     >
-      <form @submit.prevent="handleSignup({ fullName, email, password })">
+      <form @submit.prevent="handleSignup({ username, email, password })">
         <BaseHeading class="mb-5" size="h4" tag="h1">
           Create an account
         </BaseHeading>
 
         <div class="flex flex-col space-y-6">
-          <BaseInput v-model="fullName" required>Full Name</BaseInput>
+          <BaseInput v-model="username" required>User Name</BaseInput>
 
           <BaseInput inputType="email" v-model="email" required>
             Email
@@ -20,9 +20,9 @@
           </BaseInput>
 
           <div class="text-right">
-            <BaseButton type="submit" theme="tertiary"
-              >Create Account</BaseButton
-            >
+            <BaseButton type="submit" theme="tertiary">
+              Create Account
+            </BaseButton>
           </div>
         </div>
       </form>
@@ -50,14 +50,14 @@ export default defineComponent({
     CreateAccount,
   },
   setup() {
-    const fullName = ref("");
+    const username = ref("");
     const email = ref("");
     const password = ref("");
 
     const { handleSignup } = useAuthUser();
 
     return {
-      fullName,
+      username,
       email,
       password,
       handleSignup,

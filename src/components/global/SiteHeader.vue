@@ -1,6 +1,6 @@
 <template>
   <header
-    class="base-wrapper z-50 top-0 w-full flex items-center justify-between p-4 mb-12"
+    class="base-wrapper z-50 top-0 w-full flex items-center justify-between p-6 mb-12"
   >
     <div id="top">
       <router-link to="/" class="block w-40 lg:w-48">
@@ -9,14 +9,18 @@
     </div>
 
     <nav class="hidden lg:flex font-body items-center">
-      <BaseButton v-if="!user" href="/sign-in" theme="secondary"
-        >Sign in</BaseButton
-      >
+      <BaseButton v-if="!user" href="/sign-in" theme="secondary">
+        Sign in
+      </BaseButton>
 
-      <p v-else>{{ user.user_metadata.full_name }}</p>
+      <router-link :to="`/account/${user.user_metadata.username}`" v-else>
+        {{ user.user_metadata.username }}
+      </router-link>
+
       <BaseButton class="ml-6" href="/create-an-account" theme="primary">
         Create an Account
       </BaseButton>
+
       <button v-if="user" class="ml-6" @click="handleLogout">Log Out</button>
     </nav>
 

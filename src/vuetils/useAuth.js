@@ -1,3 +1,4 @@
+import router from "@/router";
 import { ref } from "vue";
 import { supabase } from "../supabase";
 
@@ -6,13 +7,17 @@ const user = ref();
 export default function useAuthUser() {
   const handleLogin = async (credentials) => {
     try {
-      const { error } = await supabase.auth.signIn({
+      const { error, user } = await supabase.auth.signIn({
         email: credentials.email,
         password: credentials.password,
       });
 
       if (error) {
         alert("Error logging in: " + error.message);
+      }
+
+      if (user) {
+        router.push({ path: `/account/${user.user_metadata.username}` });
       }
     } catch (error) {
       alert(error.error_description || error);
@@ -21,7 +26,7 @@ export default function useAuthUser() {
 
   const handleSignup = async (credentials) => {
     try {
-      const { fullName, email, password } = credentials;
+      const { fullName, email, password, username } = credentials;
 
       const { error } = await supabase.auth.signUp(
         {
@@ -31,6 +36,7 @@ export default function useAuthUser() {
         {
           data: {
             full_name: fullName,
+            username: username,
           },
         }
       );

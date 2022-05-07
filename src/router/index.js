@@ -26,6 +26,15 @@ const routes = [
       layout: "AppLayoutDefault",
     },
   },
+  {
+    path: "/account/:id",
+    name: "User Account",
+    component: () => import("@/views/account/_id.vue"),
+    meta: {
+      layout: "AppLayoutAccountDashboard",
+      requiresAuth: true,
+    },
+  },
 ];
 
 const router = createRouter({
@@ -41,7 +50,7 @@ router.beforeEach((to) => {
     to.meta.requiresAuth &&
     !Object.keys(to.query).includes("fromEmail")
   ) {
-    return { name: "CreateAnAccount" };
+    return { path: "/sign-in" };
   }
 });
 
