@@ -1,14 +1,22 @@
 <template>
-  <router-link :class="`btn btn-${theme}`" v-if="href" :to="href">
+  <router-link :class="`btn btn-${theme} group`" v-if="href" :to="href">
+    <span v-if="$slots.icon" :class="$slots.icon ? 'mr-3' : ''">
+      <slot name="icon" />
+    </span>
+
     <slot />
   </router-link>
 
   <button
     v-else
-    :class="`btn btn-${theme}`"
+    :class="`btn btn-${theme} group`"
     :type="type"
     @click="$emit('click')"
   >
+    <span v-if="$slots.icon" :class="$slots.icon ? 'mr-3 ' : ''">
+      <slot name="icon" />
+    </span>
+
     <slot />
   </button>
 </template>
@@ -34,7 +42,7 @@ export default {
 
 <style lang="postcss" scoped>
 .btn {
-  @apply px-3 py-0.5 font-display text-center rounded border-2 border-transparent transition duration-150 ease-in-out;
+  @apply flex items-center px-3 py-0.5 font-display text-center rounded border-2 border-transparent transition duration-150 ease-in-out;
 }
 .btn-primary {
   @apply bg-red-500 text-white;
@@ -45,7 +53,7 @@ export default {
 }
 
 .btn-secondary {
-  @apply border-blue-500 text-blue-500;
+  @apply border-blue-500 text-black;
 }
 
 .btn-secondary:hover {

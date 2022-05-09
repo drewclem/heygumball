@@ -17,34 +17,34 @@
 </template>
 
 <script>
-export default {
-  inheritAttrs: false,
-  model: {
-    prop: 'value',
-    event: 'input',
-  },
-  props: {
-    rows: {
-      type: Number,
-      default: 4,
-    },
-    placeholder: {
-      type: String,
-      default: '',
-    },
-    required: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  computed: {
-    id() {
-      return this._uid;
-    },
-    listeners() {
-      const { input, ...listeners } = this.$listeners;
-      return listeners;
-    },
-  },
-};
+// export default {
+//   inheritAttrs: false,
+//   model: {
+//     prop: 'value',
+//     event: 'input',
+//   },
+//   props: {
+//     rows: {
+//       type: Number,
+//       default: 4,
+//     },
+//     placeholder: {
+//       type: String,
+//       default: '',
+//     },
+//     required: {
+//       type: Boolean,
+//       default: false,
+//     },
+//   },
+//   computed: {
+//     id() {
+//       return this._uid;
+//     },
+//     listeners() {
+//       const { input, ...listeners } = this.$listeners;
+//       return listeners;
+//     },
+//   },
+// };
 </script>

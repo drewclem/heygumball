@@ -13,7 +13,7 @@
         Sign in
       </BaseButton>
 
-      <router-link :to="`/account/${user.user_metadata.username}`" v-else>
+      <router-link :to="`/${user.user_metadata.username}`" v-else>
         {{ user.user_metadata.username }}
       </router-link>
 

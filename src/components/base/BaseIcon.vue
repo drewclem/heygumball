@@ -9,12 +9,9 @@
 </template>
 
 <script>
-import IconComponents from '~/utils/registerIconComponents.js';
+// import IconComponents from '~/utils/registerIconComponents.js';
 
 export default {
-  components: {
-    ...IconComponents,
-  },
   props: {
     file: {
       type: String,

@@ -17,7 +17,7 @@ export default function useAuthUser() {
       }
 
       if (user) {
-        router.push({ path: `/account/${user.user_metadata.username}` });
+        router.push({ path: `/${user.user_metadata.username}` });
       }
     } catch (error) {
       alert(error.error_description || error);
@@ -58,6 +58,8 @@ export default function useAuthUser() {
    */
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
+
+    router.push({ path: "/sign-in" });
 
     if (error) throw error;
   };

@@ -20,38 +20,38 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { Portal } from "portal-vue";
+// import { mapState } from "vuex";
+// import { Portal } from "portal-vue";
 
-export default {
-  components: {
-    Portal,
-  },
-  data() {
-    return {
-      isOpen: false,
-    };
-  },
-  computed: {
-    ...mapState("global", ["pageHasModalOpen"]),
-  },
-  methods: {
-    async closeModal() {
-      this.isOpen = false;
-      await this.$store.commit("modal/isModalOpen", false);
-      await this.$nextTick();
-      await this.$nextTick();
-      this.$refs.openButtonRef?.focus();
-    },
-    async openModal() {
-      this.isOpen = true;
-      await this.$store.commit("modal/isModalOpen", true);
-      await this.$nextTick();
-      await this.$nextTick();
-      this.$refs.closeButtonRef?.focus();
-    },
-  },
-};
+// export default {
+//   components: {
+//     Portal,
+//   },
+//   data() {
+//     return {
+//       isOpen: false,
+//     };
+//   },
+//   computed: {
+//     ...mapState("global", ["pageHasModalOpen"]),
+//   },
+//   methods: {
+//     async closeModal() {
+//       this.isOpen = false;
+//       await this.$store.commit("modal/isModalOpen", false);
+//       await this.$nextTick();
+//       await this.$nextTick();
+//       this.$refs.openButtonRef?.focus();
+//     },
+//     async openModal() {
+//       this.isOpen = true;
+//       await this.$store.commit("modal/isModalOpen", true);
+//       await this.$nextTick();
+//       await this.$nextTick();
+//       this.$refs.closeButtonRef?.focus();
+//     },
+//   },
+// };
 </script>
 
 <style lang="postcss" scoped>

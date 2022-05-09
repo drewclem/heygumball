@@ -6,26 +6,61 @@
       <div class="flex flex-col px-6 py-12">
         <div class="flex-grow">
           <div class="flex flex-col space-y-5 mb-12">
-            <BaseButton theme="tertiary">Schedule Window</BaseButton>
-            <BaseButton theme="secondary">Open Requests</BaseButton>
+            <BaseButton theme="tertiary">
+              <template #icon>
+                <IconSchedule class="text-white w-5 h-5 opacity-75" />
+              </template>
+              Schedule Window
+            </BaseButton>
+
+            <BaseButton theme="secondary">
+              <template #icon>
+                <IconLock class="text-blue-500 w-5 h-5 opacity-50" />
+              </template>
+              Open Requests
+            </BaseButton>
           </div>
 
           <nav>
             <ul class="flex flex-col space-y-3">
-              <li><router-link to="/">Collections</router-link></li>
-              <li><router-link to="/">Saved</router-link></li>
-              <li><router-link to="/">Request Form</router-link></li>
+              <li>
+                <BaseLink to="/">
+                  <template #icon>
+                    <IconCollection class="text-gray-200 w-5 h-5" />
+                  </template>
+                  Collections
+                </BaseLink>
+              </li>
+              <li>
+                <BaseLink to="/">
+                  <template #icon>
+                    <IconHeart class="text-gray-200 w-5 h-5" />
+                  </template>
+                  Saved
+                </BaseLink>
+              </li>
+              <li>
+                <BaseLink to="/">
+                  <template #icon>
+                    <IconForm class="text-gray-200 w-5 h-5" />
+                  </template>
+                  Request Form
+                </BaseLink>
+              </li>
             </ul>
           </nav>
         </div>
 
         <footer class="flex flex-col space-y-3">
-          <router-link :to="`/account/${user.user_metadata.username}`">
+          <BaseLink :to="`/${user.user_metadata.username}`">
+            <template #icon>
+              <IconUser class="text-gray-200 w-5 h-5" />
+            </template>
             Account
-          </router-link>
+          </BaseLink>
 
           <div>
-            <button>Sign out</button>
+            <button @click="handleLogout" type="button">Sign out</button>
           </div>
         </footer>
       </div>
@@ -42,11 +77,30 @@ import useAuthUser from "@/vuetils/useAuth";
 
 import DashboardHeader from "@/components/global/DashboardHeader.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
+import BaseLink from "@/components/base/BaseLink.vue";
+
+import IconSchedule from "@/components/svg/IconSchedule.vue";
+import IconLock from "@/components/svg/IconLock.vue";
+import IconCollection from "@/components/svg/IconCollection";
+import IconHeart from "@/components/svg/IconHeart.vue";
+import IconForm from "@/components/svg/IconForm.vue";
+import IconUser from "@/components/svg/IconUser.vue";
 
 export default {
-  components: { DashboardHeader, BaseButton },
+  components: {
+    DashboardHeader,
+    BaseButton,
+    BaseLink,
+    IconSchedule,
+    IconLock,
+    IconCollection,
+    IconHeart,
+    IconForm,
+    IconUser,
+  },
   setup() {
     const { user, handleLogout } = useAuthUser();
+
     return { user, handleLogout };
   },
 };

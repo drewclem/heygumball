@@ -8,6 +8,7 @@ export default {
 };
 
 export const Default = (args) => ({
+  props: Object.keys(args),
   template: `
   <div>
     <BaseModal>

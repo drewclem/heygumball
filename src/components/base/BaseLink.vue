@@ -1,11 +1,29 @@
 <template>
-  <a v-if="external" :class="`cursor-pointer ${classes}`" :href="href" v-bind="$attrs">
+  <a
+    v-if="external"
+    :class="`link cursor-pointer ${classes}`"
+    :href="href"
+    v-bind="$attrs"
+  >
+    <span v-if="$slots.icon" :class="$slots.icon ? 'mr-3' : ''">
+      <slot name="icon" />
+    </span>
+
     <slot />
   </a>
 
-  <nuxt-link v-else :class="`cursor-pointer ${classes}`" :to="href" v-bind="$attrs">
+  <router-link
+    v-else
+    :class="`link cursor-pointer ${classes}`"
+    :to="href"
+    v-bind="$attrs"
+  >
+    <span v-if="$slots.icon" :class="$slots.icon ? 'mr-3' : ''">
+      <slot name="icon" />
+    </span>
+
     <slot />
-  </nuxt-link>
+  </router-link>
 </template>
 
 <script>
@@ -22,8 +40,14 @@ export default {
     },
     classes: {
       type: String,
-      default: '',
+      default: "",
     },
   },
 };
 </script>
+
+<style scoped>
+.link {
+  @apply flex items-center;
+}
+</style>

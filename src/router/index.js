@@ -27,9 +27,9 @@ const routes = [
     },
   },
   {
-    path: "/account/:id",
+    path: "/:id",
     name: "User Account",
-    component: () => import("@/views/account/_id.vue"),
+    component: () => import("@/views/account/AccountHome.vue"),
     meta: {
       layout: "AppLayoutAccountDashboard",
       requiresAuth: true,
