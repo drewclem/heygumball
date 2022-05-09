@@ -1,5 +1,9 @@
 <template>
-  <router-link :class="`btn btn-${theme} group`" v-if="href" :to="href">
+  <router-link
+    :class="`btn btn-${theme} group ${$slots.icon ? 'flex items-center' : ''}`"
+    v-if="href"
+    :to="href"
+  >
     <span v-if="$slots.icon" :class="$slots.icon ? 'mr-3' : ''">
       <slot name="icon" />
     </span>
@@ -9,7 +13,7 @@
 
   <button
     v-else
-    :class="`btn btn-${theme} group`"
+    :class="`btn btn-${theme} group ${$slots.icon ? 'flex items-center' : ''}`"
     :type="type"
     @click="$emit('click')"
   >
@@ -42,7 +46,7 @@ export default {
 
 <style lang="postcss" scoped>
 .btn {
-  @apply flex items-center px-3 py-0.5 font-display text-center rounded border-2 border-transparent transition duration-150 ease-in-out;
+  @apply px-3 py-0.5 font-display text-center rounded border-2 border-transparent transition duration-150 ease-in-out;
 }
 .btn-primary {
   @apply bg-red-500 text-white;

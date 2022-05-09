@@ -1,7 +1,9 @@
 <template>
   <a
     v-if="external"
-    :class="`link cursor-pointer ${classes}`"
+    :class="`cursor-pointer ${classes} ${
+      $slots.icon ? 'flex items-center' : ''
+    }`"
     :href="href"
     v-bind="$attrs"
   >
@@ -14,7 +16,9 @@
 
   <router-link
     v-else
-    :class="`link cursor-pointer ${classes}`"
+    :class="`cursor-pointer ${classes} ${
+      $slots.icon ? 'flex items-center' : ''
+    }`"
     :to="href"
     v-bind="$attrs"
   >
@@ -45,9 +49,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.link {
-  @apply flex items-center;
-}
-</style>
