@@ -17,7 +17,7 @@ export default function useAuthUser() {
       }
 
       if (user) {
-        router.push({ path: `/${user.user_metadata.username}` });
+        router.push({ path: `/${user.user_metadata.username}/account` });
       }
     } catch (error) {
       alert(error.error_description || error);

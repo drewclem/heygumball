@@ -1,25 +1,41 @@
 <template>
-  <div class="flex flex-col">
-    <label class="font-display text-sm mb-2 font-bold" :for="id">
+  <div class="relative flex flex-col">
+    <label class="font-display mb-2 text-sm font-bold" :for="id">
       <slot /> <span v-if="required">*</span>
     </label>
 
     <input
       :id="id"
       class="border border-gray-300 rounded-md px-2 py-1"
-      :type="inputType"
+      :type="showPassword ? text : inputType"
       :placeholder="placeholder"
       :required="required"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
     />
+
+    <button
+      class="absolute right-0"
+      type="button"
+      v-if="inputType === 'password'"
+      @click="togglePassword"
+    >
+      <IconEye v-if="!showPassword" class="h-4 w-4 text-gray-400" />
+      <IconEyeClosed v-else class="h-4 w-4 text-gray-400" />
+      <span class="sr-only">Toggle Password</span>
+    </button>
   </div>
 </template>
 
 <script setup>
+import IconEye from "@/components/svg/IconEye.vue";
+import IconEyeClosed from "@/components/svg/IconEyeClosed.vue";
+
+import { ref } from "vue";
 import { v4 as uuidv4 } from "uuid";
 
 const id = uuidv4();
+const showPassword = ref(false);
 
 defineProps({
   modelValue: {
@@ -43,4 +59,8 @@ defineProps({
   },
 });
 defineEmits(["update:modelValue"]);
+
+function togglePassword() {
+  showPassword.value = !showPassword.value;
+}
 </script>

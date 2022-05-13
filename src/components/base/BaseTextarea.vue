@@ -11,40 +11,33 @@
       :required="required"
       :rows="rows"
       v-on="listeners"
-      @input="$emit('input', $event.target.value)"
+      @input="$emit('update:modalValue', $event.target.value)"
     />
   </div>
 </template>
 
-<script>
-// export default {
-//   inheritAttrs: false,
-//   model: {
-//     prop: 'value',
-//     event: 'input',
-//   },
-//   props: {
-//     rows: {
-//       type: Number,
-//       default: 4,
-//     },
-//     placeholder: {
-//       type: String,
-//       default: '',
-//     },
-//     required: {
-//       type: Boolean,
-//       default: false,
-//     },
-//   },
-//   computed: {
-//     id() {
-//       return this._uid;
-//     },
-//     listeners() {
-//       const { input, ...listeners } = this.$listeners;
-//       return listeners;
-//     },
-//   },
-// };
+<script setup>
+import { v4 as uuidv4 } from "uuid";
+
+const id = uuidv4();
+
+defineProps({
+  modelValue: {
+    type: String,
+  },
+  rows: {
+    type: Number,
+    default: 4,
+  },
+  placeholder: {
+    type: String,
+    default: "",
+  },
+  required: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+defineEmits(["update:modelValue"]);
 </script>

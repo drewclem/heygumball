@@ -2,7 +2,7 @@
   <div class="flex flex-col min-h-screen">
     <SiteHeader />
 
-    <main class="flex-grow">
+    <main class="flex-grow mb-12">
       <slot />
     </main>
 

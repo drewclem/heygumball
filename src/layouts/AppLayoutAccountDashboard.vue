@@ -24,7 +24,7 @@
           <nav>
             <ul class="flex flex-col space-y-3">
               <li>
-                <BaseLink to="/">
+                <BaseLink :to="`/${user.user_metadata.username}/collections`">
                   <template #icon>
                     <IconCollection class="text-gray-200 w-5 h-5" />
                   </template>
@@ -40,7 +40,7 @@
                 </BaseLink>
               </li>
               <li>
-                <BaseLink to="/">
+                <BaseLink :to="`/${user.user_metadata.username}`">
                   <template #icon>
                     <IconForm class="text-gray-200 w-5 h-5" />
                   </template>
@@ -52,7 +52,7 @@
         </div>
 
         <footer class="flex flex-col space-y-3">
-          <BaseLink :to="`/${user.user_metadata.username}`">
+          <BaseLink :to="`/${user.user_metadata.username}/account`">
             <template #icon>
               <IconUser class="text-gray-200 w-5 h-5" />
             </template>

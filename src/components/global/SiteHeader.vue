@@ -1,6 +1,6 @@
 <template>
   <header
-    class="base-wrapper z-50 top-0 w-full flex items-center justify-between p-6 mb-12"
+    class="base-wrapper z-50 top-0 w-full flex items-center justify-between p-6"
   >
     <div id="top">
       <router-link to="/" class="block w-40 lg:w-48">
@@ -15,7 +15,7 @@
             Sign in
           </BaseButton>
 
-          <router-link :to="`/${user.user_metadata.username}`" v-else>
+          <router-link :to="`/${user.user_metadata.username}/account`" v-else>
             {{ user.user_metadata.username }}
           </router-link>
 

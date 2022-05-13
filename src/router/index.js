@@ -28,8 +28,25 @@ const routes = [
   },
   {
     path: "/:id",
+    name: "User Request Form",
+    component: () => import("@/views/account/AccountForm.vue"),
+    meta: {
+      layout: "AppLayoutDefault",
+    },
+  },
+  {
+    path: "/:id/account",
     name: "User Account",
     component: () => import("@/views/account/AccountHome.vue"),
+    meta: {
+      layout: "AppLayoutAccountDashboard",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/:id/collections",
+    name: "User Collections",
+    component: () => import("@/views/account/AccountCollections.vue"),
     meta: {
       layout: "AppLayoutAccountDashboard",
       requiresAuth: true,
