@@ -3,7 +3,7 @@
     <div
       class="max-w-3xl mx-auto px-6 xl:px-0 grid lg:grid-cols-2 gap-24 items-center"
     >
-      <form @submit.prevent="handleSignup({ username, email, password })">
+      <form @submit.prevent="handleSignup({ email, username, password })">
         <BaseHeading class="mb-5" size="h4" tag="h1">
           Create an account
         </BaseHeading>

@@ -26,7 +26,7 @@ export default function useAuthUser() {
 
   const handleSignup = async (credentials) => {
     try {
-      const { fullName, email, password, username } = credentials;
+      const { email, username, password } = credentials;
 
       const { error } = await supabase.auth.signUp(
         {
@@ -35,7 +35,6 @@ export default function useAuthUser() {
         },
         {
           data: {
-            full_name: fullName,
             username: username,
           },
         }
@@ -43,9 +42,9 @@ export default function useAuthUser() {
 
       if (error) {
         alert(error.message);
-        console.error(error, error.message);
         return;
       }
+
       alert("Signup successful, confirmation mail should be sent soon!");
     } catch (err) {
       alert("Fatal error signing up");

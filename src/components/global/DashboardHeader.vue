@@ -31,6 +31,7 @@ export default {
   },
   setup() {
     const { user, handleLogout } = useAuthUser();
+
     return {
       user,
       handleLogout,
