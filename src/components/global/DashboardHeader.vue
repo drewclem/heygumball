@@ -29,13 +29,19 @@ export default {
     GumballLogo,
     BaseButton,
   },
+  props: {
+    user: {
+      type: Object,
+      required: true,
+    },
+  },
   setup() {
-    const { user, handleLogout } = useAuthUser();
+    const { handleLogout } = useAuthUser();
 
     return {
-      user,
       handleLogout,
     };
   },
+  mounted() {},
 };
 </script>

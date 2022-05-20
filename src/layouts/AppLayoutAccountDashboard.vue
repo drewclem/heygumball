@@ -1,6 +1,6 @@
 <template>
   <div>
-    <DashboardHeader />
+    <DashboardHeader :user="user" />
 
     <main class="flex">
       <div class="flex flex-col px-6 py-12">
@@ -74,6 +74,7 @@
 
 <script>
 import useAuthUser from "@/vuetils/useAuth";
+import { useUserStore } from "@/stores/user";
 
 import DashboardHeader from "@/components/global/DashboardHeader.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
@@ -100,6 +101,11 @@ export default {
   },
   setup() {
     const { user, handleLogout } = useAuthUser();
+
+    const { setCurrentUserId, setCollections } = useUserStore();
+
+    setCurrentUserId(user._rawValue.id);
+    setCollections();
 
     return { user, handleLogout };
   },

@@ -15,7 +15,10 @@
             Sign in
           </BaseButton>
 
-          <router-link :to="`/${user.user_metadata.username}/account`" v-else>
+          <router-link
+            :to="`/${user.user_metadata.username}/collections`"
+            v-else
+          >
             {{ user.user_metadata.username }}
           </router-link>
 

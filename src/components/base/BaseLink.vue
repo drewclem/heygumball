@@ -16,7 +16,7 @@
 
   <router-link
     v-else
-    :class="`cursor-pointer ${classes} ${
+    :class="`cursor-pointer  ${classes} ${
       $slots.icon ? 'flex items-center' : ''
     }`"
     :to="href"

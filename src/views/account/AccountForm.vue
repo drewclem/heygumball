@@ -32,13 +32,4 @@ import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
 import BaseTextarea from "@/components/base/BaseTextarea.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
-
-// export default {
-//   components: {
-//     BaseHeading,
-//     BaseInput,
-//     BaseTextarea,
-//     BaseButton,
-//   },
-// };
 </script>

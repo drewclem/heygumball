@@ -52,6 +52,15 @@ const routes = [
       requiresAuth: true,
     },
   },
+  {
+    path: '/:id/account/edit',
+    name: "Edit user account",
+    component: () => import("@/views/account/AccountSettingsEdit.vue"),
+    meta: {
+      layout: "AppLayoutAccountDashboard",
+      requiresAuth: true,
+    }
+  }
 ];
 
 const router = createRouter({

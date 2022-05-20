@@ -17,8 +17,10 @@ export default function useAuthUser() {
       }
 
       if (user) {
-        router.push({ path: `/${user.user_metadata.username}/account` });
+        router.push({ path: `/${user.user_metadata.username}/collections` });
       }
+
+      return { user };
     } catch (error) {
       alert(error.error_description || error);
     }
@@ -45,10 +47,11 @@ export default function useAuthUser() {
         return;
       }
 
-      alert("Signup successful, confirmation mail should be sent soon!");
+      alert(
+        "Signup successful, check your email to confirm your registration!"
+      );
     } catch (err) {
       alert("Fatal error signing up");
-      console.error("signup error", err);
     }
   };
 
