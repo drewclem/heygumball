@@ -21,9 +21,23 @@ export const useUserStore = defineStore("currentUser", {
         .select()
         .eq("user_id", this.userID);
 
-      console.log(data);
+      data.forEach(async (item) => {
+        const requestsReceived = await supabase
+          .from("submissions")
+          .select("id")
+          .match({ collection_id: item.id });
 
-      this.collections = data;
+        const approvedRequests = await supabase
+          .from("submissions")
+          .select("id")
+          .eq("approved", true);
+
+        this.collections.push({
+          ...item,
+          requests_received: requestsReceived.data.length,
+          approved_requests: approvedRequests.data.length,
+        });
+      });
     },
   },
 });

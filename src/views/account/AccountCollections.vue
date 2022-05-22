@@ -21,26 +21,21 @@
       </div>
 
       <div class="flex flex-col space-y-6">
-        <AccountCardGrid class="card-shadow bg-white rounded-lg">
-          <template #col-1>March 1 - March 12</template>
-          <template #col-2>2022</template>
-          <template #col-3>324</template>
-          <template #col-4>23</template>
-        </AccountCardGrid>
-
-        <AccountCardGrid class="card-shadow bg-white rounded-lg">
-          <template #col-1>December 12 - January 3</template>
-          <template #col-2>2021-2022</template>
-          <template #col-3>236</template>
-          <template #col-4>58</template>
-        </AccountCardGrid>
+        <AccountCollectionCard
+          v-for="collection in collections"
+          :key="collection.id"
+          :collection="collection"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { useUserStore } from "@/stores/user";
 import BaseHeading from "@/components/base/BaseHeading.vue";
-import AccountCardGrid from "@/components/account/AccountCardGrid.vue";
+import AccountCollectionCard from "@/components/account/AccountCollectionCard.vue";
 import IconSearch from "@/components/svg/IconSearch";
+
+const { collections } = useUserStore();
 </script>

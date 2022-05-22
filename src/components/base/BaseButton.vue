@@ -50,6 +50,9 @@ export default {
 }
 .btn-primary {
   @apply bg-red-500 text-white;
+
+  box-shadow: 0px 5.4px 5.3px rgba(0, 0, 0, 0.02),
+    0px 18.1px 17.9px rgba(0, 0, 0, 0.03), 0px 81px 80px rgba(0, 0, 0, 0.05);
 }
 
 .btn-primary:hover {
@@ -66,6 +69,9 @@ export default {
 
 .btn-tertiary {
   @apply bg-green-500 text-white;
+
+  box-shadow: 0px 5.4px 5.3px rgba(0, 0, 0, 0.02),
+    0px 18.1px 17.9px rgba(0, 0, 0, 0.03), 0px 81px 80px rgba(0, 0, 0, 0.05);
 }
 
 .btn-tertiary:hover {
