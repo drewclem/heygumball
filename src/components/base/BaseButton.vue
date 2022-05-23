@@ -51,8 +51,8 @@ export default {
 .btn-primary {
   @apply bg-red-500 text-white;
 
-  box-shadow: 0px 5.4px 5.3px rgba(0, 0, 0, 0.02),
-    0px 18.1px 17.9px rgba(0, 0, 0, 0.03), 0px 81px 80px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.08), 0 8px 8px rgba(0, 0, 0, 0.05),
+    0 10px 10px rgba(0, 0, 0, 0.03);
 }
 
 .btn-primary:hover {
@@ -64,14 +64,17 @@ export default {
 }
 
 .btn-secondary:hover {
-  @apply bg-blue-500 bg-opacity-10;
+  @apply bg-blue-500 text-white;
+
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.08), 0 8px 8px rgba(0, 0, 0, 0.05),
+    0 10px 10px rgba(0, 0, 0, 0.03);
 }
 
 .btn-tertiary {
   @apply bg-green-500 text-white;
 
-  box-shadow: 0px 5.4px 5.3px rgba(0, 0, 0, 0.02),
-    0px 18.1px 17.9px rgba(0, 0, 0, 0.03), 0px 81px 80px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.08), 0 8px 8px rgba(0, 0, 0, 0.05),
+    0 10px 10px rgba(0, 0, 0, 0.03);
 }
 
 .btn-tertiary:hover {

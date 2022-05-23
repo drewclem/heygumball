@@ -34,7 +34,7 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import useAuthUser from "@/vuetils/useAuth";
+import useAuthUser from "@/utils/useAuth";
 
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseInput from "@/components/base/BaseInput.vue";

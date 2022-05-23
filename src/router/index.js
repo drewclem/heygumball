@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import useAuthUser from "@/vuetils/useAuth";
+import useAuthUser from "@/utils/useAuth";
 
 const routes = [
   {

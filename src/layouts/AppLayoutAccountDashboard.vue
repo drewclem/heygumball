@@ -13,9 +13,11 @@
               Schedule Window
             </BaseButton>
 
-            <BaseButton theme="secondary">
+            <BaseButton class="group" theme="secondary">
               <template #icon>
-                <IconLock class="text-blue-500 w-5 h-5 opacity-50" />
+                <IconLock
+                  class="text-blue-500 group-hover:text-white w-5 h-5 opacity-50"
+                />
               </template>
               Open Requests
             </BaseButton>
@@ -73,7 +75,7 @@
 </template>
 
 <script>
-import useAuthUser from "@/vuetils/useAuth";
+import useAuthUser from "@/utils/useAuth";
 import { useUserStore } from "@/stores/user";
 
 import DashboardHeader from "@/components/global/DashboardHeader.vue";

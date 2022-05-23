@@ -8,7 +8,7 @@ const app = createApp(App);
 
 // supabase auth
 import { supabase } from "./supabase";
-import useAuthUser from "@/vuetils/useAuth";
+import useAuthUser from "@/utils/useAuth";
 
 app.use(router);
 app.use(createPinia());

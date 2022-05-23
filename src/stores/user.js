@@ -6,8 +6,6 @@ export const useUserStore = defineStore("currentUser", {
     return {
       userID: undefined,
       collections: [],
-      activeCollection: {},
-      submissions: [],
     };
   },
 
@@ -20,7 +18,8 @@ export const useUserStore = defineStore("currentUser", {
         const { data } = await supabase
           .from("collections")
           .select()
-          .eq("user_id", this.userID);
+          .eq("user_id", this.userID)
+          .order("created_at", { ascending: true });
 
         data.forEach(async (item) => {
           const requestsReceived = await supabase
@@ -41,22 +40,12 @@ export const useUserStore = defineStore("currentUser", {
         });
       }
     },
-    async setActiveCollection(id) {
+    setActiveCollection(id) {
       const filteredCollections = this.collections.filter((collection) => {
         return collection.id === id;
       });
 
       this.activeCollection = filteredCollections[0];
-
-      await this.setSubmissions();
-    },
-    async setSubmissions() {
-      const { data } = await supabase
-        .from("submissions")
-        .select()
-        .eq("collection_id", this.activeCollection.id);
-
-      this.submissions = data;
     },
   },
 });

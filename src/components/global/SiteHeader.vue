@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import useAuthUser from "@/vuetils/useAuth";
+import useAuthUser from "@/utils/useAuth";
 import BaseButton from "@/components/base/BaseButton.vue";
 import GumballLogo from "@/components/global/GumballLogo.vue";
 import MenuIcon from "@/components/icons/MenuIcon.vue";

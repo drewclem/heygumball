@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import useAuthUser from "./vuetils/useAuth";
+import useAuthUser from "@/utils/useAuth";
 
 const supabaseUrl = process.env.VUE_APP_SUPABASE_URL;
 const supbaseAnonKey = process.env.VUE_APP_SUPABASE_ANON_KEY;
