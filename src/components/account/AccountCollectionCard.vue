@@ -13,6 +13,7 @@
 </template>
 
 <script setup>
+// components
 import AccountCardGrid from "@/components/account/AccountCardGrid.vue";
 
 defineProps({
@@ -22,6 +23,7 @@ defineProps({
   },
 });
 
+// format collection dates
 function formatOpenDates(date) {
   const dateObj = new Date(date);
 
@@ -32,6 +34,7 @@ function formatOpenDates(date) {
   })}`;
 }
 
+// format collection year
 function getYear(date) {
   const dateObj = new Date(date);
 

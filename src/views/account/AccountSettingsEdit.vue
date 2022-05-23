@@ -22,7 +22,10 @@
 </template>
 
 <script setup>
+// utils
 import useAuthUser from "@/utils/useAuth";
+
+// components
 import BaseLink from "@/components/base/BaseLink.vue";
 import BaseHeading from "@/components/base/BaseHeading.vue";
 

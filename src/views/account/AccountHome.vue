@@ -11,6 +11,7 @@
 </template>
 
 <script setup>
+// components
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseLink from "@/components/base/BaseLink.vue";
 </script>

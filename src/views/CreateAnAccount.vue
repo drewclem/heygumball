@@ -33,9 +33,11 @@
 </template>
 
 <script>
+// utils
 import { defineComponent, ref } from "vue";
 import useAuthUser from "@/utils/useAuth";
 
+//components
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
 import BaseButton from "@/components/base/BaseButton.vue";

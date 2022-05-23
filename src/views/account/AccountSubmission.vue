@@ -36,6 +36,7 @@
 </template>
 
 <script setup>
+// utils
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { supabase } from "@/supabase";
@@ -45,8 +46,11 @@ import BaseHeading from "@/components/base/BaseHeading.vue";
 
 const route = useRoute();
 const submission = ref();
+
+// init loading state to true
 const loading = ref(true);
 
+// fetch request to get the submission data
 async function fetchSubmission() {
   const { data } = await supabase
     .from("submissions")
@@ -56,6 +60,7 @@ async function fetchSubmission() {
 
   submission.value = data[0];
 
+  // set loading to false
   if (data) loading.value = false;
 }
 

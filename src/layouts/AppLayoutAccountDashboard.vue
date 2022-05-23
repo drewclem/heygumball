@@ -91,13 +91,14 @@
 </template>
 
 <script setup>
+// utils
 import useAuthUser from "@/utils/useAuth";
 import { useUserStore } from "@/stores/user";
 
+//components
 import DashboardHeader from "@/components/global/DashboardHeader.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 import BaseLink from "@/components/base/BaseLink.vue";
-
 import IconSchedule from "@/components/svg/IconSchedule.vue";
 import IconLock from "@/components/svg/IconLock.vue";
 import IconCollection from "@/components/svg/IconCollection";
@@ -110,6 +111,8 @@ const { user, handleLogout } = useAuthUser();
 const { setCurrentUserId, setCollections } = useUserStore();
 
 setCurrentUserId(user._rawValue.id);
+
+// fetch collections for user and set in pinia
 setCollections();
 </script>
 

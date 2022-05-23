@@ -48,7 +48,6 @@ import { ref, onMounted, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
 import useAuthUser from "@/utils/useAuth";
 import { useUserStore } from "@/stores/user";
-
 import { supabase } from "@/supabase";
 
 // components
@@ -57,13 +56,15 @@ import BaseHeading from "@/components/base/BaseHeading.vue";
 import IconSearch from "@/components/svg/IconSearch.vue";
 
 const route = useRoute();
-let submissions = ref([]);
-let loading = ref(true);
 const { setCurrentCollection } = useUserStore();
 const { user } = useAuthUser();
 
+let submissions = ref([]);
+let loading = ref(true);
+
 const collection_id = route.params.collection_id;
 
+// fetch request to get all  submissions from collections
 async function setSubmissions() {
   const { data } = await supabase
     .from("submissions")
@@ -75,19 +76,10 @@ async function setSubmissions() {
   loading.value = false;
 }
 
+// set current collection in pinia for use later
 onBeforeMount(() => {
   setCurrentCollection(collection_id);
 });
-
-function formatDate(date) {
-  const dateObj = new Date(date);
-
-  return `${dateObj.toLocaleString("default", {
-    month: "short",
-  })} ${dateObj.toLocaleString("default", {
-    day: "numeric",
-  })}`;
-}
 
 onMounted(() => {
   setSubmissions();
