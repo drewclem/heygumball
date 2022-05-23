@@ -60,6 +60,7 @@ const route = useRoute();
 let submissions = ref([]);
 let loading = ref(true);
 const { setCurrentCollection } = useUserStore();
+const { user } = useAuthUser();
 
 const collection_id = route.params.collection_id;
 

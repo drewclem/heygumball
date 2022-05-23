@@ -21,7 +21,7 @@ export const useUserStore = defineStore("currentUser", {
           .from("collections")
           .select()
           .eq("user_id", this.userID)
-          .order("created_at", { ascending: true });
+          .order("created_at");
 
         data.forEach(async (item) => {
           const requestsReceived = await supabase
