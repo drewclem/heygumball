@@ -37,7 +37,7 @@
 
 <script setup>
 // utils
-import { onMounted, ref } from "vue";
+import { onBeforeMount, onMounted, ref, nextTick } from "vue";
 import { useRoute } from "vue-router";
 import { supabase } from "@/supabase";
 
@@ -45,7 +45,7 @@ import { supabase } from "@/supabase";
 import BaseHeading from "@/components/base/BaseHeading.vue";
 
 const route = useRoute();
-const submission = ref();
+const submission = ref({});
 
 // init loading state to true
 const loading = ref(true);
@@ -64,7 +64,31 @@ async function fetchSubmission() {
   if (data) loading.value = false;
 }
 
-onMounted(() => {
-  fetchSubmission();
+async function updateViewed() {
+  if (!submission.value.viewed) {
+    const { error } = await supabase
+      .from("submissions")
+      .update("viewed", true)
+      .match({ id: submission.value.id });
+
+    if (error) {
+      alert("Oops! Something went wrong.");
+    }
+  }
+}
+
+onBeforeMount(async () => {
+  await fetchSubmission();
+
+  if (!submission?.value?.viewed) {
+    const { error } = await supabase
+      .from("submissions")
+      .update({ viewed: true })
+      .match({ id: submission.value.id });
+
+    if (error) {
+      alert("Oops! Something went wrong.");
+    }
+  }
 });
 </script>
