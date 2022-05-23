@@ -6,6 +6,8 @@ export const useUserStore = defineStore("currentUser", {
     return {
       userID: undefined,
       collections: [],
+      currentCollection: null,
+      currentSubmissions: [],
     };
   },
 
@@ -40,12 +42,15 @@ export const useUserStore = defineStore("currentUser", {
         });
       }
     },
-    setActiveCollection(id) {
+    setCurrentCollection(id) {
       const filteredCollections = this.collections.filter((collection) => {
         return collection.id === id;
       });
 
-      this.activeCollection = filteredCollections[0];
+      this.currentCollection = filteredCollections[0];
+    },
+    setCurrentSubmissions(data) {
+      this.currentSubmissions = data;
     },
   },
 });

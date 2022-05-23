@@ -3,7 +3,7 @@
     v-if="external"
     :class="`cursor-pointer ${classes} ${
       $slots.icon ? 'flex items-center' : ''
-    }`"
+    } group`"
     :href="href"
     v-bind="$attrs"
   >

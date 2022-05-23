@@ -1,35 +1,32 @@
 <template>
-  <div class="relative flex w-full items-center">
+  <router-link
+    :to="`/${user.user_metadata.username}/collections/${route.params.collection_id}/${submission.id}`"
+    class="relative flex w-full items-center"
+  >
     <div
       v-if="!submission.viewed"
       class="absolute rounded-full bg-red-500 w-2 h-2 ml-3"
     />
     <div
-      class="grid grid-cols-3 px-8 py-4 bg-white card-shadow rounded-lg w-full"
+      class="grid grid-cols-6 px-8 py-4 bg-white card-shadow rounded-lg w-full"
     >
-      <p>{{ submission.name }}</p>
-      <p>{{ submission.email }}</p>
-      <p class="ml-auto">{{ submission.phone }}</p>
+      <p class="col-span-2">{{ submission.name }}</p>
+      <p class="col-span-2">{{ submission.email }}</p>
+      <p>{{ submission.phone }}</p>
+      <p class="ml-auto">{{ formatDate(submission.created_at) }}</p>
     </div>
-  </div>
+  </router-link>
 </template>
 
 <script setup>
-import { onMounted } from "vue";
 import useAuthUser from "@/utils/useAuth";
-import { useUserStore } from "@/stores/user";
 import { useRoute } from "vue-router";
 
 // components
 import AccountCardGrid from "@/components/account/AccountCardGrid.vue";
 
 const { user } = useAuthUser();
-const { setActiveCollection } = useUserStore();
 const route = useRoute();
-
-onMounted(() => {
-  setActiveCollection(route.params.collection_id);
-});
 
 defineProps({
   submission: {
@@ -38,16 +35,14 @@ defineProps({
   },
 });
 
-function formatOpenDates(date) {
+// simple function to take the date returned from Supbase (yyyy-mm-dd) and format it to MMM-YY
+function formatDate(date) {
   const dateObj = new Date(date);
+
   return `${dateObj.toLocaleString("default", {
     month: "short",
-  })} ${dateObj.getDay()}`;
-}
-
-function getYear(date) {
-  const dateObj = new Date(date);
-
-  return dateObj.getFullYear();
+  })} ${dateObj.toLocaleString("default", {
+    day: "numeric",
+  })}`;
 }
 </script>

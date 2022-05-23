@@ -64,7 +64,16 @@ const routes = [
   {
     path: "/:id/collections/:collection_id",
     name: "Collection",
-    component: () => import("@/views/account/AccountCollectionsItem.vue"),
+    component: () => import("@/views/account/AccountSubmissions.vue"),
+    meta: {
+      layout: "AppLayoutAccountDashboard",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/:id/collections/:collection_id/:submission_id",
+    name: "Submission",
+    component: () => import("@/views/account/AccountSubmission.vue"),
     meta: {
       layout: "AppLayoutAccountDashboard",
       requiresAuth: true,

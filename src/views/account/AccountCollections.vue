@@ -38,4 +38,14 @@ import AccountCollectionCard from "@/components/account/AccountCollectionCard.vu
 import IconSearch from "@/components/svg/IconSearch";
 
 const { collections } = useUserStore();
+
+function formatDate(date) {
+  const dateObj = new Date(date);
+
+  return `${dateObj.toLocaleString("default", {
+    month: "short",
+  })} ${dateObj.toLocaleString("default", {
+    day: "numeric",
+  })}`;
+}
 </script>

@@ -26,25 +26,34 @@
           <nav>
             <ul class="flex flex-col space-y-3">
               <li>
-                <BaseLink :to="`/${user.user_metadata.username}/collections`">
+                <BaseLink
+                  class="group"
+                  :to="`/${user.user_metadata.username}/collections`"
+                >
                   <template #icon>
-                    <IconCollection class="text-gray-200 w-5 h-5" />
+                    <IconCollection
+                      class="text-gray-200 group-hover:text-gray-300 w-5 h-5"
+                    />
                   </template>
                   Collections
                 </BaseLink>
               </li>
               <li>
-                <BaseLink to="/">
+                <BaseLink class="group" to="/">
                   <template #icon>
-                    <IconHeart class="text-gray-200 w-5 h-5" />
+                    <IconHeart
+                      class="text-gray-200 group-hover:text-gray-300 w-5 h-5"
+                    />
                   </template>
                   Saved
                 </BaseLink>
               </li>
               <li>
-                <BaseLink :to="`/${user.user_metadata.username}`">
+                <BaseLink class="group" :to="`/${user.user_metadata.username}`">
                   <template #icon>
-                    <IconForm class="text-gray-200 w-5 h-5" />
+                    <IconForm
+                      class="text-gray-200 group-hover:text-gray-300 w-5 h-5"
+                    />
                   </template>
                   Request Form
                 </BaseLink>
@@ -54,9 +63,14 @@
         </div>
 
         <footer class="flex flex-col space-y-3">
-          <BaseLink :to="`/${user.user_metadata.username}/account`">
+          <BaseLink
+            class="group"
+            :to="`/${user.user_metadata.username}/account`"
+          >
             <template #icon>
-              <IconUser class="text-gray-200 w-5 h-5" />
+              <IconUser
+                class="text-gray-200 group-hover:text-gray-300 w-5 h-5"
+              />
             </template>
             Account
           </BaseLink>
@@ -68,13 +82,15 @@
       </div>
 
       <div class="py-12 px-20 bg-gray-50 flex-grow">
-        <slot />
+        <Transition name="fade">
+          <slot />
+        </Transition>
       </div>
     </main>
   </div>
 </template>
 
-<script>
+<script setup>
 import useAuthUser from "@/utils/useAuth";
 import { useUserStore } from "@/stores/user";
 
@@ -89,33 +105,30 @@ import IconHeart from "@/components/svg/IconHeart.vue";
 import IconForm from "@/components/svg/IconForm.vue";
 import IconUser from "@/components/svg/IconUser.vue";
 
-export default {
-  components: {
-    DashboardHeader,
-    BaseButton,
-    BaseLink,
-    IconSchedule,
-    IconLock,
-    IconCollection,
-    IconHeart,
-    IconForm,
-    IconUser,
-  },
-  setup() {
-    const { user, handleLogout } = useAuthUser();
+const { user, handleLogout } = useAuthUser();
 
-    const { setCurrentUserId, setCollections } = useUserStore();
+const { setCurrentUserId, setCollections } = useUserStore();
 
-    setCurrentUserId(user._rawValue.id);
-    setCollections();
-
-    return { user, handleLogout };
-  },
-};
+setCurrentUserId(user._rawValue.id);
+setCollections();
 </script>
 
 <style scoped>
 main {
   height: calc(100vh - 89.31px);
+}
+
+.router-link-active svg {
+  @apply text-green-500;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 300ms ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

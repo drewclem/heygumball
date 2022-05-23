@@ -13,29 +13,30 @@
     </div>
 
     <div>
-      <div class="grid grid-cols-3 px-8 py-4 opacity-40 mb-4">
-        <p>Name</p>
-        <p>Email</p>
-        <p class="ml-auto">Phone</p>
+      <div class="grid grid-cols-6 px-8 py-4 opacity-40 mb-4">
+        <p class="col-span-2">Name</p>
+        <p class="col-span-2">Email</p>
+        <p>Phone</p>
+        <p class="ml-auto">Submitted On</p>
       </div>
 
       <div class="flex flex-col space-y-6">
         <p class="opacity-50" v-if="loading">Loading...</p>
 
-        <template v-else-if="submissions.length">
+        <div v-else-if="!submissions.length">
+          <p class="mb-5">No submissions yet! Share that link!</p>
+          <p class="font-bold text-green-500">
+            https://heygumball.com/{{ user.user_metadata.username }}
+          </p>
+        </div>
+
+        <template v-else>
           <CollectionSubmissionCard
             v-for="submission in submissions"
             :key="submission.id"
             :submission="submission"
           />
         </template>
-
-        <div v-else>
-          <p class="mb-5">No submissions yet! Share that link!</p>
-          <p class="font-bold text-green-500">
-            https://heygumball.com/{{ user.user_metadata.username }}
-          </p>
-        </div>
       </div>
     </div>
   </div>
@@ -43,9 +44,10 @@
 
 <script setup>
 // utils
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
 import useAuthUser from "@/utils/useAuth";
+import { useUserStore } from "@/stores/user";
 
 import { supabase } from "@/supabase";
 
@@ -57,16 +59,33 @@ import IconSearch from "@/components/svg/IconSearch.vue";
 const route = useRoute();
 let submissions = ref([]);
 let loading = ref(true);
-const { user } = useAuthUser();
+const { setCurrentCollection } = useUserStore();
+
+const collection_id = route.params.collection_id;
 
 async function setSubmissions() {
   const { data } = await supabase
     .from("submissions")
     .select()
-    .eq("collection_id", route.params.collection_id);
+    .eq("collection_id", collection_id)
+    .order("created_at");
 
   submissions.value = data;
   loading.value = false;
+}
+
+onBeforeMount(() => {
+  setCurrentCollection(collection_id);
+});
+
+function formatDate(date) {
+  const dateObj = new Date(date);
+
+  return `${dateObj.toLocaleString("default", {
+    month: "short",
+  })} ${dateObj.toLocaleString("default", {
+    day: "numeric",
+  })}`;
 }
 
 onMounted(() => {
