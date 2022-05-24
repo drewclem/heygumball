@@ -8,9 +8,9 @@
 
     <p v-if="loading">Loading...</p>
 
-    <div v-else class="flex w-full gap-12">
+    <div v-else class="flex gap-12">
       <!-- left side -->
-      <div class="w-52 text-sm flex flex-col space-y-5">
+      <div class="text-sm w-44 flex flex-col space-y-5">
         <div>
           <BaseHeading size="h5" tag="h2">Name</BaseHeading>
           <p>{{ submission.name }}</p>
@@ -36,7 +36,7 @@
         </button>
 
         <a
-          :href="submission.email"
+          :href="`mailto:${submission.email}`"
           class="py-0.5 border-2 border-green-500 text-center rounded-md"
         >
           Reply
@@ -52,10 +52,10 @@
       </div>
 
       <!-- right side -->
-      <div class="flex-grow">
+      <div class="w-3/4">
         <div class="card-shadow bg-white p-8 rounded-lg">
           <BaseHeading size="h5" tag="h2" class="mb-5">Message</BaseHeading>
-          <p>{{ submission.message }}</p>
+          <div class="richtext" v-html="submission.message" />
         </div>
       </div>
     </div>
@@ -65,7 +65,7 @@
 <script setup>
 // utils
 import { onBeforeMount, onMounted, ref, nextTick } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { supabase } from "@/supabase";
 
 // components
@@ -74,6 +74,7 @@ import BaseButton from "@/components/base/BaseButton.vue";
 import IconHeart from "@/components/svg/IconHeart.vue";
 
 const route = useRoute();
+const router = useRouter();
 const submission = ref({});
 
 // init loading state to true
@@ -122,7 +123,7 @@ async function deleteSubmission() {
     if (error) {
       alert(error.message);
     } else {
-      route.go(-1);
+      router.back();
     }
   }
 }
@@ -143,3 +144,11 @@ onBeforeMount(async () => {
   }
 });
 </script>
+
+<style>
+.richtext p,
+.richtext ul,
+.richtext ol {
+  margin-bottom: 1.25rem !important;
+}
+</style>
