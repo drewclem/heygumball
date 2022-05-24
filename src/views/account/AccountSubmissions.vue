@@ -25,18 +25,20 @@
 
         <div v-else-if="!submissions.length">
           <p class="mb-5">No submissions yet! Share that link!</p>
-          <div>
-            <p id="copy" class="font-bold text-green-500">
+          <div class="flex items-center">
+            <p id="copy" class="font-bold text-green-500 mr-4">
               https://heygumball.com/{{ user.user_metadata.username }}
             </p>
             <button
-              class="text-xs"
-              :class="copySuccess ? 'text-green-500' : 'underline'"
+              class="text-xs opacity-50 hover:opacity-100"
               type="button"
               @click="copyText"
             >
               <span v-if="copySuccess">Copied!</span>
-              <span v-else>Copy</span>
+              <div v-else>
+                <IconCopy class="h-4 w-4 -mt-0.5" />
+                <span class="sr-only">Copy to clipboard</span>
+              </div>
             </button>
           </div>
         </div>
@@ -65,6 +67,7 @@ import { supabase } from "@/supabase";
 import CollectionSubmissionCard from "@/components/collections/CollectionSubmissionCard.vue";
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import IconSearch from "@/components/svg/IconSearch.vue";
+import IconCopy from "@/components/svg/IconCopy.vue";
 
 const route = useRoute();
 const { setCurrentCollection } = useUserStore();
