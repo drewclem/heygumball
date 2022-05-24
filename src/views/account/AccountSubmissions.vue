@@ -25,9 +25,20 @@
 
         <div v-else-if="!submissions.length">
           <p class="mb-5">No submissions yet! Share that link!</p>
-          <p class="font-bold text-green-500">
-            https://heygumball.com/{{ user.user_metadata.username }}
-          </p>
+          <div>
+            <p id="copy" class="font-bold text-green-500">
+              https://heygumball.com/{{ user.user_metadata.username }}
+            </p>
+            <button
+              class="text-xs"
+              :class="copySuccess ? 'text-green-500' : 'underline'"
+              type="button"
+              @click="copyText"
+            >
+              <span v-if="copySuccess">Copied!</span>
+              <span v-else>Copy</span>
+            </button>
+          </div>
         </div>
 
         <template v-else>
@@ -59,8 +70,9 @@ const route = useRoute();
 const { setCurrentCollection } = useUserStore();
 const { user } = useAuthUser();
 
-let submissions = ref([]);
-let loading = ref(true);
+const submissions = ref([]);
+const loading = ref(true);
+const copySuccess = ref(false);
 
 const collection_id = route.params.collection_id;
 
@@ -74,6 +86,18 @@ async function setSubmissions() {
 
   submissions.value = data;
   loading.value = false;
+}
+
+function copyText() {
+  const text = document.getElementById("copy");
+
+  navigator.clipboard.writeText(text.innerText);
+
+  copySuccess.value = true;
+
+  setTimeout(() => {
+    copySuccess.value = false;
+  }, 3000);
 }
 
 // set current collection in pinia for use later
