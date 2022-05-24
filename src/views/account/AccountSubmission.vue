@@ -9,6 +9,7 @@
     <p v-if="loading">Loading...</p>
 
     <div v-else class="flex w-full gap-12">
+      <!-- left side -->
       <div class="w-52 text-sm flex flex-col space-y-5">
         <div>
           <BaseHeading size="h5" tag="h2">Name</BaseHeading>
@@ -24,7 +25,33 @@
           <BaseHeading size="h5" tag="h2">Phone</BaseHeading>
           <p>{{ submission.phone }}</p>
         </div>
+
+        <button class="flex text-base" @click="saveSubmission">
+          <IconHeart
+            class="h-5 w-5 mr-2 -mt-px"
+            :class="submission.saved ? 'text-red-500' : 'text-gray-300'"
+          />
+          <span v-if="!submission.saved">Save</span>
+          <span v-else>Saved</span>
+        </button>
+
+        <a
+          :href="submission.email"
+          class="py-0.5 border-2 border-green-500 text-center rounded-md"
+        >
+          Reply
+        </a>
+
+        <button
+          type="button"
+          class="text-red-500 underline text-left"
+          @click="deleteSubmission"
+        >
+          Delete
+        </button>
       </div>
+
+      <!-- right side -->
       <div class="flex-grow">
         <div class="card-shadow bg-white p-8 rounded-lg">
           <BaseHeading size="h5" tag="h2" class="mb-5">Message</BaseHeading>
@@ -43,6 +70,8 @@ import { supabase } from "@/supabase";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
+import BaseButton from "@/components/base/BaseButton.vue";
+import IconHeart from "@/components/svg/IconHeart.vue";
 
 const route = useRoute();
 const submission = ref({});
@@ -64,15 +93,36 @@ async function fetchSubmission() {
   if (data) loading.value = false;
 }
 
-async function updateViewed() {
-  if (!submission.value.viewed) {
+// toggle saving the submission
+async function saveSubmission() {
+  const { error } = await supabase
+    .from("submissions")
+    .update({ saved: !submission.value.saved })
+    .match({ id: submission.value.id });
+
+  if (error) {
+    alert("Oops! Something went wrong.");
+  }
+
+  await fetchSubmission();
+}
+
+// delete submission
+async function deleteSubmission() {
+  if (
+    window.confirm(
+      "Are you sure you want to delete this submission? This is an irreversible action."
+    )
+  ) {
     const { error } = await supabase
       .from("submissions")
-      .update("viewed", true)
+      .delete()
       .match({ id: submission.value.id });
 
     if (error) {
-      alert("Oops! Something went wrong.");
+      alert(error.message);
+    } else {
+      route.go(-1);
     }
   }
 }
@@ -80,6 +130,7 @@ async function updateViewed() {
 onBeforeMount(async () => {
   await fetchSubmission();
 
+  // update submission when viewed for the first time
   if (!submission?.value?.viewed) {
     const { error } = await supabase
       .from("submissions")
