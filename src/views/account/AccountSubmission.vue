@@ -37,7 +37,7 @@
 
         <a
           :href="`mailto:${submission.email}`"
-          class="py-0.5 border-2 border-green-500 text-center rounded-md"
+          class="py-0.5 border-2 border-green-500 hover:bg-green-500 hover:text-white text-center rounded-md"
         >
           Reply
         </a>
