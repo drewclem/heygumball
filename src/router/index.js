@@ -79,6 +79,15 @@ const routes = [
       requiresAuth: true,
     },
   },
+  {
+    path: "/:id/saved",
+    name: "Saved submissions",
+    component: () => import("@/views/account/AccountSaved.vue"),
+    meta: {
+      layout: "AppLayoutAccountDashboard",
+      requiresAuth: true,
+    }
+  }
 ];
 
 const router = createRouter({

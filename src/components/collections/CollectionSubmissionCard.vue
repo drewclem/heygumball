@@ -1,6 +1,6 @@
 <template>
   <router-link
-    :to="`/${user.user_metadata.username}/collections/${route.params.collection_id}/${submission.id}`"
+    :to="`/${user.user_metadata.username}/collections/${submission.collection_id}/${submission.id}`"
     class="relative flex w-full items-center overflow-hidden"
   >
     <div
