@@ -38,9 +38,21 @@
         <a
           :href="`mailto:${submission.email}`"
           class="py-0.5 border-2 border-green-500 hover:bg-green-500 hover:text-white text-center rounded-md"
+          :class="submission.booked ? 'opacity-50 pointer-events-none' : ''"
+          :disabled="submission.booked"
         >
           Reply
         </a>
+
+        <button
+          type="button"
+          class="py-0.5 border-2 border-blue-500 hover:bg-blue-500 hover:text-white text-center rounded-md"
+          :class="`${submission.booked ? 'bg-blue-500 text-white' : ''}`"
+          @click="markAsBooked"
+        >
+          <span v-if="!submission.booked">Mark as booked</span>
+          <span v-else>Booked</span>
+        </button>
 
         <button
           type="button"
@@ -99,6 +111,20 @@ async function saveSubmission() {
   const { error } = await supabase
     .from("submissions")
     .update({ saved: !submission.value.saved })
+    .match({ id: submission.value.id });
+
+  if (error) {
+    alert("Oops! Something went wrong.");
+  }
+
+  await fetchSubmission();
+}
+
+// toggle saving the submission
+async function markAsBooked() {
+  const { error } = await supabase
+    .from("submissions")
+    .update({ booked: !submission.value.booked })
     .match({ id: submission.value.id });
 
   if (error) {

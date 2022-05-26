@@ -1,7 +1,7 @@
 <template>
   <router-link
     :to="`/${user.user_metadata.username}/collections/${route.params.collection_id}/${submission.id}`"
-    class="relative flex w-full items-center"
+    class="relative flex w-full items-center overflow-hidden"
   >
     <div
       v-if="!submission.viewed"
@@ -10,7 +10,15 @@
     <div
       class="grid grid-cols-6 px-8 py-4 bg-white card-shadow rounded-lg w-full"
     >
-      <p class="col-span-2">{{ submission.name }}</p>
+      <div class="relative col-span-2">
+        <p
+          v-if="submission.booked"
+          class="text-[10px] text-blue-500 bottom-0 -mb-[10px] absolute"
+        >
+          Booked
+        </p>
+        <p>{{ submission.name }}</p>
+      </div>
       <p class="col-span-2">{{ submission.email }}</p>
       <p>{{ submission.phone }}</p>
       <p class="ml-auto">{{ formatDate(submission.created_at) }}</p>
