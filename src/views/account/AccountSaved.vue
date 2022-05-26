@@ -41,5 +41,7 @@ import BaseHeading from "@/components/base/BaseHeading.vue";
 import CollectionSubmissionCard from "@/components/collections/CollectionSubmissionCard.vue";
 import IconSearch from "@/components/svg/IconSearch";
 
-const { savedSubmissions } = useUserStore();
+const { savedSubmissions, setSavedSubmissions } = useUserStore();
+
+setSavedSubmissions()
 </script>

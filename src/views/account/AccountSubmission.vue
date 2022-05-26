@@ -79,6 +79,7 @@
 import { onBeforeMount, onMounted, ref, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { supabase } from "@/supabase";
+import { useUserStore } from "@/stores/user";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
@@ -88,6 +89,8 @@ import IconHeart from "@/components/svg/IconHeart.vue";
 const route = useRoute();
 const router = useRouter();
 const submission = ref({});
+
+const { setSavedSubmissions } = useUserStore();
 
 // init loading state to true
 const loading = ref(true);
@@ -132,6 +135,7 @@ async function markAsBooked() {
   }
 
   await fetchSubmission();
+  await setSavedSubmissions()
 }
 
 // delete submission
