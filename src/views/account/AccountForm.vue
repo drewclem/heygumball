@@ -5,7 +5,7 @@
     <div class="relative max-w-lg mx-auto">
       <div class="flex justify-between items-center py-12 px-6 lg:p-11">
         <BaseHeading size="h4" tag="h1">
-          Contact <span class="text-red-500">John Doe</span>
+          Contact <span class="text-red-500">{{user.full_name}}</span>
         </BaseHeading>
 
         <div class="h-12 w-12 bg-gray-400 rounded-full"></div>
@@ -28,8 +28,15 @@
 </template>
 
 <script setup>
+// utils
+import {useUserStore} from "@/stores/user";
+
+// components
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
 import BaseTextarea from "@/components/base/BaseTextarea.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
+
+const { user } = useUserStore();
+
 </script>

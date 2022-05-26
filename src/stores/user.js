@@ -5,6 +5,7 @@ export const useUserStore = defineStore("currentUser", {
   state: () => {
     return {
       userID: undefined,
+      user: undefined,
       collections: [],
       currentCollection: null,
       currentSubmissions: [],
@@ -15,6 +16,13 @@ export const useUserStore = defineStore("currentUser", {
   actions: {
     setCurrentUserId(id) {
       this.userID = id;
+
+      this.setUser(id);
+    },
+    async setUser(id) {
+      const { data } = await supabase.from("profiles").select().eq("id", id).single();
+
+      this.user = data;
     },
     async setCollections(refetch) {
       if (!this.collections.length || refetch) {
@@ -60,7 +68,7 @@ export const useUserStore = defineStore("currentUser", {
         .eq("saved", true)
         .eq("user_id", this.userID);
 
-      this.savedSubmissions = data
+      this.savedSubmissions = data;
     },
   },
 });
