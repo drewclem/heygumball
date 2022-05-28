@@ -40,5 +40,5 @@ import BaseHeading from "@/components/base/BaseHeading.vue";
 import AccountCollectionCard from "@/components/account/AccountCollectionCard.vue";
 import IconSearch from "@/components/svg/IconSearch";
 
-const { collections } = useUserStore();
+const { collections, setCollections } = useUserStore();
 </script>

@@ -21,9 +21,14 @@
       </div>
 
       <div class="flex flex-col space-y-6">
-        <template v-for="submission in savedSubmissions" :key="submission.id">
+        <div v-if="!savedSubmissions.length">
+          <p class="mb-5">No saved submissions</p>
+          </div>
+
+        <template v-else>
           <CollectionSubmissionCard
-            v-if="submission"
+            v-for="submission in savedSubmissions"
+            :key="submission.id"
             :submission="submission"
           />
         </template>

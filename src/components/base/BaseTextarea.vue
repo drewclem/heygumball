@@ -11,7 +11,7 @@
       :required="required"
       :rows="rows"
       v-on="listeners"
-      @input="$emit('update:modalValue', $event.target.value)"
+      @input="$emit('update:modelValue', $event.target.value)"
     />
   </div>
 </template>

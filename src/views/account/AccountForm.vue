@@ -5,7 +5,7 @@
     <div class="relative max-w-lg mx-auto">
       <div class="flex justify-between items-center py-12 px-6 lg:p-11">
         <BaseHeading size="h4" tag="h1">
-          Contact <span class="text-red-500">{{user.full_name}}</span>
+          Contact <span class="text-red-500">{{ user.full_name }}</span>
         </BaseHeading>
 
         <div class="h-12 w-12 bg-gray-400 rounded-full"></div>
@@ -13,14 +13,17 @@
 
       <form
         class="card-shadow bg-white rounded-xl mx-6 lg:mx-0 p-6 lg:p-11 flex flex-col gap-6"
+        @submit.prevent="submitForm"
       >
-        <BaseInput required>Full Name</BaseInput>
-        <BaseInput type="email" required>Email</BaseInput>
-        <BaseInput>Phone</BaseInput>
-        <BaseTextarea rows="8" required>Message</BaseTextarea>
+        <BaseInput v-model="form.name" required>Full Name</BaseInput>
+        <BaseInput v-model="form.email" type="email" required>Email</BaseInput>
+        <BaseInput v-model="form.phone">Phone</BaseInput>
+        <BaseTextarea v-model="form.message" :rows="8" required
+          >Message</BaseTextarea
+        >
 
         <div class="ml-auto">
-          <BaseButton theme="tertiary">Send</BaseButton>
+          <BaseButton theme="tertiary" type="submit">Send</BaseButton>
         </div>
       </form>
     </div>
@@ -29,7 +32,9 @@
 
 <script setup>
 // utils
-import {useUserStore} from "@/stores/user";
+import { onMounted, reactive, ref } from "vue";
+import { useUserStore } from "@/stores/user";
+import { supabase } from "@/supabase";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
@@ -38,5 +43,56 @@ import BaseTextarea from "@/components/base/BaseTextarea.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 
 const { user } = useUserStore();
+const activeForm = ref({});
+const loading = ref(true);
+const form = reactive({
+  name: "",
+  email: "",
+  phone: "",
+  message: "",
+});
 
+// grab all user collections and set activeForm
+onMounted(async () => {
+  const { data } = await supabase
+    .from("collections")
+    .select()
+    .eq("user_id", user.id);
+
+  const currentDate = new Date();
+
+  const activeCollection = data.filter((collection) => {
+    const startDate = new Date(collection.start_date);
+    const endDate = new Date(collection.end_date);
+
+    if (startDate <= currentDate && endDate >= currentDate) {
+      return { ...collection };
+    }
+  });
+
+  if (Object.keys(activeCollection).length) {
+    activeForm.value = activeCollection[0];
+    loading.value = false;
+  }
+});
+
+async function submitForm() {
+  const { data, error } = await supabase.from("submissions").insert([
+    {
+      collection_id: activeForm.value.id,
+      user_id: user.id,
+      viewed: false,
+      booked: false,
+      approved: false,
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      message: form.message,
+    },
+  ]);
+
+  if (error) {
+    alert("Oops! Something went wrong");
+  }
+}
 </script>

@@ -121,6 +121,7 @@ async function saveSubmission() {
   }
 
   await fetchSubmission();
+  await setSavedSubmissions();
 }
 
 // toggle saving the submission
