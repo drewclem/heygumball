@@ -85,7 +85,7 @@ async function setSubmissions() {
     .from("submissions")
     .select()
     .eq("collection_id", collection_id)
-    .order("created_at");
+    .order("created_at", { ascending: false });
 
   submissions.value = data;
   loading.value = false;
