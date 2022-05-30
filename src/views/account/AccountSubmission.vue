@@ -90,7 +90,7 @@ const route = useRoute();
 const router = useRouter();
 const submission = ref({});
 
-const { setSavedSubmissions } = useUserStore();
+const { setSavedSubmissions, setCollections } = useUserStore();
 
 // init loading state to true
 const loading = ref(true);
@@ -121,6 +121,7 @@ async function saveSubmission() {
   }
 
   await fetchSubmission();
+  await setCollections(true);
   await setSavedSubmissions();
 }
 
@@ -136,7 +137,7 @@ async function markAsBooked() {
   }
 
   await fetchSubmission();
-  await setSavedSubmissions()
+  await setSavedSubmissions();
 }
 
 // delete submission

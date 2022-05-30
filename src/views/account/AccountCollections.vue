@@ -17,7 +17,7 @@
         <p class="col-span-2">Open Dates</p>
         <p>Year</p>
         <p>Requests Received</p>
-        <p class="ml-auto">Approvals</p>
+        <p class="ml-auto">Saved</p>
       </div>
 
       <div class="flex flex-col space-y-6">

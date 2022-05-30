@@ -19,13 +19,13 @@
           @submit.prevent="submitForm"
         >
           <BaseInput v-model="form.name" required>Full Name</BaseInput>
-          <BaseInput v-model="form.email" type="email" required
-            >Email</BaseInput
-          >
+          <BaseInput v-model="form.email" type="email" required>
+            Email
+          </BaseInput>
           <BaseInput v-model="form.phone">Phone</BaseInput>
-          <BaseTextarea v-model="form.message" :rows="8" required
-            >Message</BaseTextarea
-          >
+          <BaseTextarea v-model="form.message" :rows="8" required>
+            Message
+          </BaseTextarea>
 
           <div class="ml-auto">
             <BaseButton theme="tertiary" type="submit">Send</BaseButton>
@@ -49,7 +49,6 @@
 // utils
 import { onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
-import { useUserStore } from "@/stores/user";
 import { supabase } from "@/supabase";
 
 // components

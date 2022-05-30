@@ -30,6 +30,8 @@ export const useUserStore = defineStore("currentUser", {
     },
     async setCollections(refetch) {
       if (!this.collections.length || refetch) {
+        this.collections = [];
+
         const { data } = await supabase
           .from("collections")
           .select()
