@@ -39,8 +39,10 @@
                 </BaseLink>
               </li>
               <li>
-                <BaseLink class="group" 
-                  :to="`/${user.user_metadata.username}/saved`">
+                <BaseLink
+                  class="group"
+                  :to="`/${user.user_metadata.username}/saved`"
+                >
                   <template #icon>
                     <IconHeart
                       class="text-gray-200 group-hover:text-gray-300 w-5 h-5"
@@ -109,7 +111,8 @@ import IconUser from "@/components/svg/IconUser.vue";
 
 const { user, handleLogout } = useAuthUser();
 
-const { setCurrentUserId, setCollections, setSavedSubmissions } = useUserStore();
+const { setCurrentUserId, setCollections, setSavedSubmissions } =
+  useUserStore();
 
 setCurrentUserId(user._rawValue.id);
 
