@@ -35,9 +35,11 @@ export const useUserStore = defineStore("currentUser", {
         const { data } = await supabase
           .from("collections")
           .select()
-          .eq("user_id", this.userID);
+          .eq("user_id", this.userID)
+          .order("created_at", { ascending: false });
 
-        data.forEach(async (item) => {
+        data.forEach(async (item, index) => {
+          console.log(index);
           const requestsReceived = await supabase
             .from("submissions")
             .select("id")
@@ -49,11 +51,11 @@ export const useUserStore = defineStore("currentUser", {
             .eq("booked", true)
             .match({ collection_id: item.id });
 
-          this.collections.push({
+          this.collections[index] = {
             ...item,
             requests_received: requestsReceived.data.length,
             booked_requests: bookedRequests.data.length,
-          });
+          };
         });
       }
     },
