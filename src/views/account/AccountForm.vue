@@ -2,8 +2,8 @@
   <div class="relative">
     <div class="absolute bg-gray-100 top-0 w-full h-56" />
 
-    <div class="relative max-w-lg mx-auto">
-      <div class="flex justify-between items-center py-12 px-6 lg:p-11">
+    <div class="relative max-w-lg mx-auto mb-12">
+      <div class="flex justify-between items-center py-8 lg:py-12 px-6 lg:p-11">
         <BaseHeading size="h4" tag="h1">
           Contact <span class="text-blue-500">{{ currentUser.full_name }}</span>
         </BaseHeading>
@@ -27,8 +27,10 @@
             Message
           </BaseTextarea>
 
-          <div class="ml-auto">
-            <BaseButton theme="tertiary" type="submit">Send</BaseButton>
+          <div class="lg:ml-auto">
+            <BaseButton class="w-full" theme="tertiary" type="submit">
+              Send
+            </BaseButton>
           </div>
         </form>
 

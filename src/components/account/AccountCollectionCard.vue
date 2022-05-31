@@ -10,7 +10,7 @@
       </template>
       <template #col-2>{{ getYear(collection.end_date) }}</template>
       <template #col-3>{{ collection.requests_received }}</template>
-      <template #col-4>{{ collection.saved_requests }}</template>
+      <template #col-4>{{ collection.booked_requests }}</template>
     </AccountCardGrid>
   </router-link>
 </template>

@@ -43,16 +43,16 @@ export const useUserStore = defineStore("currentUser", {
             .select("id")
             .match({ collection_id: item.id });
 
-          const savedRequests = await supabase
+          const bookedRequests = await supabase
             .from("submissions")
             .select("id")
-            .eq("saved", true)
+            .eq("booked", true)
             .match({ collection_id: item.id });
 
           this.collections.push({
             ...item,
             requests_received: requestsReceived.data.length,
-            saved_requests: savedRequests.data.length,
+            booked_requests: bookedRequests.data.length,
           });
         });
       }

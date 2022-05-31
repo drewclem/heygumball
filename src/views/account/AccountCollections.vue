@@ -16,8 +16,8 @@
       <div class="grid grid-cols-5 px-8 py-4 opacity-40 mb-4">
         <p class="col-span-2">Open Dates</p>
         <p>Year</p>
-        <p>Requests Received</p>
-        <p class="ml-auto">Saved</p>
+        <p>Submissions</p>
+        <p class="ml-auto">Booked</p>
       </div>
 
       <div class="flex flex-col space-y-6">
