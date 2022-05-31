@@ -38,10 +38,6 @@ function checkIsActive() {
   const startDate = new Date(collection.value.start_date);
   const endDate = new Date(collection.value.end_date);
 
-  console.log("current", currentDate);
-  console.log("start", startDate);
-  console.log("end", endDate);
-
   if (startDate <= currentDate && endDate >= currentDate) {
     isActive.value = true;
   }
