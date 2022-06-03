@@ -5,7 +5,7 @@ export const useUserStore = defineStore("currentUser", {
   state: () => {
     return {
       userID: undefined,
-      user: undefined,
+      currentUser: undefined,
       collections: [],
       currentCollection: null,
       currentSubmissions: [],
@@ -26,7 +26,7 @@ export const useUserStore = defineStore("currentUser", {
         .eq("id", id)
         .single();
 
-      this.user = data;
+      this.currentUser = data;
     },
     async setCollections(refetch) {
       if (!this.collections.length || refetch) {

@@ -1,6 +1,6 @@
 <template>
   <div class="relative flex flex-col" :class="{ 'opacity-50': disabled }">
-    <label class="font-display mb-2 text-sm font-bold" :for="id">
+    <label class="font-display mb-2 text-sm" :for="id">
       <slot /> <span v-if="required">*</span>
     </label>
 

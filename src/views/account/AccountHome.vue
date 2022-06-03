@@ -14,17 +14,19 @@
         <div class="info-group info-list">
           <div>
             <h2 class="info-heading">Username</h2>
-            <p>{{ user.username }}</p>
+            <p v-if="currentUser">{{ currentUser.username }}</p>
+            <p v-else>--</p>
           </div>
 
           <div>
             <h2 class="info-heading">Full Name</h2>
-            <p>{{ user.full_name }}</p>
+            <p v-if="currentUser">{{ currentUser.full_name }}</p>
+            <p v-else>--</p>
           </div>
 
           <div>
             <h2 class="info-heading">Email</h2>
-            <p v-if="user.email !== null">{{ user.email }}</p>
+            <p v-if="currentUser">{{ currentUser.email }}</p>
             <p v-else>--</p>
           </div>
         </div>
@@ -32,25 +34,33 @@
         <div class="info-group info-grid">
           <div>
             <h2 class="info-heading">Instagram</h2>
-            <p v-if="user.instagram_url !== null">{{ user.instagram_url }}</p>
+            <p v-if="currentUser && currentUser.instagram_url !== null">
+              {{ currentUser.instagram_url }}
+            </p>
             <p v-else>--</p>
           </div>
 
           <div>
             <h2 class="info-heading">TikTok</h2>
-            <p v-if="user.tiktok_url !== null">{{ user.tiktoko_url }}</p>
+            <p v-if="currentUser && currentUser.tiktok_url !== null">
+              {{ currentUser.tiktok_url }}
+            </p>
             <p v-else>--</p>
           </div>
 
           <div>
             <h2 class="info-heading">Twitter</h2>
-            <p v-if="user.twitter_url !== null">{{ user.twitter }}</p>
+            <p v-if="currentUser && currentUser.twitter_url !== null">
+              {{ currentUser.twitter_url }}
+            </p>
             <p v-else>--</p>
           </div>
 
           <div>
             <h2 class="info-heading">Facebook</h2>
-            <p v-if="user.facebook_url !== null">{{ user.facebook }}</p>
+            <p v-if="currentUser && currentUser.facebook_url">
+              {{ currentUser.facebook_url }}
+            </p>
             <p v-else>--</p>
           </div>
         </div>
@@ -67,12 +77,12 @@ import { useUserStore } from "@/stores/user";
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseLink from "@/components/base/BaseLink.vue";
 
-const { user } = useUserStore();
+const { currentUser } = useUserStore();
 </script>
 
 <style scoped>
 .info-heading {
-  @apply opacity-50 mb-1;
+  @apply opacity-50 mb-1 font-display;
 }
 
 .info-group {
