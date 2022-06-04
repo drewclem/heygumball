@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^1.35.2",
+    "@vee-validate/rules": "^4.5.11",
+    "@vuelidate/core": "^2.0.0-alpha.41",
+    "@vuelidate/validators": "^2.0.0-alpha.29",
     "autoprefixer": "^10.4.4",
     "core-js": "^3.8.3",
     "pinia": "^2.0.13",

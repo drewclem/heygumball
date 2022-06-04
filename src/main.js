@@ -18,6 +18,9 @@ app.use(router);
 app.use(pinia);
 app.mount("#app");
 
+/**
+ * supabase watching for auth state change
+ */
 supabase.auth.onAuthStateChange((event, session) => {
   const { user } = useAuthUser();
   user.value = session?.user || null;
