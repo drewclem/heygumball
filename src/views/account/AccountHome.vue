@@ -20,13 +20,17 @@
 
           <div>
             <h2 class="info-heading">Full Name</h2>
-            <p v-if="currentUser">{{ currentUser.full_name }}</p>
+            <p v-if="currentUser && currentUser.full_name !== null">
+              {{ currentUser.full_name }}
+            </p>
             <p v-else>--</p>
           </div>
 
           <div>
             <h2 class="info-heading">Email</h2>
-            <p v-if="currentUser">{{ currentUser.email }}</p>
+            <p v-if="currentUser && currentUser.email !== null">
+              {{ currentUser.email }}
+            </p>
             <p v-else>--</p>
           </div>
         </div>

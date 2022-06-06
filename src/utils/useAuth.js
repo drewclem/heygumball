@@ -46,10 +46,6 @@ export default function useAuthUser() {
         alert(error.message);
         return;
       }
-
-      alert(
-        "Signup successful, check your email to confirm your registration!"
-      );
     } catch (err) {
       alert("Fatal error signing up");
     }

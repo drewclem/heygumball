@@ -11,20 +11,20 @@
     <nav class="hidden lg:flex font-body items-center">
       <div class="flex flex-col items-end">
         <div>
-          <BaseButton v-if="!user" href="/sign-in" theme="secondary">
-            Sign in
-          </BaseButton>
-
           <router-link
+            v-if="user"
             :to="`/${user.user_metadata.username}/collections`"
-            v-else
           >
             {{ user.user_metadata.username }}
           </router-link>
 
-          <BaseButton class="ml-6" href="/create-an-account" theme="primary">
-            Create an Account
-          </BaseButton>
+          <div v-else>
+            <BaseButton href="/sign-in" theme="secondary"> Sign in </BaseButton>
+
+            <BaseButton class="ml-6" href="/create-an-account" theme="primary">
+              Create an Account
+            </BaseButton>
+          </div>
         </div>
 
         <button

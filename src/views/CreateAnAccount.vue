@@ -8,7 +8,15 @@
           Create an account
         </BaseHeading>
 
-        <div class="flex flex-col space-y-8">
+        <div v-if="formState === 'submitted'">
+          <BaseHeading tag="h2" size="h4" class="text-green-500 mb-5">
+            Thanks for signing up!
+          </BaseHeading>
+
+          <BaseText>Check your email to confirm your registration</BaseText>
+        </div>
+
+        <div v-else class="flex flex-col space-y-8">
           <div class="relative" :class="{ error: v$.username.$errors.length }">
             <BaseInput v-model="state.username"> User Name </BaseInput>
             <div
@@ -51,8 +59,12 @@
           </div>
 
           <div class="text-right">
-            <BaseButton type="submit" theme="tertiary">
-              Create Account
+            <BaseButton
+              type="submit"
+              theme="tertiary"
+              :disabled="formState === 'submitting'"
+            >
+              {{ formState === "submitting" ? "Submitting" : "Create Account" }}
             </BaseButton>
           </div>
         </div>
@@ -88,6 +100,7 @@ export default {
   },
   setup() {
     const usernames = ref();
+    const formState = ref();
     const state = reactive({
       username: "",
       email: "",
@@ -122,6 +135,7 @@ export default {
 
     return {
       usernames,
+      formState,
       state,
       handleSignup,
       v$,
@@ -133,7 +147,13 @@ export default {
 
       if (!isFormValid) return;
 
+      this.formState = "submitting";
+
       this.handleSignup(this.state);
+
+      setTimeout(() => {
+        this.formState = "submitted";
+      }, 500);
     },
   },
 };
