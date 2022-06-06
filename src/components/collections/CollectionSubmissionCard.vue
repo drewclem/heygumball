@@ -1,15 +1,13 @@
 <template>
   <router-link
     :to="`/${user.user_metadata.username}/collections/${submission.collection_id}/${submission.id}`"
-    class="relative flex w-full items-center overflow-hidden"
+    class="relative flex w-full items-center overflow-hidden card-shadow"
   >
     <div
       v-if="!submission.viewed"
       class="absolute rounded-full bg-red-500 w-2 h-2 ml-3"
     />
-    <div
-      class="grid grid-cols-6 px-8 py-4 bg-white card-shadow rounded-lg w-full"
-    >
+    <div class="grid grid-cols-6 px-8 py-4 bg-white rounded-lg w-full">
       <div class="relative col-span-2">
         <p
           v-if="submission.booked"
@@ -19,9 +17,9 @@
         </p>
         <p>{{ submission.name }}</p>
       </div>
-      <p class="col-span-2">{{ submission.email }}</p>
-      <p>{{ submission.phone }}</p>
-      <p class="ml-auto">{{ formatDate(submission.created_at) }}</p>
+      <p class="col-span-2 opacity-60">{{ submission.email }}</p>
+      <p class="opacity-60">{{ submission.phone }}</p>
+      <p class="opacity-60 ml-auto">{{ formatDate(submission.created_at) }}</p>
     </div>
   </router-link>
 </template>
@@ -48,9 +46,13 @@ defineProps({
 function formatDate(date) {
   const dateObj = new Date(date);
 
-  return `${dateObj.toLocaleString("default", {
+  const dateFormatted = new Date(
+    dateObj.getTime() - dateObj.getTimezoneOffset() * -60000
+  );
+
+  return `${dateFormatted.toLocaleString("default", {
     month: "short",
-  })} ${dateObj.toLocaleString("default", {
+  })} ${dateFormatted.toLocaleString("default", {
     day: "numeric",
   })}`;
 }

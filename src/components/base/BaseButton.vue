@@ -81,6 +81,10 @@ export default {
   @apply bg-green-600;
 }
 
+.btn:disabled {
+  @apply opacity-50 pointer-events-none;
+}
+
 @screen lg {
   .btn {
     @apply px-6;

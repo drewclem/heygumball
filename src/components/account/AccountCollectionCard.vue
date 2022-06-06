@@ -38,7 +38,17 @@ function checkIsActive() {
   const startDate = new Date(collection.value.start_date);
   const endDate = new Date(collection.value.end_date);
 
-  if (startDate <= currentDate && endDate >= currentDate) {
+  const currentDateFormatted =
+    currentDate.getTime() - currentDate.getTimezoneOffset() * -60000;
+  const startDateFormatted =
+    startDate.getTime() - startDate.getTimezoneOffset() * -60000;
+  const endDateFormatted =
+    endDate.getTime() - endDate.getTimezoneOffset() * -60000;
+
+  if (
+    startDateFormatted <= currentDateFormatted &&
+    endDateFormatted >= currentDateFormatted
+  ) {
     isActive.value = true;
   }
 }
@@ -51,9 +61,15 @@ onMounted(() => {
 function formatOpenDates(date) {
   const dateObj = new Date(date);
 
-  return `${dateObj.toLocaleString("default", {
+  const dateFormatted = new Date(
+    dateObj.getTime() - dateObj.getTimezoneOffset() * -60000
+  );
+
+  console.log(dateFormatted);
+
+  return `${dateFormatted.toLocaleString("default", {
     month: "short",
-  })} ${dateObj.toLocaleString("default", {
+  })} ${dateFormatted.toLocaleString("default", {
     day: "numeric",
   })}`;
 }

@@ -67,11 +67,11 @@
 // utils
 import { ref, reactive } from "vue";
 import useAuthUser from "@/utils/useAuth";
-import { supabase } from "@/supabase";
 
 // vuelidate form validation
 import useVuelidate from "@vuelidate/core";
 import { required, email, minLength, helpers } from "@vuelidate/validators";
+import { useValidate } from "@/utils/validate";
 
 //components
 import BaseHeading from "@/components/base/BaseHeading.vue";
@@ -95,26 +95,7 @@ export default {
     });
 
     const { handleSignup } = useAuthUser();
-
-    const notEmpty = "This field cannot be empty.";
-
-    async function getAllUsernames() {
-      const { data } = await supabase.from("profiles").select("username");
-
-      usernames.value = data;
-    }
-
-    getAllUsernames();
-
-    const mustBeUniqueUsername = (value) => {
-      const nameFilter = usernames.value.filter((name) => {
-        return name.username === value;
-      });
-
-      const nameUnavailable = nameFilter.length > 0;
-
-      return !nameUnavailable;
-    };
+    const { mustBeUniqueUsername, notEmpty } = useValidate();
 
     const rules = {
       username: {
