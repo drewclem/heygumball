@@ -1,16 +1,24 @@
 <template>
   <div class="max-w-4xl">
     <div class="flex items-center justify-between mb-8">
-      <BaseHeading size="h4" tag="h1">Settings</BaseHeading>
+      <div class="flex">
+        <BaseHeading size="h4" tag="h1">Settings</BaseHeading>
+      </div>
 
       <div>
         <BaseLink
           :to="`/${user.user_metadata.username}/account`"
           class="text-red-500 mr-5 underline"
-          >Cancel</BaseLink
         >
-        <button type="button" @click="updateUserInfo" class="underline">
-          Save Changes
+          Cancel
+        </BaseLink>
+        <button
+          type="submit"
+          @click="updateUserInfo"
+          class="underline"
+          :disabled="userForm.submitting"
+        >
+          {{ userForm.submitting ? "Submitting..." : "Save Changes" }}
         </button>
       </div>
     </div>
@@ -83,6 +91,7 @@ import { supabase } from "@/supabase";
 import BaseLink from "@/components/base/BaseLink.vue";
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
+import IconArrowLeft from "@/components/svg/IconArrowLeft.vue";
 
 const { user } = useAuthUser();
 const { currentUser, setCurrentUserId } = useUserStore();
@@ -91,6 +100,7 @@ const userForm = reactive({
   username: null,
   full_name: null,
   email: null,
+  submitting: false,
 });
 
 watchEffect(() => {
@@ -104,6 +114,7 @@ watchEffect(() => {
 });
 
 async function updateUserInfo() {
+  userForm.submitting = true;
   const { error } = await supabase.from("profiles").upsert({
     id: currentUser.id,
     full_name: userForm.full_name,
@@ -116,6 +127,10 @@ async function updateUserInfo() {
   });
   if (error) {
     alert("Oops! Something went wrong.");
+  } else {
+    setTimeout(() => {
+      userForm.submitting = false;
+    }, 300);
   }
 
   setCurrentUserId(currentUser.id);

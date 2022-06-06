@@ -28,7 +28,11 @@
               <li>
                 <BaseLink
                   class="group"
-                  :to="`/${user.user_metadata.username}/collections`"
+                  :class="{
+                    'router-link-active':
+                      $route.fullPath.includes('collections'),
+                  }"
+                  :href="`/${user.user_metadata.username}/collections`"
                 >
                   <template #icon>
                     <IconCollection
@@ -41,7 +45,7 @@
               <li>
                 <BaseLink
                   class="group"
-                  :to="`/${user.user_metadata.username}/saved`"
+                  :href="`/${user.user_metadata.username}/saved`"
                 >
                   <template #icon>
                     <IconHeart
@@ -52,7 +56,10 @@
                 </BaseLink>
               </li>
               <li>
-                <BaseLink class="group" :to="`/${user.user_metadata.username}`">
+                <BaseLink
+                  class="group"
+                  :href="`/${user.user_metadata.username}`"
+                >
                   <template #icon>
                     <IconForm
                       class="text-gray-200 group-hover:text-gray-300 w-5 h-5"
@@ -68,6 +75,9 @@
         <footer class="flex flex-col space-y-3">
           <BaseLink
             class="group"
+            :class="{
+              'router-link-active': $route.fullPath.includes('account'),
+            }"
             :to="`/${user.user_metadata.username}/account`"
           >
             <template #icon>

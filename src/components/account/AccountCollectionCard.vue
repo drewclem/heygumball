@@ -65,8 +65,6 @@ function formatOpenDates(date) {
     dateObj.getTime() - dateObj.getTimezoneOffset() * -60000
   );
 
-  console.log(dateFormatted);
-
   return `${dateFormatted.toLocaleString("default", {
     month: "short",
   })} ${dateFormatted.toLocaleString("default", {

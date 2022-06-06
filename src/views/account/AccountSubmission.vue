@@ -1,8 +1,18 @@
 <template>
   <div class="max-w-4xl">
     <div class="flex items-center justify-between mb-8">
-      <div>
+      <div class="flex items-baseline">
         <BaseHeading size="h4" tag="h1">Collections</BaseHeading>
+
+        <button
+          class="ml-6 opacity-60"
+          type="button"
+          aria-label="Go back to account info page"
+          @click="router.back()"
+        >
+          <IconArrowLeft class="h-3 w-3 inline -mt-0.5" />
+          Back
+        </button>
       </div>
     </div>
 
@@ -85,6 +95,7 @@ import { useUserStore } from "@/stores/user";
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 import IconHeart from "@/components/svg/IconHeart.vue";
+import IconArrowLeft from "@/components/svg/IconArrowLeft.vue";
 
 const route = useRoute();
 const router = useRouter();

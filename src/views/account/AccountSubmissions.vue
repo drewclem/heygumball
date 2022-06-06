@@ -1,8 +1,18 @@
 <template>
   <div class="max-w-4xl">
     <div class="flex items-center justify-between mb-8">
-      <div>
+      <div class="flex items-baseline">
         <BaseHeading size="h4" tag="h1">Collections</BaseHeading>
+
+        <button
+          class="ml-6 opacity-60"
+          type="button"
+          aria-label="Go back to account info page"
+          @click="router.back()"
+        >
+          <IconArrowLeft class="h-3 w-3 inline -mt-0.5" />
+          Back
+        </button>
       </div>
 
       <button
@@ -58,7 +68,7 @@
 <script setup>
 // utils
 import { ref, onMounted, onBeforeMount } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import useAuthUser from "@/utils/useAuth";
 import { useUserStore } from "@/stores/user";
 import { supabase } from "@/supabase";
@@ -68,8 +78,10 @@ import CollectionSubmissionCard from "@/components/collections/CollectionSubmiss
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import IconSearch from "@/components/svg/IconSearch.vue";
 import IconCopy from "@/components/svg/IconCopy.vue";
+import IconArrowLeft from "@/components/svg/IconArrowLeft.vue";
 
 const route = useRoute();
+const router = useRouter();
 const { setCurrentCollection } = useUserStore();
 const { user } = useAuthUser();
 
