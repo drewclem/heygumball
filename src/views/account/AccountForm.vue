@@ -191,7 +191,15 @@ export default {
         const startDate = new Date(collection.start_date);
         const endDate = new Date(collection.end_date);
 
-        if (startDate <= currentDate && endDate >= currentDate) {
+        const startDateFormatted =
+          startDate.getTime() - startDate.getTimezoneOffset() * -60000;
+        const endDateFormatted =
+          endDate.getTime() - endDate.getTimezoneOffset() * -60000;
+
+        if (
+          startDateFormatted <= currentDate &&
+          endDateFormatted >= currentDate
+        ) {
           return { ...collection };
         }
       });

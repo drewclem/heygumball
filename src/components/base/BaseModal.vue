@@ -6,7 +6,7 @@
     type="button"
   >
     <slot name="button" />
-    <Portal v-if="isOpen" to="modal">
+    <Teleport v-if="isOpen" to="body">
       <div class="modal-wrapper" @keydown.esc="closeModal">
         <div class="modal-content">
           <button @click="closeModal" ref="closeButtonRef" type="button">
@@ -15,43 +15,34 @@
           <slot name="content" />
         </div>
       </div>
-    </Portal>
+    </Teleport>
   </button>
 </template>
 
-<script>
-// import { mapState } from "vuex";
-// import { Portal } from "portal-vue";
+<script setup>
+import { ref } from "vue";
+import { useGlobalLayout } from "@/stores/global";
 
-// export default {
-//   components: {
-//     Portal,
-//   },
-//   data() {
-//     return {
-//       isOpen: false,
-//     };
-//   },
-//   computed: {
-//     ...mapState("global", ["pageHasModalOpen"]),
-//   },
-//   methods: {
-//     async closeModal() {
-//       this.isOpen = false;
-//       await this.$store.commit("modal/isModalOpen", false);
-//       await this.$nextTick();
-//       await this.$nextTick();
-//       this.$refs.openButtonRef?.focus();
-//     },
-//     async openModal() {
-//       this.isOpen = true;
-//       await this.$store.commit("modal/isModalOpen", true);
-//       await this.$nextTick();
-//       await this.$nextTick();
-//       this.$refs.closeButtonRef?.focus();
-//     },
-//   },
-// };
+const { toggleModal } = useGlobalLayout();
+const isOpen = ref(false);
+const closeButtonRef = ref(null);
+const openButtonRef = ref(null);
+
+function closeModal() {
+  isOpen.value = false;
+  toggleModal(false);
+  setTimeout(() => {
+    openButtonRef.value.focus();
+  }, 50);
+}
+
+function openModal() {
+  isOpen.value = true;
+  toggleModal(true);
+  setTimeout(() => {
+    closeButtonRef.value.focus();
+  }, 50);
+}
 </script>
 
 <style lang="postcss" scoped>
@@ -61,20 +52,13 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: rgba(1, 1, 1, 0.75);
+  background-color: rgba(1, 1, 1, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .modal-content {
-  background-color: white;
-  padding: 3rem;
-}
-
-.open-button:focus,
-.modal-content button:focus {
-  background-color: red;
-  color: white;
+  @apply relative bg-white p-6 rounded-lg;
 }
 </style>

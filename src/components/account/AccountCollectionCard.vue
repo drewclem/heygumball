@@ -44,9 +44,6 @@ function checkIsActive() {
   const endDateFormatted =
     endDate.getTime() - endDate.getTimezoneOffset() * -60000;
 
-  console.log("end", endDateFormatted);
-  console.log("current", currentDateFormatted);
-
   if (
     startDateFormatted < currentDateFormatted &&
     endDateFormatted > currentDateFormatted

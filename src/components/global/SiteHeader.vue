@@ -41,26 +41,24 @@
       <button
         class="p-2"
         ref="openButtonRef"
-        @click="openMobileMenu"
+        @click="openMenu"
         type="button"
-        :inert="isMobileMenuOpen"
+        :inert="isOpen"
+        aria-label="Open menu"
       >
-        <span class="sr-only">Open main menu</span>
         <MenuIcon class="w-8 h-8" title="Open menu" />
 
-        <Portal to="mobile-menu">
+        <Teleport to="body">
           <div
             :class="`z-50 fixed lg:hidden inset-0 bg-black transition duration-150 ${
-              isMobileMenuOpen
-                ? 'bg-opacity-75'
-                : 'bg-opacity-0 pointer-events-none'
+              isOpen ? 'bg-opacity-75' : 'bg-opacity-0 pointer-events-none'
             }`"
-            :inert="!isMobileMenuOpen"
+            :inert="!isOpen"
             @keydown.esc="closeMenu"
           >
             <div
               :class="`flex transform transition-transform duration-150 ease-in-out ${
-                isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+                isOpen ? 'translate-x-0' : 'translate-x-full'
               }`"
             >
               <div @click="closeMenu">
@@ -69,9 +67,9 @@
                   ref="closeButtonRef"
                   @click="closeMenu"
                   type="button"
+                  aria-label="Close menu"
                 >
-                  <span class="sr-only">Close menu</span>
-                  <CloseIcon class="h-6 w-6" alt="close menu" />
+                  <IconClose class="h-6 w-6" alt="close menu" />
                 </button>
               </div>
 
@@ -97,63 +95,46 @@
               </div>
             </div>
           </div>
-        </Portal>
+        </Teleport>
       </button>
     </div>
   </header>
 </template>
 
-<script>
+<script setup>
+import { defineComponent, ref, watch } from "vue";
 import useAuthUser from "@/utils/useAuth";
+import { useGlobalLayout } from "@/stores/global";
+
 import BaseButton from "@/components/base/BaseButton.vue";
 import GumballLogo from "@/components/global/GumballLogo.vue";
+
 import MenuIcon from "@/components/icons/MenuIcon.vue";
-// import { mapState } from "vuex";
-// import { Portal } from "portal-vue";
+import IconClose from "@/components/svg/IconClose.vue";
 
-// import MenuIcon from "~/assets/icons/menu-icon.svg?inline";
-// import CloseIcon from "~/assets/icons/close-icon.svg?inline";
+const openButtonRef = ref(null);
+const closeButtonRef = ref(null);
+const isOpen = ref(false);
 
-export default {
-  components: {
-    BaseButton,
-    GumballLogo,
-    MenuIcon,
-  },
-  setup() {
-    const { user, handleLogout } = useAuthUser();
+const { user, handleLogout } = useAuthUser();
+const { hasOpenModal, toggleMobileMenu } = useGlobalLayout();
 
-    return {
-      user,
-      handleLogout,
-    };
-  },
-  computed: {
-    // ...mapState("global", ["isMobileMenuOpen", "pageHasModalOpen", "loaded"]),
-    isHomePage() {
-      return this.$route.fullPath === "/";
-    },
-  },
-  watch: {
-    // $route(to, from) {
-    //   this.closeMenu();
-    // },
-  },
-  methods: {
-    async openMobileMenu() {
-      await this.$store.commit("global/isMobileMenuOpen", true);
-      await this.$nextTick();
-      await this.$nextTick();
+function openMenu() {
+  isOpen.value = true;
+  toggleMobileMenu(true);
 
-      this.$refs.closeButtonRef?.focus();
-    },
-    async closeMenu() {
-      await this.$store.commit("global/isMobileMenuOpen", false);
-      await this.$nextTick();
-      await this.$nextTick();
-    },
-  },
-};
+  setTimeout(() => {
+    closeButtonRef?.value.focus();
+  }, 50);
+}
+function closeMenu() {
+  isOpen.value = false;
+  toggleMobileMenu(false);
+
+  setTimeout(() => {
+    openButtonRef?.value.focus();
+  }, 50);
+}
 </script>
 
 <style lang="postcss">

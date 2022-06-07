@@ -13,14 +13,22 @@
               Schedule Window
             </BaseButton>
 
-            <BaseButton class="group" theme="secondary">
-              <template #icon>
-                <IconLock
-                  class="text-blue-500 group-hover:text-white w-5 h-5 opacity-50"
-                />
+            <BaseModal>
+              <template #button>
+                <div
+                  class="flex items-center group px-3 lg:px-6 py-0.5 font-display text-center rounded-md border-2 border-transparent transition duration-150 ease-in-out border-blue-500 text-black hover:bg-blue-500 hover:text-white"
+                >
+                  <IconLock
+                    class="text-blue-500 group-hover:text-white w-5 h-5 opacity-50 mr-3"
+                  />
+                  Open Requests
+                </div>
               </template>
-              Open Requests
-            </BaseButton>
+
+              <template #content>
+                <p>hello</p>
+              </template>
+            </BaseModal>
           </div>
 
           <nav>
@@ -110,7 +118,7 @@
         </footer>
       </div>
 
-      <div class="py-12 px-20 bg-gray-50 flex-grow">
+      <div class="py-12 px-20 bg-gray-50 flex-grow overflow-y-scroll">
         <Transition name="fade">
           <slot />
         </Transition>
@@ -123,11 +131,15 @@
 // utils
 import useAuthUser from "@/utils/useAuth";
 import { useUserStore } from "@/stores/user";
+import supabase from "@/supabase";
 
-//components
+// components
 import DashboardHeader from "@/components/global/DashboardHeader.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 import BaseLink from "@/components/base/BaseLink.vue";
+import BaseModal from "@/components/base/BaseModal.vue";
+
+// icons
 import IconSchedule from "@/components/svg/IconSchedule.vue";
 import IconLock from "@/components/svg/IconLock.vue";
 import IconCollection from "@/components/svg/IconCollection";
@@ -146,11 +158,18 @@ setCurrentUserId(user._rawValue.id);
 // fetch collections for user and set in pinia
 setCollections();
 setSavedSubmissions();
+
+/**
+ * Create open collection
+ */
+
+function createOpenCollection() {}
 </script>
 
 <style scoped>
 main {
   height: calc(100vh - 89.31px);
+  overflow: hidden;
 }
 
 .router-link-active svg {
