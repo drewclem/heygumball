@@ -1,17 +1,25 @@
 <template>
-  <div>
+  <div class="here" :inert="hasOpenModal">
     <DashboardHeader :user="user" />
 
     <main class="flex">
       <div class="flex flex-col px-6 py-12">
         <div class="flex-grow">
           <div class="flex flex-col space-y-5 mb-12">
-            <BaseButton theme="tertiary">
-              <template #icon>
-                <IconSchedule class="text-white w-5 h-5 opacity-75" />
+            <BaseModal>
+              <template #button>
+                <div
+                  class="flex items-center group px-3 lg:px-6 py-0.5 font-display text-center rounded-md transition duration-150 text-white ease-in-out bg-green-500 hover:bg-green-600 border-2 border-transparent"
+                >
+                  <IconSchedule class="text-white w-5 h-5 opacity-75 mr-3" />
+                  Schedule window
+                </div>
               </template>
-              Schedule Window
-            </BaseButton>
+
+              <template #content>
+                <p>Schedule window</p>
+              </template>
+            </BaseModal>
 
             <BaseModal>
               <template #button>
@@ -131,7 +139,9 @@
 // utils
 import useAuthUser from "@/utils/useAuth";
 import { useUserStore } from "@/stores/user";
-import supabase from "@/supabase";
+import { useGlobalLayout } from "@/stores/global";
+import { storeToRefs } from "pinia";
+import "wicg-inert";
 
 // components
 import DashboardHeader from "@/components/global/DashboardHeader.vue";
@@ -150,14 +160,22 @@ import IconInbox from "@/components/svg/IconInbox.vue";
 
 const { user, handleLogout } = useAuthUser();
 
-const { setCurrentUserId, setCollections, setSavedSubmissions } =
-  useUserStore();
+const {
+  setCurrentUserId,
+  setCollections,
+  setSavedSubmissions,
+  setAllSubmissions,
+} = useUserStore();
+
+const global = useGlobalLayout();
+const { hasOpenModal } = storeToRefs(global);
 
 setCurrentUserId(user._rawValue.id);
 
 // fetch collections for user and set in pinia
 setCollections();
 setSavedSubmissions();
+setAllSubmissions();
 
 /**
  * Create open collection

@@ -2,7 +2,7 @@
   <header
     class="base-wrapper z-50 top-0 w-full flex items-center justify-between p-6"
   >
-    <div id="top">
+    <div id="top" :inert="isOpen">
       <router-link to="/" class="block w-40 lg:w-48">
         <GumballLogo class="w-full" />
       </router-link>
@@ -105,6 +105,7 @@
 import { defineComponent, ref, watch } from "vue";
 import useAuthUser from "@/utils/useAuth";
 import { useGlobalLayout } from "@/stores/global";
+import "wicg-inert";
 
 import BaseButton from "@/components/base/BaseButton.vue";
 import GumballLogo from "@/components/global/GumballLogo.vue";

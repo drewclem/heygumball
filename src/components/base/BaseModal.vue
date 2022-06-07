@@ -10,7 +10,7 @@
       <div class="modal-wrapper" @keydown.esc="closeModal">
         <div class="modal-content">
           <button @click="closeModal" ref="closeButtonRef" type="button">
-            Close Modal
+            <IconClose class="h-6 w-6" alt="close menu" />
           </button>
           <slot name="content" />
         </div>
@@ -22,6 +22,8 @@
 <script setup>
 import { ref } from "vue";
 import { useGlobalLayout } from "@/stores/global";
+
+import IconClose from "@/components/svg/IconClose.vue";
 
 const { toggleModal } = useGlobalLayout();
 const isOpen = ref(false);
