@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between mb-8">
       <BaseHeading size="h4" tag="h1">Settings</BaseHeading>
 
-      <BaseLink to="account/edit">Edit</BaseLink>
+      <BaseLink href="account/edit">Edit</BaseLink>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-10">
@@ -76,12 +76,14 @@
 <script setup>
 // utility
 import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseLink from "@/components/base/BaseLink.vue";
 
-const { currentUser } = useUserStore();
+const global = useUserStore();
+const { currentUser } = storeToRefs(global);
 </script>
 
 <style scoped>

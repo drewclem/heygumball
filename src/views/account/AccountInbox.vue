@@ -34,13 +34,17 @@
 <script setup>
 // utils
 import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import CollectionSubmissionCard from "@/components/collections/CollectionSubmissionCard.vue";
 import IconSearch from "@/components/svg/IconSearch";
 
-const { allSubmissions, setAllSubmissions } = useUserStore();
+const { setAllSubmissions } = useUserStore();
+const global = useUserStore();
+
+const { allSubmissions } = storeToRefs(global);
 
 setAllSubmissions();
 </script>

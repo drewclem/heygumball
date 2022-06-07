@@ -110,7 +110,7 @@
             :class="{
               'router-link-active': $route.fullPath.includes('account'),
             }"
-            :to="`/${user.user_metadata.username}/account`"
+            :href="`/${user.user_metadata.username}/account`"
           >
             <template #icon>
               <IconUser
@@ -162,6 +162,7 @@ const { user, handleLogout } = useAuthUser();
 
 const {
   setCurrentUserId,
+  setUser,
   setCollections,
   setSavedSubmissions,
   setAllSubmissions,
@@ -170,7 +171,7 @@ const {
 const global = useGlobalLayout();
 const { hasOpenModal } = storeToRefs(global);
 
-setCurrentUserId(user._rawValue.id);
+setCurrentUserId(user.value.id);
 
 // fetch collections for user and set in pinia
 setCollections();

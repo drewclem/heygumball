@@ -7,7 +7,7 @@
 
       <div>
         <BaseLink
-          :to="`/${user.user_metadata.username}/account`"
+          :href="`/${user.user_metadata.username}/account`"
           class="text-red-500 mr-5 underline"
         >
           Cancel
@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-10">
+    <div v-if="currentUser" class="grid grid-cols-1 lg:grid-cols-10">
       <div class="lg:col-span-2">
         <div class="h-24 w-24 bg-gray-400 rounded-full"></div>
       </div>
@@ -82,10 +82,11 @@
 
 <script setup>
 // utils
-import { reactive, watchEffect } from "vue";
+import { onMounted, reactive, watchEffect } from "vue";
 import useAuthUser from "@/utils/useAuth";
 import { useUserStore } from "@/stores/user";
 import { supabase } from "@/supabase";
+import { storeToRefs } from "pinia";
 
 // components
 import BaseLink from "@/components/base/BaseLink.vue";
@@ -94,23 +95,29 @@ import BaseInput from "@/components/base/BaseInput.vue";
 import IconArrowLeft from "@/components/svg/IconArrowLeft.vue";
 
 const { user } = useAuthUser();
-const { currentUser, setCurrentUserId } = useUserStore();
+const global = useUserStore();
+const { setCurrentUserId } = useUserStore();
+const { currentUser } = storeToRefs(global);
 
 const userForm = reactive({
   username: null,
   full_name: null,
   email: null,
+  instagram_url: null,
+  tiktok_url: null,
+  twitter_url: null,
+  facebook_url: null,
   submitting: false,
 });
 
 watchEffect(() => {
-  (userForm.username = currentUser.username),
-    (userForm.full_name = currentUser.full_name),
-    (userForm.email = currentUser.email),
-    (userForm.instagram_url = currentUser.instagram_url),
-    (userForm.tiktok_url = currentUser.tiktok_url),
-    (userForm.twitter_url = currentUser.twitter_url),
-    (userForm.facebook_url = currentUser.facebook_url);
+  (userForm.username = currentUser.value?.username),
+    (userForm.full_name = currentUser.value?.full_name),
+    (userForm.email = currentUser.value?.email),
+    (userForm.instagram_url = currentUser.value?.instagram_url),
+    (userForm.tiktok_url = currentUser.value?.tiktok_url),
+    (userForm.twitter_url = currentUser.value?.twitter_url),
+    (userForm.facebook_url = currentUser.value?.facebook_url);
 });
 
 async function updateUserInfo() {

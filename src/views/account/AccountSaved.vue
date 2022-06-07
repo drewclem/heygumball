@@ -23,7 +23,7 @@
       <div class="flex flex-col space-y-6">
         <div v-if="!savedSubmissions.length">
           <p class="mb-5">No saved submissions</p>
-          </div>
+        </div>
 
         <template v-else>
           <CollectionSubmissionCard
@@ -40,13 +40,17 @@
 <script setup>
 // utils
 import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import CollectionSubmissionCard from "@/components/collections/CollectionSubmissionCard.vue";
 import IconSearch from "@/components/svg/IconSearch";
 
-const { savedSubmissions, setSavedSubmissions } = useUserStore();
+const global = useUserStore();
+const { setSavedSubmissions } = useUserStore();
 
-setSavedSubmissions()
+const { savedSubmissions } = storeToRefs(global);
+
+setSavedSubmissions();
 </script>
