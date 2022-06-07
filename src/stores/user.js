@@ -10,6 +10,7 @@ export const useUserStore = defineStore("currentUser", {
       currentCollection: null,
       currentSubmissions: [],
       savedSubmissions: [],
+      allSubmissions: [],
     };
   },
 
@@ -76,6 +77,14 @@ export const useUserStore = defineStore("currentUser", {
         .eq("user_id", this.userID);
 
       this.savedSubmissions = data;
+    },
+    async setAllSubmissions() {
+      const { data } = await supabase
+        .from("submissions")
+        .select()
+        .eq("user_id", this.userID);
+
+      this.allSubmissions = data;
     },
   },
 });

@@ -38,16 +38,18 @@ function checkIsActive() {
   const startDate = new Date(collection.value.start_date);
   const endDate = new Date(collection.value.end_date);
 
-  const currentDateFormatted =
-    currentDate.getTime() - currentDate.getTimezoneOffset() * -60000;
+  const currentDateFormatted = currentDate.getTime();
   const startDateFormatted =
     startDate.getTime() - startDate.getTimezoneOffset() * -60000;
   const endDateFormatted =
     endDate.getTime() - endDate.getTimezoneOffset() * -60000;
 
+  console.log("end", endDateFormatted);
+  console.log("current", currentDateFormatted);
+
   if (
-    startDateFormatted <= currentDateFormatted &&
-    endDateFormatted >= currentDateFormatted
+    startDateFormatted < currentDateFormatted &&
+    endDateFormatted > currentDateFormatted
   ) {
     isActive.value = true;
   }

@@ -53,6 +53,15 @@ const routes = [
     },
   },
   {
+    path: "/:id/inbox",
+    name: "User inbox",
+    component: () => import("@/views/account/AccountInbox.vue"),
+    meta: {
+      layout: "AppLayoutAccountDashboard",
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/:id/account/edit",
     name: "Edit user account",
     component: () => import("@/views/account/AccountSettingsEdit.vue"),
@@ -86,8 +95,8 @@ const routes = [
     meta: {
       layout: "AppLayoutAccountDashboard",
       requiresAuth: true,
-    }
-  }
+    },
+  },
 ];
 
 const router = createRouter({

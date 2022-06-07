@@ -45,6 +45,22 @@
               <li>
                 <BaseLink
                   class="group"
+                  :class="{
+                    'router-link-active': $route.fullPath.includes('inbox'),
+                  }"
+                  :href="`/${user.user_metadata.username}/inbox`"
+                >
+                  <template #icon>
+                    <IconInbox
+                      class="text-gray-200 group-hover:text-gray-300 w-5 h-5"
+                    />
+                  </template>
+                  Inbox
+                </BaseLink>
+              </li>
+              <li>
+                <BaseLink
+                  class="group"
                   :href="`/${user.user_metadata.username}/saved`"
                 >
                   <template #icon>
@@ -118,6 +134,7 @@ import IconCollection from "@/components/svg/IconCollection";
 import IconHeart from "@/components/svg/IconHeart.vue";
 import IconForm from "@/components/svg/IconForm.vue";
 import IconUser from "@/components/svg/IconUser.vue";
+import IconInbox from "@/components/svg/IconInbox.vue";
 
 const { user, handleLogout } = useAuthUser();
 
