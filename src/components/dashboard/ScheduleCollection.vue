@@ -10,12 +10,22 @@
       <div class="flex space-x-6">
         <div>
           <p class="font-display mb-2 text-sm">Start date</p>
-          <Datepicker class="mb-6" v-model="state.startDate" />
+          <Datepicker
+            class="mb-6"
+            v-model="state.startDate"
+            :lower-limit="currentDate"
+            :disabled-dates="disabledDates"
+          />
         </div>
 
         <div>
           <p class="font-display mb-2 text-sm">End date</p>
-          <Datepicker class="mb-6" v-model="state.endDate" />
+          <Datepicker
+            class="mb-6"
+            v-model="state.endDate"
+            :lower-limit="tomorrowDate"
+            :disabled-dates="disabledDates"
+          />
         </div>
       </div>
 
@@ -47,6 +57,7 @@
 import { reactive } from "vue";
 import { supabase } from "@/supabase";
 import { useUserStore } from "@/stores/user";
+import { useDates } from "@/utils/dates";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
@@ -63,20 +74,13 @@ const state = reactive({
   submitting: false,
 });
 
-const { currentUser, setCollections, createCollection } = useUserStore();
+const { currentUser, setCollections, createCollection, disabledDates } =
+  useUserStore();
+
+const { currentDate, tomorrowDate } = useDates();
 
 function incrementStep() {
   state.step++;
-}
-
-function formatDate(date) {
-  const dateObj = new Date(date);
-
-  const year = dateObj.getFullYear();
-  const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
-  const day = dateObj.getDate();
-
-  return year + "-" + month + "-" + day;
 }
 
 async function scheduleCollection() {

@@ -20,7 +20,7 @@
         <p class="ml-auto">Booked</p>
       </div>
 
-      <div class="flex flex-col space-y-6">
+      <div v-if="collections" class="flex flex-col space-y-6">
         <AccountCollectionCard
           v-for="collection in collections"
           :key="collection.id"
@@ -40,5 +40,5 @@ import BaseHeading from "@/components/base/BaseHeading.vue";
 import AccountCollectionCard from "@/components/dashboard/CollectionCard.vue";
 import IconSearch from "@/components/svg/IconSearch";
 
-const { collections, setCollections } = useUserStore();
+const { collections } = useUserStore();
 </script>

@@ -4,6 +4,7 @@
     @click="openModal"
     ref="openButtonRef"
     type="button"
+    :disabled="disabled"
   >
     <slot name="button" />
     <Teleport v-if="isOpen" to="body">
@@ -25,6 +26,12 @@
 </template>
 
 <script setup>
+defineProps({
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+});
 import { ref } from "vue";
 import { useGlobalLayout } from "@/stores/global";
 
@@ -69,5 +76,9 @@ function openModal() {
   @apply relative bg-white p-6 xl:p-10 rounded-lg mx-6;
   max-width: 540px;
   min-width: 409.56px;
+}
+
+button:disabled {
+  @apply opacity-50 pointer-events-none;
 }
 </style>

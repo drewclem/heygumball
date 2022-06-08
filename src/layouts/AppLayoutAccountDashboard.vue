@@ -3,7 +3,7 @@
     <DashboardHeader :user="user" />
 
     <main class="flex">
-      <div class="flex flex-col px-6 py-12">
+      <div class="flex flex-col px-6 py-12 w-[268.66px]">
         <div class="flex-grow">
           <div class="flex flex-col space-y-5 mb-12">
             <BaseModal>
@@ -21,10 +21,10 @@
               </template>
             </BaseModal>
 
-            <BaseModal>
+            <BaseModal :disabled="hasActiveCollection">
               <template #button>
                 <div
-                  class="flex items-center group px-3 lg:px-6 py-0.5 font-display text-center rounded-md border-2 border-transparent transition duration-150 ease-in-out border-blue-500 text-black hover:bg-blue-500 hover:text-white"
+                  class="flex items-center group px-3 lg:px-6 py-0.5 font-display text-center rounded-md border-2 border-transparent transition duration-150 ease-in-out border-blue-500 text-black hover:bg-blue-500 hover:text-white mb-2"
                 >
                   <IconLock
                     class="text-blue-500 group-hover:text-white w-5 h-5 opacity-50 mr-3"
@@ -161,6 +161,8 @@ import IconUser from "@/components/svg/IconUser.vue";
 import IconInbox from "@/components/svg/IconInbox.vue";
 
 const { user, handleLogout } = useAuthUser();
+const userStore = useUserStore();
+const { hasActiveCollection } = storeToRefs(userStore);
 
 const {
   setCurrentUserId,

@@ -11,7 +11,50 @@ export const useUserStore = defineStore("currentUser", {
       currentSubmissions: [],
       savedSubmissions: [],
       allSubmissions: [],
+      disabledDates: {
+        dates: [],
+      },
     };
+  },
+
+  getters: {
+    disabledDates: (state) => {
+      const datesArray = [];
+
+      for (const collection of state.collections) {
+        const startDate = new Date(collection.start_date);
+        const endDate = new Date(collection.end_date);
+
+        let currentDate = startDate;
+
+        while (currentDate <= endDate) {
+          datesArray.push(new Date(currentDate));
+          currentDate.setDate(currentDate.getDate() + 1);
+        }
+      }
+
+      return datesArray;
+    },
+    hasActiveCollection: (state) => {
+      const currentDate = new Date();
+
+      for (const collection of state.collections) {
+        const startDate = new Date(collection.start_date);
+        const endDate = new Date(collection.end_date);
+
+        const currentDateFormatted = currentDate.getTime();
+        const startDateFormatted =
+          startDate.getTime() - startDate.getTimezoneOffset() * -60000;
+        const endDateFormatted =
+          endDate.getTime() - endDate.getTimezoneOffset() * -60000;
+
+        if (
+          startDateFormatted < currentDateFormatted &&
+          endDateFormatted > currentDateFormatted
+        )
+          return true;
+      }
+    },
   },
 
   actions: {

@@ -41,7 +41,13 @@
 
       <div>
         <p class="font-display mb-2 text-sm">End date</p>
-        <Datepicker class="mb-6" v-model="state.endDate" />
+        <Datepicker
+          class="mb-6"
+          v-model="state.endDate"
+          :lower-limit="tomorrowDate"
+          :disabled-dates="disabledDates"
+          starting-view="day"
+        />
 
         <BaseButton
           class="block ml-auto"
@@ -72,6 +78,7 @@ import { reactive } from "vue";
 import { supabase } from "@/supabase";
 import useAuthUser from "@/utils/useAuth";
 import { useUserStore } from "@/stores/user";
+import { useDates } from "@/utils/dates";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
@@ -87,7 +94,10 @@ const state = reactive({
   submitting: false,
 });
 
-const { currentUser, setCollections, createCollection } = useUserStore();
+const { currentUser, setCollections, createCollection, disabledDates } =
+  useUserStore();
+
+const { currentDate, tomorrowDate } = useDates();
 
 function incrementStep() {
   state.step++;
