@@ -30,7 +30,7 @@ import useAuthUser from "@/utils/useAuth";
 import { useRoute } from "vue-router";
 
 // components
-import AccountCardGrid from "@/components/account/AccountCardGrid.vue";
+import AccountCardGrid from "@/components/dashboard/AccountCardGrid.vue";
 
 const { user } = useAuthUser();
 const route = useRoute();

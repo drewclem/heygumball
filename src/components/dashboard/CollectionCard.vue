@@ -5,10 +5,11 @@
       :class="{ 'py-6 bg-blue-100': isActive }"
     >
       <template #col-1>
-        {{ formatOpenDates(collection.start_date) }} -
+        {{ formatOpenDates(collection.start_date) }}
+        <span v-if="collection.end_date !== null">-</span>
         {{ formatOpenDates(collection.end_date) }}
       </template>
-      <template #col-2>{{ getYear(collection.end_date) }}</template>
+      <template #col-2>{{ getYear(collection.start_date) }}</template>
       <template #col-3>{{ collection.requests_received }}</template>
       <template #col-4>{{ collection.booked_requests }}</template>
     </AccountCardGrid>
@@ -20,7 +21,7 @@
 import { ref, toRefs, onMounted } from "vue";
 
 // components
-import AccountCardGrid from "@/components/account/AccountCardGrid.vue";
+import AccountCardGrid from "@/components/dashboard/AccountCardGrid.vue";
 
 const props = defineProps({
   collection: {
@@ -45,8 +46,10 @@ function checkIsActive() {
     endDate.getTime() - endDate.getTimezoneOffset() * -60000;
 
   if (
-    startDateFormatted < currentDateFormatted &&
-    endDateFormatted > currentDateFormatted
+    (startDateFormatted < currentDateFormatted &&
+      endDateFormatted > currentDateFormatted) ||
+    (startDateFormatted < currentDateFormatted &&
+      collection.value.end_date === null)
   ) {
     isActive.value = true;
   }
@@ -58,6 +61,8 @@ onMounted(() => {
 
 // format collection dates
 function formatOpenDates(date) {
+  if (date === null) return "";
+
   const dateObj = new Date(date);
 
   const dateFormatted = new Date(

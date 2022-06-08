@@ -8,9 +8,14 @@
     <slot name="button" />
     <Teleport v-if="isOpen" to="body">
       <div class="modal-wrapper" @keydown.esc="closeModal">
-        <div class="modal-content">
-          <button @click="closeModal" ref="closeButtonRef" type="button">
-            <IconClose class="h-6 w-6" alt="close menu" />
+        <div class="modal-content card-shadow">
+          <button
+            class="absolute shadow-md bg-red-500 -mt-3 -ml-3 p-1 rounded-full left-0 top-0 text-white"
+            @click="closeModal"
+            ref="closeButtonRef"
+            type="button"
+          >
+            <IconClose class="h-4 w-4" alt="close menu" />
           </button>
           <slot name="content" />
         </div>
@@ -61,6 +66,8 @@ function openModal() {
 }
 
 .modal-content {
-  @apply relative bg-white p-6 rounded-lg;
+  @apply relative bg-white p-6 xl:p-10 rounded-lg mx-6;
+  max-width: 540px;
+  min-width: 409.56px;
 }
 </style>

@@ -38,7 +38,7 @@ import { storeToRefs } from "pinia";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
-import CollectionSubmissionCard from "@/components/collections/CollectionSubmissionCard.vue";
+import CollectionSubmissionCard from "@/components/dashboard/SubmissionCard.vue";
 import IconSearch from "@/components/svg/IconSearch";
 
 const { setAllSubmissions } = useUserStore();

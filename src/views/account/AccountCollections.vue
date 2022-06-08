@@ -37,7 +37,7 @@ import { useUserStore } from "@/stores/user";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
-import AccountCollectionCard from "@/components/account/AccountCollectionCard.vue";
+import AccountCollectionCard from "@/components/dashboard/CollectionCard.vue";
 import IconSearch from "@/components/svg/IconSearch";
 
 const { collections, setCollections } = useUserStore();

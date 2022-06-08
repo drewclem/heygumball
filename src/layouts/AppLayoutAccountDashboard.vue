@@ -34,7 +34,7 @@
               </template>
 
               <template #content>
-                <p>hello</p>
+                <OpenRequest />
               </template>
             </BaseModal>
           </div>
@@ -148,6 +148,7 @@ import DashboardHeader from "@/components/global/DashboardHeader.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 import BaseLink from "@/components/base/BaseLink.vue";
 import BaseModal from "@/components/base/BaseModal.vue";
+import OpenRequest from "@/components/dashboard/OpenRequest.vue";
 
 // icons
 import IconSchedule from "@/components/svg/IconSchedule.vue";

@@ -11,7 +11,7 @@
     <div class="flex items-center space-x-8">
       <p>{{ user.user_metadata.username }}</p>
 
-      <BaseButton @click="handleLogout" theme="secondary">
+      <BaseButton @user-click="handleLogout" theme="secondary">
         Sign Out
       </BaseButton>
     </div>
