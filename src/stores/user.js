@@ -33,7 +33,7 @@ export const useUserStore = defineStore("currentUser", {
         }
       }
 
-      return datesArray;
+      return { dates: datesArray };
     },
     hasActiveCollection: (state) => {
       const currentDate = new Date();
