@@ -46,7 +46,7 @@
         <BaseButton
           class="block ml-auto"
           theme="tertiary"
-          @user-click="createCollection"
+          @user-click="openCollection"
           :disabled="state.submitting"
         >
           Confirm
@@ -70,7 +70,7 @@
 // utils
 import { reactive } from "vue";
 import { supabase } from "@/supabase";
-import { useAuthUser } from "@/utils/useAuth";
+import useAuthUser from "@/utils/useAuth";
 import { useUserStore } from "@/stores/user";
 
 // components
@@ -87,54 +87,29 @@ const state = reactive({
   submitting: false,
 });
 
-const { currentUser, setCollections } = useUserStore();
+const { currentUser, setCollections, createCollection } = useUserStore();
 
 function incrementStep() {
   state.step++;
 }
 
-function formatDate(date) {
-  const dateObj = new Date(date);
-
-  const year = dateObj.getFullYear();
-  const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
-  const day = dateObj.getDate();
-
-  return year + "-" + month + "-" + day;
-}
-
-async function createCollection() {
+async function openCollection() {
   state.submitting = true;
 
-  const currentDate = new Date();
-
-  const nowDate = formatDate(currentDate);
-  const endDate = formatDate(state.endDate);
-
-  const { error } = await supabase.from("collections").insert([
-    {
-      user_id: currentUser.id,
-      full_name: currentUser.full_name,
-      start_date: nowDate,
-      end_date: state.endDate !== null ? endDate : null,
-    },
-  ]);
+  const { data, error } = await createCollection({
+    startDate: null,
+    endDate: state.endDate,
+  });
 
   if (error) {
     alert(error);
   } else {
+    setCollections();
+
     setTimeout(() => {
       state.submitting = false;
       state.step = 3;
     }, 100);
-
-    setCollections();
   }
 }
 </script>
-
-<style>
-.v3dp__input_wrapper input {
-  @apply border border-gray-300 rounded-md px-2 py-1 w-full;
-}
-</style>

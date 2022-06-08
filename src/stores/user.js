@@ -86,5 +86,34 @@ export const useUserStore = defineStore("currentUser", {
 
       this.allSubmissions = data;
     },
+    formatDate(date) {
+      const dateObj = new Date(date);
+
+      const year = dateObj.getFullYear();
+      const month = ("0" + (dateObj.getMonth() + 1)).slice(-2);
+      const day = dateObj.getDate();
+
+      return year + "-" + month + "-" + day;
+    },
+    async createCollection(dates) {
+      const { startDate, endDate } = dates;
+
+      const currentDate = new Date();
+      const nowDate = this.formatDate(currentDate);
+
+      const startDateFormatted = this.formatDate(startDate);
+      const endDateFormatted = this.formatDate(endDate);
+
+      const req = await supabase.from("collections").insert([
+        {
+          user_id: this.currentUser.id,
+          full_name: this.currentUser.full_name,
+          start_date: startDate !== null ? startDateFormatted : nowDate,
+          end_date: endDate !== null ? endDateFormatted : null,
+        },
+      ]);
+
+      return req;
+    },
   },
 });
