@@ -5,11 +5,7 @@
         <BaseHeading size="h4" tag="h1">Saved</BaseHeading>
       </div>
 
-      <button
-        class="rounded-full border border-gray-500 p-2 opacity-50 hover:opacity-100"
-      >
-        <IconSearch class="w-4 h-4 text-gray-500" />
-      </button>
+      <KeywordSearch v-model="searchPhrase" />
     </div>
 
     <div>
@@ -25,9 +21,17 @@
           <p class="mb-5">No saved submissions</p>
         </div>
 
+        <div v-else-if="!filteredSubmissions.length">
+          <BaseHeading class="text-red-500 mb-5" size="h3" tag="h2">
+            Uh oh!
+          </BaseHeading>
+          <BaseText> Looks like we couldn't find anything. </BaseText>
+          <BaseText size="small">Check for typos!</BaseText>
+        </div>
+
         <template v-else>
           <CollectionSubmissionCard
-            v-for="submission in savedSubmissions"
+            v-for="submission in filteredSubmissions"
             :key="submission.id"
             :submission="submission"
           />
@@ -39,12 +43,14 @@
 
 <script setup>
 // utils
+import { ref, computed } from "vue";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import CollectionSubmissionCard from "@/components/dashboard/SubmissionCard.vue";
+import KeywordSearch from "@/components/dashboard/KeywordSearch.vue";
 import IconSearch from "@/components/svg/IconSearch";
 
 const global = useUserStore();
@@ -53,4 +59,30 @@ const { setSavedSubmissions } = useUserStore();
 const { savedSubmissions } = storeToRefs(global);
 
 setSavedSubmissions();
+
+/**
+ * Filter through submissions
+ */
+
+const searchPhrase = ref(null);
+
+const filteredSubmissions = computed(() => {
+  return savedSubmissions.value.filter((submission) => {
+    if (searchPhrase.value === null) return submission;
+    const filter = searchPhrase.value.toLowerCase();
+
+    const email = submission.email?.toLowerCase();
+    const name = submission.name?.toLowerCase();
+    const message = submission.message?.toLowerCase();
+
+    if (
+      searchPhrase.value !== null &&
+      (email.includes(filter) ||
+        name.includes(filter) ||
+        message.includes(filter) ||
+        submission.phone.includes(filter))
+    )
+      return submission;
+  });
+});
 </script>

@@ -1,7 +1,8 @@
 <template>
-  <div class="flex items-center">
+  <div class="flex items-center" @keydown.esc="closeSearch">
     <transition name="search" appear>
       <input
+        ref="search"
         v-if="state.isOpen"
         class="py-2 px-4 border border-gray-500 rounded-full mr-3 h-[34px] w-96"
         type="text"
@@ -12,10 +13,11 @@
     </transition>
 
     <button
+      ref="searchButton"
       class="rounded-full h-full border border-gray-500 p-2 opacity-50 hover:opacity-100"
       :class="{ 'bg-white opacity-100': state.isOpen }"
       type="button"
-      @click="state.isOpen = !state.isOpen"
+      @click="toggleSearch"
     >
       <transition v-if="!state.isOpen" name="fade" appear>
         <IconSearch class="w-4 h-4 text-gray-500" />
@@ -29,7 +31,7 @@
 
 <script setup>
 // utils
-import { reactive } from "vue";
+import { ref, nextTick, reactive } from "vue";
 
 // components
 import IconSearch from "@/components/svg/IconSearch.vue";
@@ -46,6 +48,25 @@ defineEmits(["update:modelValue"]);
 const state = reactive({
   isOpen: false,
 });
+const search = ref(null);
+const searchButton = ref(null);
+
+function toggleSearch() {
+  state.isOpen = !state.isOpen;
+
+  nextTick(() => {
+    if (state.isOpen) {
+      search.value.focus();
+    } else {
+      searchButton.value.focus();
+    }
+  });
+}
+
+function closeSearch() {
+  state.isOpen = false;
+  searchButton.value.focus();
+}
 </script>
 
 <style scoped>

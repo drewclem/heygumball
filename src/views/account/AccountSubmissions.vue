@@ -29,9 +29,17 @@
       <div class="flex flex-col space-y-6">
         <p class="opacity-50" v-if="loading">Loading...</p>
 
-        <div v-else-if="!submissions.length">
+        <div v-if="!submissions.length">
           <p class="mb-5">No submissions yet! Share that link!</p>
           <CopyShareLink />
+        </div>
+
+        <div v-else-if="!filteredSubmissions.length">
+          <BaseHeading class="text-red-500 mb-5" size="h3" tag="h2">
+            Uh oh!
+          </BaseHeading>
+          <BaseText> Looks like we couldn't find anything. </BaseText>
+          <BaseText size="small">Check for typos!</BaseText>
         </div>
 
         <template v-else>
@@ -55,8 +63,9 @@ import { useUserStore } from "@/stores/user";
 import { supabase } from "@/supabase";
 
 // components
-import CollectionSubmissionCard from "@/components/dashboard/SubmissionCard.vue";
 import BaseHeading from "@/components/base/BaseHeading.vue";
+import BaseText from "@/components/base/BaseText.vue";
+import CollectionSubmissionCard from "@/components/dashboard/SubmissionCard.vue";
 import CopyShareLink from "@/components/dashboard/CopyShareLink.vue";
 import KeywordSearch from "@/components/dashboard/KeywordSearch.vue";
 import IconSearch from "@/components/svg/IconSearch.vue";
