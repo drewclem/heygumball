@@ -4,12 +4,6 @@
       <div>
         <BaseHeading size="h4" tag="h1">Collections</BaseHeading>
       </div>
-
-      <button
-        class="rounded-full border border-gray-500 p-2 opacity-50 hover:opacity-100"
-      >
-        <IconSearch class="w-4 h-4 text-gray-500" />
-      </button>
     </div>
 
     <div>
@@ -38,7 +32,6 @@ import { useUserStore } from "@/stores/user";
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import AccountCollectionCard from "@/components/dashboard/CollectionCard.vue";
-import IconSearch from "@/components/svg/IconSearch";
 
 const { collections } = useUserStore();
 </script>

@@ -5,11 +5,7 @@
         <BaseHeading size="h4" tag="h1">Inbox</BaseHeading>
       </div>
 
-      <button
-        class="rounded-full border border-gray-500 p-2 opacity-50 hover:opacity-100"
-      >
-        <IconSearch class="w-4 h-4 text-gray-500" />
-      </button>
+      <KeywordSearch v-model="searchPhrase" :value="searchPhrase" />
     </div>
 
     <div>
@@ -22,7 +18,7 @@
 
       <div class="flex flex-col space-y-6">
         <CollectionSubmissionCard
-          v-for="submission in allSubmissions"
+          v-for="submission in filteredSubmissions"
           :key="submission.id"
           :submission="submission"
         />
@@ -33,13 +29,16 @@
 
 <script setup>
 // utils
+import { ref, computed } from "vue";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import CollectionSubmissionCard from "@/components/dashboard/SubmissionCard.vue";
-import IconSearch from "@/components/svg/IconSearch";
+import KeywordSearch from "@/components/dashboard/KeywordSearch.vue";
+
+const searchPhrase = ref(null);
 
 const { setAllSubmissions } = useUserStore();
 const global = useUserStore();
@@ -47,4 +46,28 @@ const global = useUserStore();
 const { allSubmissions } = storeToRefs(global);
 
 setAllSubmissions();
+
+/**
+ * Filter through submissions
+ */
+
+const filteredSubmissions = computed(() => {
+  return allSubmissions.value.filter((submission) => {
+    if (searchPhrase.value === null) return submission;
+    const filter = searchPhrase.value.toLowerCase();
+
+    const email = submission.email?.toLowerCase();
+    const name = submission.name?.toLowerCase();
+    const message = submission.message?.toLowerCase();
+
+    if (
+      searchPhrase.value !== null &&
+      (email.includes(filter) ||
+        name.includes(filter) ||
+        message.includes(filter) ||
+        submission.phone.includes(filter))
+    )
+      return submission;
+  });
+});
 </script>

@@ -15,11 +15,7 @@
         </button>
       </div>
 
-      <button
-        class="rounded-full border border-gray-500 p-2 opacity-50 hover:opacity-100"
-      >
-        <IconSearch class="w-4 h-4 text-gray-500" />
-      </button>
+      <KeywordSearch v-model="searchPhrase" />
     </div>
 
     <div>
@@ -40,7 +36,7 @@
 
         <template v-else>
           <CollectionSubmissionCard
-            v-for="submission in submissions"
+            v-for="submission in filteredSubmissions"
             :key="submission.id"
             :submission="submission"
           />
@@ -52,7 +48,7 @@
 
 <script setup>
 // utils
-import { ref, onMounted, onBeforeMount } from "vue";
+import { ref, onMounted, onBeforeMount, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useAuthUser from "@/utils/useAuth";
 import { useUserStore } from "@/stores/user";
@@ -62,8 +58,8 @@ import { supabase } from "@/supabase";
 import CollectionSubmissionCard from "@/components/dashboard/SubmissionCard.vue";
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import CopyShareLink from "@/components/dashboard/CopyShareLink.vue";
+import KeywordSearch from "@/components/dashboard/KeywordSearch.vue";
 import IconSearch from "@/components/svg/IconSearch.vue";
-import IconCopy from "@/components/svg/IconCopy.vue";
 import IconArrowLeft from "@/components/svg/IconArrowLeft.vue";
 
 const route = useRoute();
@@ -96,5 +92,30 @@ onBeforeMount(() => {
 
 onMounted(() => {
   setSubmissions();
+});
+
+/**
+ * Submission filtering
+ */
+const searchPhrase = ref(null);
+
+const filteredSubmissions = computed(() => {
+  return submissions.value.filter((submission) => {
+    if (searchPhrase.value === null) return submission;
+    const filter = searchPhrase.value.toLowerCase();
+
+    const email = submission.email?.toLowerCase();
+    const name = submission.name?.toLowerCase();
+    const message = submission.message?.toLowerCase();
+
+    if (
+      searchPhrase.value !== null &&
+      (email.includes(filter) ||
+        name.includes(filter) ||
+        message.includes(filter) ||
+        submission.phone.includes(filter))
+    )
+      return submission;
+  });
 });
 </script>
