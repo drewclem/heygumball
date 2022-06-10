@@ -28,10 +28,12 @@
 <script setup>
 // utils
 import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import AccountCollectionCard from "@/components/dashboard/CollectionCard.vue";
 
-const { collections } = useUserStore();
+const global = useUserStore();
+const { collections } = storeToRefs(global);
 </script>

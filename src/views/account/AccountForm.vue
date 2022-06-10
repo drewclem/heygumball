@@ -240,6 +240,8 @@ export default {
        * Check if there's an active collection
        */
       const activeCollection = data.filter((collection) => {
+        if (collection.end_date === null) return collection;
+
         const startDate = new Date(collection.start_date);
         const endDate = new Date(collection.end_date);
 

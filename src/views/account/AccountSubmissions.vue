@@ -13,6 +13,21 @@
           <IconArrowLeft class="h-3 w-3 inline -mt-0.5" />
           Back
         </button>
+
+        <div class="bg-white rounded-full px-4 py-1 shadow-inner ml-6">
+          <!-- <button
+            class="text-gray-500 mr-6 opacity-75 hover:opacity-100"
+            @click="archiveCollection"
+          >
+            <IconArchive class="h-4 w-4 mr-2 inline-block -mt-1" />Archive
+          </button> -->
+          <button
+            class="text-red-500 opacity-75 hover:opacity-100"
+            @click="deleteCollection"
+          >
+            <IconDelete class="h-4 w-4 mr-2 inline-block -mt-1" />Delete
+          </button>
+        </div>
       </div>
 
       <KeywordSearch v-model="searchPhrase" />
@@ -56,7 +71,7 @@
 
 <script setup>
 // utils
-import { ref, onMounted, onBeforeMount, computed } from "vue";
+import { ref, onMounted, onBeforeMount, computed, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import useAuthUser from "@/utils/useAuth";
 import { useUserStore } from "@/stores/user";
@@ -70,10 +85,12 @@ import CopyShareLink from "@/components/dashboard/CopyShareLink.vue";
 import KeywordSearch from "@/components/dashboard/KeywordSearch.vue";
 import IconSearch from "@/components/svg/IconSearch.vue";
 import IconArrowLeft from "@/components/svg/IconArrowLeft.vue";
+import IconArchive from "@/components/svg/IconArchive.vue";
+import IconDelete from "@/components/svg/IconDelete.vue";
 
 const route = useRoute();
 const router = useRouter();
-const { setCurrentCollection } = useUserStore();
+const { setCurrentCollection, setCollections } = useUserStore();
 const { user } = useAuthUser();
 
 const submissions = ref([]);
@@ -127,4 +144,43 @@ const filteredSubmissions = computed(() => {
       return submission;
   });
 });
+
+async function archiveCollection() {
+  if (window.confirm("Are you sure you want to archive this collection?")) {
+    const { error } = await supabase
+      .from("collections")
+      .update({ archived: true })
+      .match({ id: collection_id });
+
+    if (error) {
+      alert(error.message);
+    } else {
+      setCollections();
+      router.back();
+    }
+  }
+}
+
+async function deleteCollection() {
+  if (window.confirm("Are you sure you want to archive this collection?")) {
+    const deleteSubmissions = await supabase
+      .from("submissions")
+      .delete()
+      .match({ collection_id: collection_id });
+
+    const { error } = await supabase
+      .from("collections")
+      .delete()
+      .match({ id: collection_id });
+
+    if (error) {
+      alert(error.message);
+    } else {
+      setCollections();
+      nextTick(() => {
+        router.back();
+      });
+    }
+  }
+}
 </script>

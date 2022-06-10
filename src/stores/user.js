@@ -38,22 +38,27 @@ export const useUserStore = defineStore("currentUser", {
     hasActiveCollection: (state) => {
       const currentDate = new Date();
 
-      for (const collection of state.collections) {
-        const startDate = new Date(collection.start_date);
-        const endDate = new Date(collection.end_date);
+      if (state.collections.length > 0)
+        for (const collection of state.collections) {
+          if (collection.end_date === null) return true;
 
-        const currentDateFormatted = currentDate.getTime();
-        const startDateFormatted =
-          startDate.getTime() - startDate.getTimezoneOffset() * -60000;
-        const endDateFormatted =
-          endDate.getTime() - endDate.getTimezoneOffset() * -60000;
+          const startDate = new Date(collection.start_date);
+          const endDate = new Date(collection.end_date);
 
-        if (
-          startDateFormatted < currentDateFormatted &&
-          endDateFormatted > currentDateFormatted
-        )
-          return true;
-      }
+          const currentDateFormatted = currentDate.getTime();
+          const startDateFormatted =
+            startDate.getTime() - startDate.getTimezoneOffset() * -60000;
+          const endDateFormatted =
+            endDate.getTime() - endDate.getTimezoneOffset() * -60000;
+
+          if (
+            (startDateFormatted < currentDateFormatted &&
+              endDateFormatted > currentDateFormatted) ||
+            (startDateFormatted < currentDateFormatted &&
+              collection.endDate === null)
+          )
+            return true;
+        }
     },
   },
 
@@ -73,13 +78,14 @@ export const useUserStore = defineStore("currentUser", {
       this.currentUser = data;
     },
     async setCollections(refetch) {
-      if (!this.collections.length || refetch) {
+      if (!this.collections.length) {
         this.collections = [];
 
         const { data } = await supabase
           .from("collections")
           .select()
           .eq("user_id", this.userID)
+          .eq("archived", false)
           .order("created_at", { ascending: false });
 
         data.forEach(async (item, index) => {
@@ -137,26 +143,6 @@ export const useUserStore = defineStore("currentUser", {
       const day = dateObj.getDate();
 
       return year + "-" + month + "-" + day;
-    },
-    async createCollection(dates) {
-      const { startDate, endDate } = dates;
-
-      const currentDate = new Date();
-      const nowDate = this.formatDate(currentDate);
-
-      const startDateFormatted = this.formatDate(startDate);
-      const endDateFormatted = this.formatDate(endDate);
-
-      const req = await supabase.from("collections").insert([
-        {
-          user_id: this.currentUser.id,
-          full_name: this.currentUser.full_name,
-          start_date: startDate !== null ? startDateFormatted : nowDate,
-          end_date: endDate !== null ? endDateFormatted : null,
-        },
-      ]);
-
-      return req;
     },
   },
 });

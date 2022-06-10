@@ -132,7 +132,7 @@ async function saveSubmission() {
   }
 
   await fetchSubmission();
-  await setCollections(true);
+  await setCollections();
   await setSavedSubmissions();
 }
 
@@ -148,7 +148,7 @@ async function markAsBooked() {
   }
 
   await fetchSubmission();
-  await setCollections(true);
+  await setCollections();
   await setSavedSubmissions();
 }
 

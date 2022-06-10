@@ -15,7 +15,7 @@
         <BaseButton
           class="mr-4"
           theme="subdued"
-          @user-click="createCollection"
+          @user-click="openCollection"
           :disabled="state.submitting"
         >
           No
@@ -75,8 +75,7 @@
 <script setup>
 // utils
 import { reactive } from "vue";
-import { supabase } from "@/supabase";
-import useAuthUser from "@/utils/useAuth";
+import useSupabase from "@/utils/useSupabase";
 import { useUserStore } from "@/stores/user";
 import { useDates } from "@/utils/dates";
 
@@ -94,8 +93,8 @@ const state = reactive({
   submitting: false,
 });
 
-const { currentUser, setCollections, createCollection, disabledDates } =
-  useUserStore();
+const { currentUser, setCollections, disabledDates } = useUserStore();
+const { createCollection } = useSupabase();
 
 const { currentDate, tomorrowDate } = useDates();
 
@@ -103,12 +102,15 @@ function incrementStep() {
   state.step++;
 }
 
-async function openCollection() {
+function openCollection() {
   state.submitting = true;
 
-  const { data, error } = await createCollection({
-    startDate: null,
+  const { data, error } = createCollection({
+    startDate: currentDate,
     endDate: state.endDate,
+    currentUser: {
+      ...currentUser,
+    },
   });
 
   if (error) {

@@ -57,6 +57,7 @@
 import { reactive } from "vue";
 import { supabase } from "@/supabase";
 import { useUserStore } from "@/stores/user";
+import useSupabase from "@/utils/useSupabase";
 import { useDates } from "@/utils/dates";
 
 // components
@@ -74,8 +75,9 @@ const state = reactive({
   submitting: false,
 });
 
-const { currentUser, setCollections, createCollection, disabledDates } =
-  useUserStore();
+const { currentUser, setCollections, disabledDates } = useUserStore();
+
+const { createCollection } = useSupabase();
 
 const { currentDate, tomorrowDate } = useDates();
 
@@ -89,6 +91,9 @@ async function scheduleCollection() {
   const { data, error } = await createCollection({
     startDate: state.startDate,
     endDate: state.endDate,
+    currentUser: {
+      ...currentUser,
+    },
   });
 
   if (error) {

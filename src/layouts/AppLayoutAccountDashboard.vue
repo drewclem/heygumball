@@ -181,12 +181,6 @@ setCurrentUserId(user.value.id);
 setCollections();
 setSavedSubmissions();
 setAllSubmissions();
-
-/**
- * Create open collection
- */
-
-function createOpenCollection() {}
 </script>
 
 <style scoped>
