@@ -7,11 +7,13 @@
       v-if="!submission.viewed"
       class="absolute rounded-full bg-red-500 w-2 h-2 ml-3"
     />
-    <div class="grid grid-cols-6 px-8 py-4 bg-white rounded-lg w-full">
+    <div
+      class="grid grid-cols-6 px-5 py-3 lg:px-8 lg:py-4 text-sm lg:text-base bg-white rounded-lg w-full"
+    >
       <div class="relative col-span-2">
         <p
           v-if="submission.booked"
-          class="text-[10px] text-blue-500 bottom-0 -mb-[10px] absolute"
+          class="text-[8px] lg:text-[10px] text-blue-500 bottom-0 -mb-[12px] absolute"
         >
           Booked
         </p>

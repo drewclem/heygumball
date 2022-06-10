@@ -4,7 +4,7 @@
       <input
         ref="search"
         v-if="state.isOpen"
-        class="py-2 px-4 border border-gray-500 rounded-full mr-3 h-[34px] w-96"
+        class="py-2 px-4 border border-gray-500 rounded-full mr-3 h-[34px] lg:w-96"
         type="text"
         placeholder="Search"
         :value="modelValue"

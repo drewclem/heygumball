@@ -36,7 +36,11 @@
           </div>
 
           <div class="w-full">
-            <BaseButton class="w-full lg:w-auto" type="submit" theme="tertiary">
+            <BaseButton
+              class="w-full lg:w-auto ml-auto"
+              type="submit"
+              theme="tertiary"
+            >
               Sign In
             </BaseButton>
           </div>

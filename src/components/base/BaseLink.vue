@@ -4,10 +4,11 @@
     :class="`cursor-pointer ${classes} ${
       $slots.icon ? 'flex items-center' : ''
     } group`"
+    class="text-xs lg:text-base"
     :href="href"
     v-bind="$attrs"
   >
-    <span v-if="$slots.icon" :class="$slots.icon ? 'mr-3' : ''">
+    <span v-if="$slots.icon" :class="$slots.icon ? 'mr-2' : ''">
       <slot name="icon" />
     </span>
 
@@ -19,10 +20,11 @@
     :class="`cursor-pointer  ${classes} ${
       $slots.icon ? 'flex items-center' : ''
     }`"
+    class="text-xs lg:text-base"
     :to="href"
     v-bind="$attrs"
   >
-    <span v-if="$slots.icon" :class="$slots.icon ? 'mr-3' : ''">
+    <span v-if="$slots.icon" :class="$slots.icon ? 'mr-2' : ''">
       <slot name="icon" />
     </span>
 

@@ -7,7 +7,9 @@
     </div>
 
     <div>
-      <div class="grid grid-cols-5 px-8 py-4 opacity-40 mb-4">
+      <div
+        class="grid grid-cols-5 px-5 py-3 lg:px-8 lg:py-4 text-sm lg:text-base opacity-40 mb-4"
+      >
         <p class="col-span-2">Open Dates</p>
         <p>Year</p>
         <p>Submissions</p>

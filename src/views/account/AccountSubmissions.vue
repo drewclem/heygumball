@@ -44,11 +44,13 @@
     </div>
 
     <div>
-      <div class="grid grid-cols-6 px-8 py-4 opacity-40 mb-4">
+      <div
+        class="grid grid-cols-6 px-5 py-3 lg:px-8 text-sm lg:text-base lg:py-4 opacity-40 mb-4"
+      >
         <p class="col-span-2">Name</p>
         <p class="col-span-2">Email</p>
         <p>Phone</p>
-        <p class="ml-auto">Submitted On</p>
+        <p class="ml-auto text-right">Submitted On</p>
       </div>
 
       <div class="flex flex-col space-y-6">

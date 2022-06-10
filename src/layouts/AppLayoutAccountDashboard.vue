@@ -3,16 +3,21 @@
     <DashboardHeader :user="user" />
 
     <main class="flex">
-      <div class="flex flex-col px-6 py-12 w-[268.66px]">
+      <div class="flex flex-col px-6 py-12 lg:w-[268.66px]">
         <div class="flex-grow">
-          <div class="flex flex-col space-y-5 mb-12">
+          <div class="flex flex-col space-y-5 mb-6 lg:mb-12">
             <BaseModal>
               <template #button>
                 <div
                   class="flex items-center group px-3 lg:px-6 py-0.5 font-display text-center rounded-md transition duration-150 text-white ease-in-out bg-green-500 hover:bg-green-600 border-2 border-transparent"
                 >
-                  <IconSchedule class="text-white w-5 h-5 opacity-75 mr-3" />
-                  Schedule window
+                  <IconSchedule
+                    class="text-white w-3 lg:w-5 h-3 lg:h-5 opacity-75 mr-2"
+                  />
+                  <span class="text-xs lg:text-base"
+                    >Schedule
+                    <span class="hidden lg:inline-block">window</span></span
+                  >
                 </div>
               </template>
 
@@ -27,9 +32,12 @@
                   class="flex items-center group px-3 lg:px-6 py-0.5 font-display text-center rounded-md border-2 border-transparent transition duration-150 ease-in-out border-blue-500 text-black hover:bg-blue-500 hover:text-white mb-2"
                 >
                   <IconLock
-                    class="text-blue-500 group-hover:text-white w-5 h-5 opacity-50 mr-3"
+                    class="text-blue-500 group-hover:text-white w-3 lg:w-5 h-3 lg:h-5 opacity-50 mr-2"
                   />
-                  Open Requests
+                  <span class="text-xs lg:text-base"
+                    >Open
+                    <span class="hidden lg:inline-block">requests</span></span
+                  >
                 </div>
               </template>
 
@@ -52,7 +60,7 @@
                 >
                   <template #icon>
                     <IconCollection
-                      class="text-gray-200 group-hover:text-gray-300 w-5 h-5"
+                      class="text-gray-200 group-hover:text-gray-300 w-3 lg:w-5 h-3 lg:h-5"
                     />
                   </template>
                   Collections
@@ -68,7 +76,7 @@
                 >
                   <template #icon>
                     <IconInbox
-                      class="text-gray-200 group-hover:text-gray-300 w-5 h-5"
+                      class="text-gray-200 group-hover:text-gray-300 w-3 lg:w-5 h-3 lg:h-5"
                     />
                   </template>
                   Inbox
@@ -81,7 +89,7 @@
                 >
                   <template #icon>
                     <IconHeart
-                      class="text-gray-200 group-hover:text-gray-300 w-5 h-5"
+                      class="text-gray-200 group-hover:text-gray-300 w-3 lg:w-5 h-3 lg:h-5"
                     />
                   </template>
                   Saved
@@ -94,7 +102,7 @@
                 >
                   <template #icon>
                     <IconForm
-                      class="text-gray-200 group-hover:text-gray-300 w-5 h-5"
+                      class="text-gray-200 group-hover:text-gray-300 w-3 lg:w-5 h-3 lg:h-5"
                     />
                   </template>
                   Request Form
@@ -114,7 +122,7 @@
           >
             <template #icon>
               <IconUser
-                class="text-gray-200 group-hover:text-gray-300 w-5 h-5"
+                class="text-gray-200 group-hover:text-gray-300 w-3 lg:w-5 h-3 lg:h-5"
               />
             </template>
             Account
@@ -126,7 +134,9 @@
         </footer>
       </div>
 
-      <div class="py-12 px-20 bg-gray-50 flex-grow overflow-y-scroll">
+      <div
+        class="px-12 py-6 lg:py-12 lg:px-20 bg-gray-50 flex-grow overflow-y-scroll"
+      >
         <Transition name="fade">
           <slot />
         </Transition>

@@ -9,7 +9,9 @@
     </div>
 
     <div>
-      <div class="grid grid-cols-6 px-8 py-4 opacity-40 mb-4">
+      <div
+        class="grid grid-cols-6 px-5 py-3 lg:px-8 lg:py-4 text-sm lg:text-base opacity-40 mb-4"
+      >
         <p class="col-span-2">Name</p>
         <p class="col-span-2">Email</p>
         <p>Phone</p>

@@ -1,8 +1,8 @@
 <template>
   <router-link :to="`collections/${collection.id}`">
     <AccountCardGrid
-      class="card-shadow bg-white rounded-lg"
-      :class="{ 'py-6 bg-blue-100': isActive }"
+      class="card-shadow bg-white rounded-lg px-5 lg:px-8"
+      :class="isActive ? 'py-4 lg:py-6 bg-blue-100' : 'py-3 lg:py-4'"
     >
       <template #col-1>
         {{ formatOpenDates(collection.start_date) }}
