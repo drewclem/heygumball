@@ -1,7 +1,7 @@
 <template>
   <section>
     <div
-      class="max-w-3xl mx-auto px-6 xl:px-0 grid lg:grid-cols-2 gap-24 items-center"
+      class="max-w-3xl mx-auto px-6 xl:px-0 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center"
     >
       <form @submit.prevent="handleFormSubmission">
         <BaseHeading class="mb-5" size="h4" tag="h1">Welcome back!</BaseHeading>
@@ -35,13 +35,17 @@
             </div>
           </div>
 
-          <div class="text-right">
-            <BaseButton type="submit" theme="tertiary">Sign In</BaseButton>
+          <div class="w-full">
+            <BaseButton class="w-full lg:w-auto" type="submit" theme="tertiary">
+              Sign In
+            </BaseButton>
           </div>
         </div>
       </form>
 
-      <WelcomeBack />
+      <div class="relative">
+        <WelcomeBack class="w-full" />
+      </div>
     </div>
   </section>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <section>
     <div
-      class="max-w-3xl mx-auto px-6 xl:px-0 grid lg:grid-cols-2 gap-24 items-center"
+      class="max-w-3xl mx-auto px-6 xl:px-0 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center"
     >
       <transition v-if="state.step === 0" name="fade" appear>
         <div class="flex flex-col space-y-5">
@@ -13,8 +13,10 @@
 
           <BaseInput v-model="state.invite">Invite Password</BaseInput>
 
-          <div class="ml-auto">
-            <BaseButton @click="verifyPassword">Verify</BaseButton>
+          <div class="w-full lg:w-auto ml-auto">
+            <BaseButton class="w-full" @click="verifyPassword"
+              >Verify</BaseButton
+            >
           </div>
         </div>
       </transition>
@@ -81,10 +83,11 @@
               </div>
             </div>
 
-            <div class="text-right">
+            <div class="w-full lg:w-auto ml-auto">
               <BaseButton
                 type="submit"
                 theme="tertiary"
+                class="w-full"
                 :disabled="formState === 'submitting'"
               >
                 {{
@@ -96,7 +99,9 @@
         </form>
       </transition>
 
-      <CreateAccount />
+      <div class="relative">
+        <CreateAccount class="w-full" />
+      </div>
     </div>
   </section>
 </template>
