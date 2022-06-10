@@ -14,9 +14,11 @@
           Back
         </button>
 
-        <div class="bg-white rounded-full px-4 py-1 shadow-inner ml-6">
+        <div
+          class="bg-white rounded-full px-4 py-1 shadow-inner ml-6 flex space-x-6"
+        >
           <!-- <button
-            class="text-gray-500 mr-6 opacity-75 hover:opacity-100"
+            class="text-gray-500 opacity-75 hover:opacity-100"
             @click="archiveCollection"
           >
             <IconArchive class="h-4 w-4 mr-2 inline-block -mt-1" />Archive
@@ -26,6 +28,14 @@
             @click="deleteCollection"
           >
             <IconDelete class="h-4 w-4 mr-2 inline-block -mt-1" />Delete
+          </button>
+
+          <button
+            v-if="currentCollection.end_date === null"
+            class="text-blue-500 opacity-75 hover:opacity-100"
+            @click="closeCollection"
+          >
+            <IconLockClosed class="h-4 w-4 mr-2 inline-block -mt-1" />Close
           </button>
         </div>
       </div>
@@ -83,14 +93,20 @@ import BaseText from "@/components/base/BaseText.vue";
 import CollectionSubmissionCard from "@/components/dashboard/SubmissionCard.vue";
 import CopyShareLink from "@/components/dashboard/CopyShareLink.vue";
 import KeywordSearch from "@/components/dashboard/KeywordSearch.vue";
+
+// icons
 import IconSearch from "@/components/svg/IconSearch.vue";
 import IconArrowLeft from "@/components/svg/IconArrowLeft.vue";
 import IconArchive from "@/components/svg/IconArchive.vue";
 import IconDelete from "@/components/svg/IconDelete.vue";
+import IconLockClosed from "@/components/svg/IconLockClosed.vue";
+import { storeToRefs } from "pinia";
 
 const route = useRoute();
 const router = useRouter();
-const { setCurrentCollection, setCollections } = useUserStore();
+const global = useUserStore();
+const { currentCollection } = storeToRefs(global);
+const { setCurrentCollection, setCollections, formatDate } = useUserStore();
 const { user } = useAuthUser();
 
 const submissions = ref([]);
@@ -111,7 +127,6 @@ async function setSubmissions() {
   loading.value = false;
 }
 
-// set current collection in pinia for use later
 onBeforeMount(() => {
   setCurrentCollection(collection_id);
 });
@@ -171,6 +186,27 @@ async function deleteCollection() {
     const { error } = await supabase
       .from("collections")
       .delete()
+      .match({ id: collection_id });
+
+    if (error) {
+      alert(error.message);
+    } else {
+      setCollections();
+      nextTick(() => {
+        router.back();
+      });
+    }
+  }
+}
+
+async function closeCollection() {
+  const currentDate = new Date();
+  const currentDateFormatted = formatDate(currentDate);
+
+  if (window.confirm("Are you sure you want to close this collection today?")) {
+    const { error } = await supabase
+      .from("collections")
+      .update({ end_date: currentDateFormatted })
       .match({ id: collection_id });
 
     if (error) {

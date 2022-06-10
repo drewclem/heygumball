@@ -77,36 +77,32 @@ export const useUserStore = defineStore("currentUser", {
 
       this.currentUser = data;
     },
-    async setCollections(refetch) {
-      if (!this.collections.length) {
-        this.collections = [];
+    async setCollections() {
+      const { data } = await supabase
+        .from("collections")
+        .select()
+        .eq("user_id", this.userID)
+        .eq("archived", false)
+        .order("created_at", { ascending: false });
 
-        const { data } = await supabase
-          .from("collections")
-          .select()
-          .eq("user_id", this.userID)
-          .eq("archived", false)
-          .order("created_at", { ascending: false });
+      data.forEach(async (item, index) => {
+        const requestsReceived = await supabase
+          .from("submissions")
+          .select("id")
+          .match({ collection_id: item.id });
 
-        data.forEach(async (item, index) => {
-          const requestsReceived = await supabase
-            .from("submissions")
-            .select("id")
-            .match({ collection_id: item.id });
+        const bookedRequests = await supabase
+          .from("submissions")
+          .select("id")
+          .eq("booked", true)
+          .match({ collection_id: item.id });
 
-          const bookedRequests = await supabase
-            .from("submissions")
-            .select("id")
-            .eq("booked", true)
-            .match({ collection_id: item.id });
-
-          this.collections[index] = {
-            ...item,
-            requests_received: requestsReceived.data.length,
-            booked_requests: bookedRequests.data.length,
-          };
-        });
-      }
+        this.collections[index] = {
+          ...item,
+          requests_received: requestsReceived.data.length,
+          booked_requests: bookedRequests.data.length,
+        };
+      });
     },
     setCurrentCollection(id) {
       const filteredCollections = this.collections.filter((collection) => {

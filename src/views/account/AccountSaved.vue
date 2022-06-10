@@ -49,6 +49,7 @@ import { storeToRefs } from "pinia";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
+import BaseText from "@/components/base/BaseText.vue";
 import CollectionSubmissionCard from "@/components/dashboard/SubmissionCard.vue";
 import KeywordSearch from "@/components/dashboard/KeywordSearch.vue";
 import IconSearch from "@/components/svg/IconSearch";

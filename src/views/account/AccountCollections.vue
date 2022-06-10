@@ -14,12 +14,19 @@
         <p class="ml-auto">Booked</p>
       </div>
 
-      <div v-if="collections" class="flex flex-col space-y-6">
+      <div
+        v-if="collections && collections.length > 0"
+        class="flex flex-col space-y-6"
+      >
         <AccountCollectionCard
           v-for="collection in collections"
           :key="collection.id"
           :collection="collection"
         />
+      </div>
+
+      <div v-else>
+        <p class="mb-5">Loading...</p>
       </div>
     </div>
   </div>
@@ -33,6 +40,7 @@ import { storeToRefs } from "pinia";
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import AccountCollectionCard from "@/components/dashboard/CollectionCard.vue";
+import { computed } from "vue-demi";
 
 const global = useUserStore();
 const { collections } = storeToRefs(global);
