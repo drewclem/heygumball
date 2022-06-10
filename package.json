@@ -20,6 +20,7 @@
     "tailwindcss": "^3.0.23",
     "uuid": "^8.3.2",
     "vue": "^3.2.13",
+    "vue-recaptcha": "^2.0.2",
     "vue-router": "4",
     "vue3-datepicker": "^0.3.4",
     "wicg-inert": "^3.1.1"

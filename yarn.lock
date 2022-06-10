@@ -6022,6 +6022,13 @@ vue-loader@^17.0.0:
     hash-sum "^2.0.0"
     loader-utils "^2.0.0"
 
+vue-recaptcha@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/vue-recaptcha/-/vue-recaptcha-2.0.2.tgz#22f323089ff15f4eacde26215ca61ac4806d009a"
+  integrity sha512-bE5WMz9jyiiY1PlaBOSUvsgTZ/ONoRV7Oq4Fn4JVz//ul+DJ0LHIJERfoF0NNEIDWXv6GjhwGLveGhoq0sEerg==
+  dependencies:
+    vue-demi "^0.12.1"
+
 vue-router@4:
   version "4.0.14"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.0.14.tgz#ce2028c1c5c33e30c7287950c973f397fce1bd65"

@@ -19,7 +19,7 @@
             Object.keys(activeForm).length && formState !== 'submitted'
           "
         >
-          <form class="flex flex-col gap-6" @submit.prevent="submitForm">
+          <form class="flex flex-col gap-8" @submit.prevent="submitForm">
             <div class="relative" :class="{ error: v$.name.$errors.length }">
               <BaseInput v-model="form.name"> Name * </BaseInput>
               <div
@@ -63,6 +63,14 @@
               </div>
             </div>
 
+            <div>
+              <VueRecaptcha
+                :sitekey="siteKey"
+                :load-recaptcha-script="true"
+                @verify="form.recaptcha = true"
+              />
+            </div>
+
             <div class="relative" :class="{ error: v$.toc.$errors.length }">
               <input
                 id="toc"
@@ -94,7 +102,9 @@
                 class="w-full"
                 theme="tertiary"
                 type="submit"
-                :disabled="formState === 'submitting' || !form.toc"
+                :disabled="
+                  formState === 'submitting' || !form.toc || !form.recaptcha
+                "
               >
                 {{ formState === "submitting" ? "Submitting..." : "Send" }}
               </BaseButton>
@@ -125,7 +135,7 @@
 
 <script>
 // utils
-import { defineComponent, onMounted, reactive, ref } from "vue";
+import { defineComponent, onMounted, reactive, ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import { supabase } from "@/supabase";
 
@@ -133,6 +143,9 @@ import { supabase } from "@/supabase";
 import useVuelidate from "@vuelidate/core";
 import { required, email, phone, helpers } from "@vuelidate/validators";
 import { useValidate } from "@/utils/validate";
+
+// recaptcha
+import { VueRecaptcha } from "vue-recaptcha";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
@@ -148,6 +161,7 @@ export default {
     BaseInput,
     BaseTextarea,
     BaseButton,
+    VueRecaptcha,
   },
   setup() {
     const { notEmpty } = useValidate();
@@ -160,6 +174,11 @@ export default {
       phone: "",
       message: "",
       toc: false,
+      recaptcha: false,
+    });
+
+    const siteKey = computed(() => {
+      return process.env.VUE_APP_RECAPTCHA_SITE_KEY;
     });
 
     const formState = ref();
@@ -250,6 +269,7 @@ export default {
       formState,
       form,
       v$,
+      siteKey,
     };
   },
   methods: {
