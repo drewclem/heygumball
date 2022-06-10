@@ -17,8 +17,10 @@ export default function useAuthUser() {
       }
 
       if (user) {
-        router.push({ path: `/${user.user_metadata.username}/account` });
+        router.push({ path: `/${user.user_metadata.username}/collections` });
       }
+
+      return { user };
     } catch (error) {
       alert(error.error_description || error);
     }
@@ -26,7 +28,7 @@ export default function useAuthUser() {
 
   const handleSignup = async (credentials) => {
     try {
-      const { fullName, email, password, username } = credentials;
+      const { email, username, password, invite } = credentials;
 
       const { error } = await supabase.auth.signUp(
         {
@@ -35,21 +37,18 @@ export default function useAuthUser() {
         },
         {
           data: {
-            full_name: fullName,
             username: username,
+            invite: invite,
           },
         }
       );
 
       if (error) {
         alert(error.message);
-        console.error(error, error.message);
         return;
       }
-      alert("Signup successful, confirmation mail should be sent soon!");
     } catch (err) {
       alert("Fatal error signing up");
-      console.error("signup error", err);
     }
   };
 

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import useAuthUser from "@/vuetils/useAuth";
+import useAuthUser from "@/utils/useAuth";
 
 const routes = [
   {
@@ -47,6 +47,51 @@ const routes = [
     path: "/:id/collections",
     name: "User Collections",
     component: () => import("@/views/account/AccountCollections.vue"),
+    meta: {
+      layout: "AppLayoutAccountDashboard",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/:id/inbox",
+    name: "User inbox",
+    component: () => import("@/views/account/AccountInbox.vue"),
+    meta: {
+      layout: "AppLayoutAccountDashboard",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/:id/account/edit",
+    name: "Edit user account",
+    component: () => import("@/views/account/AccountSettingsEdit.vue"),
+    meta: {
+      layout: "AppLayoutAccountDashboard",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/:id/collections/:collection_id",
+    name: "Collection",
+    component: () => import("@/views/account/AccountSubmissions.vue"),
+    meta: {
+      layout: "AppLayoutAccountDashboard",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/:id/collections/:collection_id/:submission_id",
+    name: "Submission",
+    component: () => import("@/views/account/AccountSubmission.vue"),
+    meta: {
+      layout: "AppLayoutAccountDashboard",
+      requiresAuth: true,
+    },
+  },
+  {
+    path: "/:id/saved",
+    name: "Saved submissions",
+    component: () => import("@/views/account/AccountSaved.vue"),
     meta: {
       layout: "AppLayoutAccountDashboard",
       requiresAuth: true,

@@ -1,7 +1,9 @@
 <template>
-  <component :is="layout">
-    <slot />
-  </component>
+  <Transition name="fade">
+    <component :is="layout">
+      <slot />
+    </component>
+  </Transition>
 </template>
 
 <script>
@@ -24,3 +26,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 300ms ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

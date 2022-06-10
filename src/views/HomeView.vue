@@ -166,7 +166,8 @@
   </div>
 </template>
 
-<script>
+<script setup>
+//components
 import BaseImage from "../components/base/BaseImage";
 import BaseButton from "../components/base/BaseButton.vue";
 import BaseText from "../components/base/BaseText.vue";
@@ -176,21 +177,6 @@ import SearchGraphic from "../components/svg/SearchGraphic.vue";
 import ReviewGraphic from "../components/svg/ReviewGraphic.vue";
 import IconSorting from "../components/svg/IconSorting.vue";
 import IconReply from "../components/svg/IconReply.vue";
-
-export default {
-  name: "HomeView",
-  components: {
-    BaseImage,
-    BaseButton,
-    BaseText,
-    BaseHeading,
-    ScheduleGraphic,
-    SearchGraphic,
-    ReviewGraphic,
-    IconSorting,
-    IconReply,
-  },
-};
 </script>
 
 <style scoped>

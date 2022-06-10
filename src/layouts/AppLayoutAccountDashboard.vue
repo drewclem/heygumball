@@ -1,48 +1,101 @@
 <template>
-  <div>
-    <DashboardHeader />
+  <div class="here" :inert="hasOpenModal">
+    <DashboardHeader :user="user" />
 
     <main class="flex">
-      <div class="flex flex-col px-6 py-12">
+      <div class="flex flex-col px-6 py-12 w-[268.66px]">
         <div class="flex-grow">
           <div class="flex flex-col space-y-5 mb-12">
-            <BaseButton theme="tertiary">
-              <template #icon>
-                <IconSchedule class="text-white w-5 h-5 opacity-75" />
+            <BaseModal>
+              <template #button>
+                <div
+                  class="flex items-center group px-3 lg:px-6 py-0.5 font-display text-center rounded-md transition duration-150 text-white ease-in-out bg-green-500 hover:bg-green-600 border-2 border-transparent"
+                >
+                  <IconSchedule class="text-white w-5 h-5 opacity-75 mr-3" />
+                  Schedule window
+                </div>
               </template>
-              Schedule Window
-            </BaseButton>
 
-            <BaseButton theme="secondary">
-              <template #icon>
-                <IconLock class="text-blue-500 w-5 h-5 opacity-50" />
+              <template #content>
+                <ScheduleCollection />
               </template>
-              Open Requests
-            </BaseButton>
+            </BaseModal>
+
+            <BaseModal :disabled="hasActiveCollection">
+              <template #button>
+                <div
+                  class="flex items-center group px-3 lg:px-6 py-0.5 font-display text-center rounded-md border-2 border-transparent transition duration-150 ease-in-out border-blue-500 text-black hover:bg-blue-500 hover:text-white mb-2"
+                >
+                  <IconLock
+                    class="text-blue-500 group-hover:text-white w-5 h-5 opacity-50 mr-3"
+                  />
+                  Open Requests
+                </div>
+              </template>
+
+              <template #content>
+                <OpenCollection />
+              </template>
+            </BaseModal>
           </div>
 
           <nav>
             <ul class="flex flex-col space-y-3">
               <li>
-                <BaseLink :to="`/${user.user_metadata.username}/collections`">
+                <BaseLink
+                  class="group"
+                  :class="{
+                    'router-link-active':
+                      $route.fullPath.includes('collections'),
+                  }"
+                  :href="`/${user.user_metadata.username}/collections`"
+                >
                   <template #icon>
-                    <IconCollection class="text-gray-200 w-5 h-5" />
+                    <IconCollection
+                      class="text-gray-200 group-hover:text-gray-300 w-5 h-5"
+                    />
                   </template>
                   Collections
                 </BaseLink>
               </li>
               <li>
-                <BaseLink to="/">
+                <BaseLink
+                  class="group"
+                  :class="{
+                    'router-link-active': $route.fullPath.includes('inbox'),
+                  }"
+                  :href="`/${user.user_metadata.username}/inbox`"
+                >
                   <template #icon>
-                    <IconHeart class="text-gray-200 w-5 h-5" />
+                    <IconInbox
+                      class="text-gray-200 group-hover:text-gray-300 w-5 h-5"
+                    />
+                  </template>
+                  Inbox
+                </BaseLink>
+              </li>
+              <li>
+                <BaseLink
+                  class="group"
+                  :href="`/${user.user_metadata.username}/saved`"
+                >
+                  <template #icon>
+                    <IconHeart
+                      class="text-gray-200 group-hover:text-gray-300 w-5 h-5"
+                    />
                   </template>
                   Saved
                 </BaseLink>
               </li>
               <li>
-                <BaseLink :to="`/${user.user_metadata.username}`">
+                <BaseLink
+                  class="group"
+                  :href="`/${user.user_metadata.username}`"
+                >
                   <template #icon>
-                    <IconForm class="text-gray-200 w-5 h-5" />
+                    <IconForm
+                      class="text-gray-200 group-hover:text-gray-300 w-5 h-5"
+                    />
                   </template>
                   Request Form
                 </BaseLink>
@@ -52,9 +105,17 @@
         </div>
 
         <footer class="flex flex-col space-y-3">
-          <BaseLink :to="`/${user.user_metadata.username}/account`">
+          <BaseLink
+            class="group"
+            :class="{
+              'router-link-active': $route.fullPath.includes('account'),
+            }"
+            :href="`/${user.user_metadata.username}/account`"
+          >
             <template #icon>
-              <IconUser class="text-gray-200 w-5 h-5" />
+              <IconUser
+                class="text-gray-200 group-hover:text-gray-300 w-5 h-5"
+              />
             </template>
             Account
           </BaseLink>
@@ -65,49 +126,86 @@
         </footer>
       </div>
 
-      <div class="py-12 px-20 bg-gray-50 flex-grow">
-        <slot />
+      <div class="py-12 px-20 bg-gray-50 flex-grow overflow-y-scroll">
+        <Transition name="fade">
+          <slot />
+        </Transition>
       </div>
     </main>
   </div>
 </template>
 
-<script>
-import useAuthUser from "@/vuetils/useAuth";
+<script setup>
+// utils
+import useAuthUser from "@/utils/useAuth";
+import { useUserStore } from "@/stores/user";
+import { useGlobalLayout } from "@/stores/global";
+import { storeToRefs } from "pinia";
+import "wicg-inert";
 
+// components
 import DashboardHeader from "@/components/global/DashboardHeader.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 import BaseLink from "@/components/base/BaseLink.vue";
+import BaseModal from "@/components/base/BaseModal.vue";
+import OpenCollection from "@/components/dashboard/OpenCollection.vue";
+import ScheduleCollection from "@/components/dashboard/ScheduleCollection.vue";
 
+// icons
 import IconSchedule from "@/components/svg/IconSchedule.vue";
 import IconLock from "@/components/svg/IconLock.vue";
 import IconCollection from "@/components/svg/IconCollection";
 import IconHeart from "@/components/svg/IconHeart.vue";
 import IconForm from "@/components/svg/IconForm.vue";
 import IconUser from "@/components/svg/IconUser.vue";
+import IconInbox from "@/components/svg/IconInbox.vue";
 
-export default {
-  components: {
-    DashboardHeader,
-    BaseButton,
-    BaseLink,
-    IconSchedule,
-    IconLock,
-    IconCollection,
-    IconHeart,
-    IconForm,
-    IconUser,
-  },
-  setup() {
-    const { user, handleLogout } = useAuthUser();
+const { user, handleLogout } = useAuthUser();
+const userStore = useUserStore();
+const { hasActiveCollection } = storeToRefs(userStore);
 
-    return { user, handleLogout };
-  },
-};
+const {
+  setCurrentUserId,
+  setUser,
+  setCollections,
+  setSavedSubmissions,
+  setAllSubmissions,
+} = useUserStore();
+
+const global = useGlobalLayout();
+const { hasOpenModal } = storeToRefs(global);
+
+setCurrentUserId(user.value.id);
+
+// fetch collections for user and set in pinia
+setCollections();
+setSavedSubmissions();
+setAllSubmissions();
+
+/**
+ * Create open collection
+ */
+
+function createOpenCollection() {}
 </script>
 
 <style scoped>
 main {
   height: calc(100vh - 89.31px);
+  overflow: hidden;
+}
+
+.router-link-active svg {
+  @apply text-green-500;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 300ms ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

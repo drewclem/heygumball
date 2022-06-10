@@ -3,7 +3,7 @@
     v-if="external"
     :class="`cursor-pointer ${classes} ${
       $slots.icon ? 'flex items-center' : ''
-    }`"
+    } group`"
     :href="href"
     v-bind="$attrs"
   >
@@ -16,7 +16,7 @@
 
   <router-link
     v-else
-    :class="`cursor-pointer ${classes} ${
+    :class="`cursor-pointer  ${classes} ${
       $slots.icon ? 'flex items-center' : ''
     }`"
     :to="href"

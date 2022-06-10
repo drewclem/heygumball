@@ -1,6 +1,6 @@
 <template>
-  <div class="relative flex flex-col">
-    <label class="font-display mb-2 text-sm font-bold" :for="id">
+  <div class="relative flex flex-col" :class="{ 'opacity-50': disabled }">
+    <label class="font-display mb-2 text-sm" :for="id">
       <slot /> <span v-if="required">*</span>
     </label>
 
@@ -10,6 +10,7 @@
       :type="showPassword ? text : inputType"
       :placeholder="placeholder"
       :required="required"
+      :disabled="disabled"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
     />
@@ -54,6 +55,10 @@ defineProps({
     default: "",
   },
   required: {
+    type: Boolean,
+    default: false,
+  },
+  disabled: {
     type: Boolean,
     default: false,
   },

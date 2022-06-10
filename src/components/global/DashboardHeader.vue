@@ -11,7 +11,7 @@
     <div class="flex items-center space-x-8">
       <p>{{ user.user_metadata.username }}</p>
 
-      <BaseButton @click="handleLogout" theme="secondary">
+      <BaseButton @user-click="handleLogout" theme="secondary">
         Sign Out
       </BaseButton>
     </div>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import useAuthUser from "@/vuetils/useAuth";
+import useAuthUser from "@/utils/useAuth";
 
 import GumballLogo from "@/components/global/GumballLogo.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
@@ -29,12 +29,19 @@ export default {
     GumballLogo,
     BaseButton,
   },
+  props: {
+    user: {
+      type: Object,
+      required: true,
+    },
+  },
   setup() {
-    const { user, handleLogout } = useAuthUser();
+    const { handleLogout } = useAuthUser();
+
     return {
-      user,
       handleLogout,
     };
   },
+  mounted() {},
 };
 </script>

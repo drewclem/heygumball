@@ -4,54 +4,59 @@
     @click="openModal"
     ref="openButtonRef"
     type="button"
+    :disabled="disabled"
   >
     <slot name="button" />
-    <Portal v-if="isOpen" to="modal">
+    <Teleport v-if="isOpen" to="body">
       <div class="modal-wrapper" @keydown.esc="closeModal">
-        <div class="modal-content">
-          <button @click="closeModal" ref="closeButtonRef" type="button">
-            Close Modal
+        <div class="modal-content card-shadow">
+          <button
+            class="absolute shadow-md bg-red-500 -mt-3 -ml-3 p-1 rounded-full left-0 top-0 text-white"
+            @click="closeModal"
+            ref="closeButtonRef"
+            type="button"
+          >
+            <IconClose class="h-4 w-4" alt="close menu" />
           </button>
           <slot name="content" />
         </div>
       </div>
-    </Portal>
+    </Teleport>
   </button>
 </template>
 
-<script>
-// import { mapState } from "vuex";
-// import { Portal } from "portal-vue";
+<script setup>
+defineProps({
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+});
+import { ref } from "vue";
+import { useGlobalLayout } from "@/stores/global";
 
-// export default {
-//   components: {
-//     Portal,
-//   },
-//   data() {
-//     return {
-//       isOpen: false,
-//     };
-//   },
-//   computed: {
-//     ...mapState("global", ["pageHasModalOpen"]),
-//   },
-//   methods: {
-//     async closeModal() {
-//       this.isOpen = false;
-//       await this.$store.commit("modal/isModalOpen", false);
-//       await this.$nextTick();
-//       await this.$nextTick();
-//       this.$refs.openButtonRef?.focus();
-//     },
-//     async openModal() {
-//       this.isOpen = true;
-//       await this.$store.commit("modal/isModalOpen", true);
-//       await this.$nextTick();
-//       await this.$nextTick();
-//       this.$refs.closeButtonRef?.focus();
-//     },
-//   },
-// };
+import IconClose from "@/components/svg/IconClose.vue";
+
+const { toggleModal } = useGlobalLayout();
+const isOpen = ref(false);
+const closeButtonRef = ref(null);
+const openButtonRef = ref(null);
+
+function closeModal() {
+  isOpen.value = false;
+  toggleModal(false);
+  setTimeout(() => {
+    openButtonRef.value.focus();
+  }, 50);
+}
+
+function openModal() {
+  isOpen.value = true;
+  toggleModal(true);
+  setTimeout(() => {
+    closeButtonRef.value.focus();
+  }, 50);
+}
 </script>
 
 <style lang="postcss" scoped>
@@ -61,20 +66,19 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: rgba(1, 1, 1, 0.75);
+  background-color: rgba(1, 1, 1, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .modal-content {
-  background-color: white;
-  padding: 3rem;
+  @apply relative bg-white p-6 xl:p-10 rounded-lg mx-6;
+  max-width: 540px;
+  min-width: 409.56px;
 }
 
-.open-button:focus,
-.modal-content button:focus {
-  background-color: red;
-  color: white;
+button:disabled {
+  @apply opacity-50 pointer-events-none;
 }
 </style>
