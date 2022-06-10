@@ -83,6 +83,7 @@
 <script setup>
 // utils
 import { onMounted, reactive, watchEffect } from "vue";
+import { useRouter } from "vue-router";
 import useAuthUser from "@/utils/useAuth";
 import { useUserStore } from "@/stores/user";
 import { supabase } from "@/supabase";
@@ -96,6 +97,7 @@ import IconArrowLeft from "@/components/svg/IconArrowLeft.vue";
 
 const { user } = useAuthUser();
 const global = useUserStore();
+const router = useRouter();
 const { setCurrentUserId } = useUserStore();
 const { currentUser } = storeToRefs(global);
 
@@ -123,7 +125,7 @@ watchEffect(() => {
 async function updateUserInfo() {
   userForm.submitting = true;
   const { error } = await supabase.from("profiles").upsert({
-    id: currentUser.id,
+    id: currentUser.value?.id,
     full_name: userForm.full_name,
     email: userForm.email,
     instagram_url:
@@ -134,13 +136,14 @@ async function updateUserInfo() {
   });
   if (error) {
     alert("Oops! Something went wrong.");
-  } else {
-    setTimeout(() => {
-      userForm.submitting = false;
-    }, 300);
   }
+  setTimeout(() => {
+    userForm.submitting = false;
 
-  setCurrentUserId(currentUser.id);
+    router.back();
+  }, 300);
+
+  setCurrentUserId(currentUser.value.id);
 }
 </script>
 
