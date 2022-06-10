@@ -3,72 +3,98 @@
     <div
       class="max-w-3xl mx-auto px-6 xl:px-0 grid lg:grid-cols-2 gap-24 items-center"
     >
-      <form @submit.prevent="handleFormSubmission">
-        <BaseHeading class="mb-5" size="h4" tag="h1">
-          Create an account
-        </BaseHeading>
+      <transition v-if="state.step === 0" name="fade" appear>
+        <div class="flex flex-col space-y-5">
+          <BaseHeading size="h4" tag="h1"> Create an account </BaseHeading>
+          <BaseText size="small">
+            We're invite only during testing. If the man in the hat gave you a
+            password, please provide it now.
+          </BaseText>
 
-        <div v-if="formState === 'submitted'">
-          <BaseHeading tag="h2" size="h4" class="text-green-500 mb-5">
-            Thanks for signing up!
+          <BaseInput v-model="state.invite">Invite Password</BaseInput>
+
+          <div class="ml-auto">
+            <BaseButton @click="verifyPassword">Verify</BaseButton>
+          </div>
+        </div>
+      </transition>
+
+      <transition v-else name="fade" appear>
+        <form @submit.prevent="handleFormSubmission">
+          <BaseHeading class="mb-5" size="h4" tag="h1">
+            Create an account
           </BaseHeading>
 
-          <BaseText>Check your email to confirm your registration</BaseText>
-        </div>
+          <div v-if="formState === 'submitted'">
+            <BaseHeading tag="h2" size="h4" class="text-green-500 mb-5">
+              Thanks for signing up!
+            </BaseHeading>
 
-        <div v-else class="flex flex-col space-y-8">
-          <div class="relative" :class="{ error: v$.username.$errors.length }">
-            <BaseInput v-model="state.username"> User Name </BaseInput>
+            <BaseText>Check your email to confirm your registration</BaseText>
+          </div>
+
+          <div v-else class="flex flex-col space-y-8">
             <div
-              class="input-errors"
-              v-for="error of v$.username.$errors"
-              :key="error.$uid"
+              class="relative"
+              :class="{ error: v$.username.$errors.length }"
             >
-              <p class="error-msg absolute text-xs text-red-500 mt-1">
-                {{ error.$message }}
-              </p>
+              <BaseInput v-model="state.username"> User Name </BaseInput>
+              <div
+                class="input-errors"
+                v-for="error of v$.username.$errors"
+                :key="error.$uid"
+              >
+                <p class="error-msg absolute text-xs text-red-500 mt-1">
+                  {{ error.$message }}
+                </p>
+              </div>
+            </div>
+
+            <div class="relative" :class="{ error: v$.email.$errors.length }">
+              <BaseInput v-model="state.email"> Email </BaseInput>
+              <div
+                class="input-errors"
+                v-for="error of v$.email.$errors"
+                :key="error.$uid"
+              >
+                <p class="error-msg absolute text-xs text-red-500 mt-1">
+                  {{ error.$message }}
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="relative"
+              :class="{ error: v$.password.$errors.length }"
+            >
+              <BaseInput inputType="password" v-model="state.password">
+                Password
+              </BaseInput>
+              <div
+                class="input-errors"
+                v-for="error of v$.password.$errors"
+                :key="error.$uid"
+              >
+                <p class="error-msg absolute text-xs text-red-500 mt-1">
+                  {{ error.$message }}
+                </p>
+              </div>
+            </div>
+
+            <div class="text-right">
+              <BaseButton
+                type="submit"
+                theme="tertiary"
+                :disabled="formState === 'submitting'"
+              >
+                {{
+                  formState === "submitting" ? "Submitting" : "Create Account"
+                }}
+              </BaseButton>
             </div>
           </div>
-
-          <div class="relative" :class="{ error: v$.email.$errors.length }">
-            <BaseInput v-model="state.email"> Email </BaseInput>
-            <div
-              class="input-errors"
-              v-for="error of v$.email.$errors"
-              :key="error.$uid"
-            >
-              <p class="error-msg absolute text-xs text-red-500 mt-1">
-                {{ error.$message }}
-              </p>
-            </div>
-          </div>
-
-          <div class="relative" :class="{ error: v$.password.$errors.length }">
-            <BaseInput inputType="password" v-model="state.password">
-              Password
-            </BaseInput>
-            <div
-              class="input-errors"
-              v-for="error of v$.password.$errors"
-              :key="error.$uid"
-            >
-              <p class="error-msg absolute text-xs text-red-500 mt-1">
-                {{ error.$message }}
-              </p>
-            </div>
-          </div>
-
-          <div class="text-right">
-            <BaseButton
-              type="submit"
-              theme="tertiary"
-              :disabled="formState === 'submitting'"
-            >
-              {{ formState === "submitting" ? "Submitting" : "Create Account" }}
-            </BaseButton>
-          </div>
-        </div>
-      </form>
+        </form>
+      </transition>
 
       <CreateAccount />
     </div>
@@ -77,7 +103,7 @@
 
 <script>
 // utils
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import useAuthUser from "@/utils/useAuth";
 
 // vuelidate form validation
@@ -89,11 +115,13 @@ import { useValidate } from "@/utils/validate";
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
+import BaseText from "@/components/base/BaseText.vue";
 import CreateAccount from "@/components/svg/CreateAccount.vue";
 
 export default {
   components: {
     BaseHeading,
+    BaseText,
     BaseInput,
     BaseButton,
     CreateAccount,
@@ -105,10 +133,31 @@ export default {
       username: "",
       email: "",
       password: "",
+      invite: "",
+      step: 0,
     });
 
     const { handleSignup } = useAuthUser();
     const { mustBeUniqueUsername, notEmpty } = useValidate();
+
+    const invitePasswords = computed(() => {
+      return [
+        process.env.VUE_APP_INVITE_ALBANY,
+        process.env.VUE_APP_INVITE_MACON,
+      ];
+    });
+
+    function verifyPassword() {
+      const passphrase = state.invite.toLowerCase();
+
+      let verified = false;
+
+      for (const password of invitePasswords.value) {
+        if (passphrase.includes(password)) verified = true;
+      }
+
+      if (verified) state.step++;
+    }
 
     const rules = {
       username: {
@@ -138,6 +187,7 @@ export default {
       formState,
       state,
       handleSignup,
+      verifyPassword,
       v$,
     };
   },
@@ -158,3 +208,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 300ms ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

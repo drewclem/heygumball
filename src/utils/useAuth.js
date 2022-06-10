@@ -28,7 +28,7 @@ export default function useAuthUser() {
 
   const handleSignup = async (credentials) => {
     try {
-      const { email, username, password } = credentials;
+      const { email, username, password, invite } = credentials;
 
       const { error } = await supabase.auth.signUp(
         {
@@ -38,6 +38,7 @@ export default function useAuthUser() {
         {
           data: {
             username: username,
+            invite: invite,
           },
         }
       );
