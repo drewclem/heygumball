@@ -144,6 +144,7 @@ export default {
       return [
         process.env.VUE_APP_INVITE_ALBANY,
         process.env.VUE_APP_INVITE_MACON,
+        process.env.VUE_APP_INVITE_INDIE,
       ];
     });
 
