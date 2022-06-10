@@ -3,6 +3,10 @@ import useAuthUser from "@/utils/useAuth";
 
 const routes = [
   {
+    path: "/*",
+    component: () => import("@/views/NotFound.vue"),
+  },
+  {
     path: "/",
     name: "Home",
     component: () => import("@/views/HomeView.vue"),
