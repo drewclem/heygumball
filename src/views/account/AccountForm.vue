@@ -63,12 +63,38 @@
               </div>
             </div>
 
+            <div class="relative" :class="{ error: v$.toc.$errors.length }">
+              <input
+                id="toc"
+                name="toc"
+                v-model="form.toc"
+                type="checkbox"
+                class="mr-1"
+              />
+              <label for="toc">
+                I agree to the
+                <router-link to="/" class="text-blue-500 underline"
+                  >terms and conditions</router-link
+                >
+                of Heygumball
+              </label>
+              <div
+                class="input-errors"
+                v-for="error of v$.toc.$errors"
+                :key="error.$uid"
+              >
+                <p class="error-msg absolute text-xs text-red-500 mt-1">
+                  {{ error.$message }}
+                </p>
+              </div>
+            </div>
+
             <div class="lg:ml-auto">
               <BaseButton
                 class="w-full"
                 theme="tertiary"
                 type="submit"
-                :disabled="formState === 'submitting'"
+                :disabled="formState === 'submitting' || !form.toc"
               >
                 {{ formState === "submitting" ? "Submitting..." : "Send" }}
               </BaseButton>
@@ -133,6 +159,7 @@ export default {
       email: "",
       phone: "",
       message: "",
+      toc: false,
     });
 
     const formState = ref();
@@ -158,6 +185,12 @@ export default {
       },
       message: {
         required: helpers.withMessage(notEmpty, required),
+      },
+      toc: {
+        required: helpers.withMessage(
+          "You must first agree to the terms and conditions",
+          required
+        ),
       },
     };
 
