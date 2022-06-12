@@ -2,6 +2,7 @@ require("dotenv").config();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const { createClient } = require("@supabase/supabase-js");
+
 const supabase = createClient(
   process.env.VUE_APP_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY
