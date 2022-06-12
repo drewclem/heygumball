@@ -21,3 +21,10 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Supabase
+**/supabase/.branches
+**/supabase/.temp
+
+# Local Netlify folder
+.netlify
