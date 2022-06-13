@@ -68,6 +68,12 @@
             <p v-else>--</p>
           </div>
         </div>
+
+        <div>
+          <BaseButton type="primary" @click="manageSubscription">
+            Manage Subscription
+          </BaseButton>
+        </div>
       </div>
     </div>
   </div>
@@ -75,15 +81,75 @@
 
 <script setup>
 // utility
+import { onMounted } from "vue";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
+
+// stripe
+import { loadStripe } from "@stripe/stripe-js";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseLink from "@/components/base/BaseLink.vue";
+import BaseButton from "@/components/base/BaseButton.vue";
 
 const global = useUserStore();
 const { currentUser } = storeToRefs(global);
+
+/**
+ * Stripe
+ */
+let stripe = null;
+
+onMounted(async () => {
+  try {
+    stripe = await loadStripe(process.env.VUE_APP_STRIPE_PUBLIC_KEY);
+  } catch (err) {
+    alert(err);
+  }
+});
+
+async function manageSubscription() {
+  if (currentUser.value.subscription_active) {
+    const data = {
+      customer: `${currentUser.value.stripe_customer}`,
+      return_url: `${process.env.VUE_APP_BASE_URL}/${currentUser.value.username}/account`,
+    };
+
+    try {
+      const sessionUrl = await fetch(
+        "/.netlify/functions/stripe-customer-portal",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const rawData = await sessionUrl.json();
+
+      if (rawData) {
+        window.location.href = rawData.url;
+      }
+    } catch (error) {
+      alert(error);
+    }
+  } else {
+    stripe.redirectToCheckout({
+      successUrl: `${process.env.VUE_APP_BASE_URL}/${currentUser.value.username}/account`,
+      cancelUrl: `${process.env.VUE_APP_BASE_URL}/${currentUser.value.username}/account`,
+      lineItems: [
+        {
+          price: `${process.env.VUE_APP_STRIPE_PRODUCT_ID}`,
+          quantity: 1,
+        },
+      ],
+      mode: "subscription",
+    });
+  }
+}
 </script>
 
 <style scoped>
