@@ -69,10 +69,20 @@
           </div>
         </div>
 
-        <div>
-          <BaseButton type="primary" @click="manageSubscription">
-            Manage Subscription
-          </BaseButton>
+        <div class="info-group info-list">
+          <p>
+            Subscription status:
+            <span
+              :class="subscriptionStatus ? 'text-green-500' : 'text-red-500'"
+              >{{ subscriptionStatus ? "Active" : "Inactive" }}</span
+            >
+          </p>
+
+          <div>
+            <BaseButton type="primary" @click="manageSubscription">
+              Manage Subscription
+            </BaseButton>
+          </div>
         </div>
       </div>
     </div>
@@ -81,7 +91,7 @@
 
 <script setup>
 // utility
-import { onMounted } from "vue";
+import { onMounted, computed } from "vue";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 
@@ -95,6 +105,10 @@ import BaseButton from "@/components/base/BaseButton.vue";
 
 const global = useUserStore();
 const { currentUser } = storeToRefs(global);
+
+const subscriptionStatus = computed(() => {
+  return currentUser.value.subscription_active;
+});
 
 /**
  * Stripe
