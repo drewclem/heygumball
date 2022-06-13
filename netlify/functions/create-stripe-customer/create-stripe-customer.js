@@ -24,7 +24,7 @@ exports.handler = async (req, res) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: `Account linked for:${customer.id}` }),
+      body: JSON.stringify({ message: `Account linked for: ${customer.id}` }),
     };
   } catch (error) {
     return { statusCode: 500, body: error.toString() };

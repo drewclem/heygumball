@@ -107,7 +107,7 @@ const global = useUserStore();
 const { currentUser } = storeToRefs(global);
 
 const subscriptionStatus = computed(() => {
-  return currentUser.value.subscription_active;
+  return currentUser.subscription_active;
 });
 
 /**
