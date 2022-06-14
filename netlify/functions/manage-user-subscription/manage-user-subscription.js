@@ -17,7 +17,7 @@ exports.handler = async (req, res) => {
     event = stripe.webhooks.constructEvent(req.body, signature, signingSecret);
 
     switch (event.type) {
-      case "customer.subscription.updated":
+      case "customer.subscription.updated" || "customer.subscription.created":
         await supabase
           .from("profiles")
           .update({
