@@ -34,7 +34,6 @@ exports.handler = async (req, res) => {
           .eq("stripe_customer", event.data.object.customer);
     }
 
-    console.log(event.type);
     return {
       statusCode: 200,
       body: JSON.stringify({ event }),
