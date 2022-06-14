@@ -8,15 +8,18 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@stripe/stripe-js": "^1.31.0",
     "@supabase/supabase-js": "^1.35.2",
     "@vee-validate/rules": "^4.5.11",
     "@vuelidate/core": "^2.0.0-alpha.41",
     "@vuelidate/validators": "^2.0.0-alpha.29",
     "autoprefixer": "^10.4.4",
     "core-js": "^3.8.3",
+    "micro": "^9.3.4",
     "pinia": "^2.0.13",
     "pinia-plugin-persist": "^1.0.0",
     "postcss": "^8.4.12",
+    "stripe": "^9.8.0",
     "tailwindcss": "^3.0.23",
     "uuid": "^8.3.2",
     "vue": "^3.2.13",
