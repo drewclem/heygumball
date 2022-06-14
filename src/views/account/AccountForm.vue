@@ -282,21 +282,27 @@ export default {
 
       this.formState = "submitting";
 
-      const { error } = await supabase.from("submissions").insert([
+      const { error } = await supabase.from("submissions").insert(
+        [
+          {
+            collection_id: this.activeForm.id,
+            user_id: this.currentUser.id,
+            viewed: false,
+            booked: false,
+            approved: false,
+            name: this.form.name,
+            email: this.form.email,
+            phone: this.form.phone,
+            message: this.form.message,
+          },
+        ],
         {
-          collection_id: this.activeForm.id,
-          user_id: this.currentUser.id,
-          viewed: false,
-          booked: false,
-          approved: false,
-          name: this.form.name,
-          email: this.form.email,
-          phone: this.form.phone,
-          message: this.form.message,
-        },
-      ]);
+          returning: "minimal",
+        }
+      );
 
       if (error) {
+        console.log(error.message);
         alert("Oops! Something went wrong");
       } else {
         setTimeout(() => {
