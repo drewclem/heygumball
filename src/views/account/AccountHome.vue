@@ -70,11 +70,17 @@
         </div>
 
         <div class="info-group info-list">
-          <p>
+          <p v-if="currentUser">
             Subscription status:
             <span
-              :class="subscriptionStatus ? 'text-green-500' : 'text-red-500'"
-              >{{ subscriptionStatus ? "Active" : "Inactive" }}</span
+              :class="
+                currentUser.subscription_active
+                  ? 'text-green-500'
+                  : 'text-red-500'
+              "
+              >{{
+                currentUser.subscription_active ? "Active" : "Inactive"
+              }}</span
             >
           </p>
 
@@ -106,10 +112,6 @@ import BaseButton from "@/components/base/BaseButton.vue";
 const global = useUserStore();
 const { currentUser } = storeToRefs(global);
 
-const subscriptionStatus = computed(() => {
-  return currentUser.subscription_active;
-});
-
 /**
  * Stripe
  */
@@ -124,7 +126,33 @@ onMounted(async () => {
 });
 
 async function manageSubscription() {
-  if (currentUser.value.subscription_active) {
+  if (!currentUser.value.subscription_active) {
+    try {
+      const bodyData = {
+        customerId: `${currentUser.value.stripe_customer}`,
+        username: `${currentUser.value.username}`,
+      };
+
+      const stripeSession = await fetch(
+        "/.netlify/functions/create-stripe-checkout-session",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bodyData),
+        }
+      );
+
+      const sessionData = await stripeSession.json();
+
+      if (sessionData?.url) {
+        window.location.href = sessionData.url;
+      }
+    } catch (error) {
+      alert(error);
+    }
+  } else {
     const data = {
       customer: `${currentUser.value.stripe_customer}`,
       return_url: `${process.env.VUE_APP_BASE_URL}/${currentUser.value.username}/account`,
@@ -150,18 +178,6 @@ async function manageSubscription() {
     } catch (error) {
       alert(error);
     }
-  } else {
-    stripe.redirectToCheckout({
-      successUrl: `${process.env.VUE_APP_BASE_URL}/${currentUser.value.username}/account`,
-      cancelUrl: `${process.env.VUE_APP_BASE_URL}/${currentUser.value.username}/account`,
-      lineItems: [
-        {
-          price: `${process.env.VUE_APP_STRIPE_PRODUCT_ID}`,
-          quantity: 1,
-        },
-      ],
-      mode: "subscription",
-    });
   }
 }
 </script>
