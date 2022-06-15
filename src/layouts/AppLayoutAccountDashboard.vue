@@ -6,7 +6,7 @@
       <div class="flex flex-col px-6 py-12 lg:w-[268.66px]">
         <div class="flex-grow">
           <div class="flex flex-col space-y-5 mb-6 lg:mb-12">
-            <BaseModal>
+            <BaseModal :disabled="!currentUser.subscription_active">
               <template #button>
                 <div
                   class="flex items-center group px-3 lg:px-6 py-0.5 font-display text-center rounded-md transition duration-150 text-white ease-in-out bg-green-500 hover:bg-green-600 border-2 border-transparent"
@@ -26,7 +26,11 @@
               </template>
             </BaseModal>
 
-            <BaseModal :disabled="hasActiveCollection">
+            <BaseModal
+              :disabled="
+                hasActiveCollection || !currentUser.subscription_active
+              "
+            >
               <template #button>
                 <div
                   class="flex items-center group px-3 lg:px-6 py-0.5 font-display text-center rounded-md border-2 border-transparent transition duration-150 ease-in-out border-blue-500 text-black hover:bg-blue-500 hover:text-white mb-2"
@@ -45,6 +49,13 @@
                 <OpenCollection />
               </template>
             </BaseModal>
+
+            <span
+              class="text-xs text-red-500"
+              v-if="!currentUser.subscription_active"
+            >
+              Activate your subscription to schedule and open collections.
+            </span>
           </div>
 
           <nav>
@@ -172,7 +183,7 @@ import IconInbox from "@/components/svg/IconInbox.vue";
 
 const { user, handleLogout } = useAuthUser();
 const userStore = useUserStore();
-const { hasActiveCollection } = storeToRefs(userStore);
+const { hasActiveCollection, currentUser } = storeToRefs(userStore);
 
 const {
   setCurrentUserId,

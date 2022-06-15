@@ -84,6 +84,14 @@
             >
           </p>
 
+          <p
+            class="lg:w-1/2 text-sm opacity-50"
+            v-if="!currentUser.subscription_active"
+          >
+            Your subscription is currently inactive. You can still access any
+            previous collections and submissions.
+          </p>
+
           <div>
             <BaseButton type="primary" @click="manageSubscription">
               Manage Subscription
