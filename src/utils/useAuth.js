@@ -37,7 +37,7 @@ export default function useAuthUser() {
         },
         {
           data: {
-            username: username,
+            username: username.toLowercase(),
             invite: invite,
           },
         }

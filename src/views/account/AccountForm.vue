@@ -5,7 +5,13 @@
     <div class="relative max-w-lg mx-auto mb-12">
       <div class="flex justify-between items-center py-8 lg:py-12 px-6 lg:p-11">
         <BaseHeading size="h4" tag="h1">
-          Contact <span class="text-blue-500">{{ currentUser.full_name }}</span>
+          Contact
+          <span class="text-blue-500">
+            <span v-if="currentUser.full_name !== null">{{
+              currentUser.full_name
+            }}</span>
+            <span v-else>{{ currentUser.username }}</span>
+          </span>
         </BaseHeading>
 
         <div class="h-12 w-12 bg-gray-400 rounded-full"></div>
@@ -218,13 +224,14 @@ export default {
     const v$ = useVuelidate(rules, form);
 
     onMounted(async () => {
+      console.log(username);
       /**
        * get user profile from username in url
        */
       const userDataRaw = await supabase
         .from("profiles")
         .select()
-        .eq("username", username);
+        .match({ username: username });
 
       currentUser.value = { ...userDataRaw.data[0] };
 
@@ -241,27 +248,29 @@ export default {
       /**
        * Check if there's an active collection
        */
-      const activeCollection = data.filter((collection) => {
-        if (collection.end_date === null) return collection;
+      if (data !== null) {
+        const activeCollection = data.filter((collection) => {
+          if (collection.end_date === null) return collection;
 
-        const startDate = new Date(collection.start_date);
-        const endDate = new Date(collection.end_date);
+          const startDate = new Date(collection.start_date);
+          const endDate = new Date(collection.end_date);
 
-        const startDateFormatted =
-          startDate.getTime() - startDate.getTimezoneOffset() * -60000;
-        const endDateFormatted =
-          endDate.getTime() - endDate.getTimezoneOffset() * -60000;
+          const startDateFormatted =
+            startDate.getTime() - startDate.getTimezoneOffset() * -60000;
+          const endDateFormatted =
+            endDate.getTime() - endDate.getTimezoneOffset() * -60000;
 
-        if (
-          startDateFormatted <= currentDate &&
-          endDateFormatted >= currentDate
-        ) {
-          return { ...collection };
+          if (
+            startDateFormatted <= currentDate &&
+            endDateFormatted >= currentDate
+          ) {
+            return { ...collection };
+          }
+        });
+
+        if (Object.keys(activeCollection).length) {
+          activeForm.value = activeCollection[0];
         }
-      });
-
-      if (Object.keys(activeCollection).length) {
-        activeForm.value = activeCollection[0];
       }
       loading.value = false;
     });

@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { ref, watch, $emit } from "vue";
+import { ref, watch } from "vue";
 // components
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
