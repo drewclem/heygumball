@@ -58,7 +58,7 @@ export default function useAuthUser() {
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
 
-    router.push({ path: "/sign-in" });
+    router.push({ path: "/" });
 
     if (error) throw error;
   };

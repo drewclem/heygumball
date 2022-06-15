@@ -4,19 +4,33 @@
       class="max-w-3xl mx-auto px-6 xl:px-0 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center"
     >
       <transition v-if="state.step === 0" name="fade" appear>
-        <div class="flex flex-col space-y-5">
+        <div class="flex flex-col space-y-6">
           <BaseHeading size="h4" tag="h1"> Create an account </BaseHeading>
           <BaseText size="small">
             We're invite only during testing. If the man in the hat gave you a
             password, please provide it now.
           </BaseText>
 
-          <BaseInput v-model="state.invite">Invite Password</BaseInput>
+          <div
+            class="relative"
+            :class="{ error: invite$.invite.$errors.length }"
+          >
+            <BaseInput v-model="state.invite">Invite Password</BaseInput>
+            <div class="input-errors">
+              <p
+                v-for="error of invite$.invite.$errors"
+                :key="error.$uid"
+                class="error-msg absolute text-xs text-red-500 mt-1"
+              >
+                {{ error.$message }}
+              </p>
+            </div>
+          </div>
 
           <div class="w-full lg:w-auto ml-auto">
-            <BaseButton class="w-full" @click="verifyPassword"
-              >Verify</BaseButton
-            >
+            <BaseButton class="w-full" @click="verifyPassword">
+              Verify
+            </BaseButton>
           </div>
         </div>
       </transition>
@@ -143,27 +157,7 @@ export default {
     });
 
     const { handleSignup } = useAuthUser();
-    const { mustBeUniqueUsername, notEmpty } = useValidate();
-
-    const invitePasswords = computed(() => {
-      return [
-        process.env.VUE_APP_INVITE_ALBANY,
-        process.env.VUE_APP_INVITE_MACON,
-        process.env.VUE_APP_INVITE_INDIE,
-      ];
-    });
-
-    function verifyPassword() {
-      const passphrase = state.invite.toLowerCase();
-
-      let verified = false;
-
-      for (const password of invitePasswords.value) {
-        if (passphrase.includes(password)) verified = true;
-      }
-
-      if (verified) state.step++;
-    }
+    const { inviteMustBeValid, mustBeUniqueUsername, notEmpty } = useValidate();
 
     const rules = {
       username: {
@@ -186,6 +180,17 @@ export default {
       },
     };
 
+    const inviteRule = {
+      invite: {
+        inviteMustBeValid: helpers.withMessage(
+          "The man in the hat doesn't know this word",
+          inviteMustBeValid
+        ),
+      },
+    };
+
+    const invite$ = useVuelidate(inviteRule, state);
+
     const v$ = useVuelidate(rules, state);
 
     return {
@@ -193,8 +198,8 @@ export default {
       formState,
       state,
       handleSignup,
-      verifyPassword,
       v$,
+      invite$,
     };
   },
   methods: {
@@ -210,6 +215,12 @@ export default {
       setTimeout(() => {
         this.formState = "submitted";
       }, 500);
+    },
+
+    async verifyPassword() {
+      const isValidInvite = await this.invite$.$validate();
+
+      if (isValidInvite) this.state.step++;
     },
   },
 };

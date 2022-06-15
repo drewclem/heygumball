@@ -32,5 +32,24 @@ export function useValidate() {
     return !nameUnavailable;
   };
 
-  return { notEmpty, mustBeUniqueUsername };
+  const inviteMustBeValid = (value) => {
+    const invitePasswords = [
+      process.env.VUE_APP_INVITE_ALBANY,
+      process.env.VUE_APP_INVITE_MACON,
+      process.env.VUE_APP_INVITE_INDIE,
+      process.env.VUE_APP_INVITE_HERITAGE,
+    ];
+
+    const passphrase = value.toLowerCase();
+
+    let verified = false;
+
+    for (const password of invitePasswords) {
+      if (passphrase.includes(password)) verified = true;
+    }
+
+    return verified;
+  };
+
+  return { notEmpty, mustBeUniqueUsername, inviteMustBeValid };
 }
