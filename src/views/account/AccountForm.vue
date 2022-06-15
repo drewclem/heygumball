@@ -49,9 +49,11 @@
             <BaseInput inputType="tel" v-model="form.phone">Phone</BaseInput>
 
             <div class="relative" :class="{ error: v$.message.$errors.length }">
-              <BaseTextarea v-model="form.message" :rows="8">
+              <BaseRichText v-model="form.message">Message *</BaseRichText>
+
+              <!-- <BaseTextarea v-model="form.message" :rows="8">
                 Message *
-              </BaseTextarea>
+              </BaseTextarea> -->
               <div
                 class="input-errors"
                 v-for="error of v$.message.$errors"
@@ -81,9 +83,9 @@
               />
               <label for="toc">
                 I agree to the
-                <router-link to="/" class="text-blue-500 underline"
-                  >terms and conditions</router-link
-                >
+                <router-link to="/" class="text-blue-500 underline">
+                  terms and conditions
+                </router-link>
                 of Heygumball
               </label>
               <div
@@ -151,16 +153,16 @@ import { VueRecaptcha } from "vue-recaptcha";
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseText from "@/components/base/BaseText.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
-import BaseTextarea from "@/components/base/BaseTextarea.vue";
+import BaseRichText from "@/components/base/BaseRichText.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 
 export default {
   components: {
-    BaseHeading,
-    BaseText,
-    BaseInput,
-    BaseTextarea,
     BaseButton,
+    BaseHeading,
+    BaseInput,
+    BaseRichText,
+    BaseText,
     VueRecaptcha,
   },
   setup() {

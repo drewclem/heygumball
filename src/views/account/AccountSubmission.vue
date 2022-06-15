@@ -190,9 +190,12 @@ onBeforeMount(async () => {
 </script>
 
 <style>
-.richtext p,
-.richtext ul,
-.richtext ol {
-  margin-bottom: 1.25rem !important;
+.richtext {
+  @apply leading-relaxed;
+}
+
+.richtext ul {
+  @apply list-disc;
+  list-style-position: inside;
 }
 </style>
