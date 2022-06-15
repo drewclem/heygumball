@@ -75,7 +75,7 @@
 
       <!-- right side -->
       <div class="w-3/4">
-        <div class="card-shadow bg-white p-8 rounded-lg">
+        <div class="card-shadow bg-white p-8 lg:p-12 rounded-lg">
           <BaseHeading size="h5" tag="h2" class="mb-5">Message</BaseHeading>
           <div class="richtext" v-html="submission.message" />
         </div>
