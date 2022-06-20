@@ -52,9 +52,15 @@
 
             <span
               class="text-xs text-red-500"
-              v-if="!currentUser.subscription_active"
+              v-if="!currentUser?.subscription_active"
             >
               Activate your subscription to schedule and open collections.
+              <router-link
+                class="underline"
+                :to="`/${currentUser.username}/account`"
+              >
+                Account Settings
+              </router-link>
             </span>
           </div>
 

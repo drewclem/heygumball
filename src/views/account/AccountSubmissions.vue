@@ -15,8 +15,18 @@
         </button>
 
         <div
-          class="bg-white rounded-full px-4 py-1 shadow-inner ml-6 flex space-x-6"
+          class="bg-white rounded-full px-4 py-2 shadow-inner flex space-x-6 text-sm ml-6"
         >
+          <div class="flex space-x-2 items-center text-sm">
+            <p class="text-blue-500">Message</p>
+            <BaseChecboxToggle
+              id="`viewMode`"
+              v-model:checked="currentUser.default_view"
+              :modelValue="currentUser.default_view"
+            />
+            <p class="text-blue-500">Info</p>
+          </div>
+
           <!-- <button
             class="text-gray-500 opacity-75 hover:opacity-100"
             @click="archiveCollection"
@@ -24,18 +34,20 @@
             <IconArchive class="h-4 w-4 mr-2 inline-block -mt-1" />Archive
           </button> -->
           <button
-            class="text-red-500 opacity-75 hover:opacity-100"
+            class="flex space-x-1 text-red-500 opacity-75 hover:opacity-100"
             @click="deleteCollection"
           >
-            <IconDelete class="h-4 w-4 mr-2 inline-block -mt-1" />Delete
+            <IconDelete class="h-4 w-4 mr-2" />
+            <span>Delete</span>
           </button>
 
           <button
             v-if="currentCollection.end_date === null"
-            class="text-blue-500 opacity-75 hover:opacity-100"
+            class="flex space-x-1 text-blue-500 opacity-75 hover:opacity-100"
             @click="closeCollection"
           >
-            <IconLockClosed class="h-4 w-4 mr-2 inline-block -mt-1" />Close
+            <IconLockClosed class="h-4 w-4 mr-2" />
+            <span>Close</span>
           </button>
         </div>
       </div>
@@ -43,9 +55,9 @@
       <KeywordSearch v-model="searchPhrase" />
     </div>
 
-    <div>
+    <div v-if="currentUser.default_view">
       <div
-        class="grid grid-cols-6 px-5 py-3 lg:px-8 text-sm lg:text-base lg:py-4 opacity-40 mb-4"
+        class="grid grid-cols-6 px-5 gap-4 py-3 lg:px-8 text-sm lg:text-base lg:py-4 opacity-40 mb-4"
       >
         <p class="col-span-2">Name</p>
         <p class="col-span-2">Email</p>
@@ -70,7 +82,41 @@
         </div>
 
         <template v-else>
-          <CollectionSubmissionCard
+          <SubmissionCard
+            v-for="submission in filteredSubmissions"
+            :key="submission.id"
+            :submission="submission"
+          />
+        </template>
+      </div>
+    </div>
+
+    <div v-else>
+      <div
+        class="grid grid-cols-5 px-5 gap-4 py-3 lg:px-8 text-sm lg:text-base lg:py-4 opacity-40 mb-4"
+      >
+        <p class="col-span-1">Thumbnail</p>
+        <p class="col-span-4">Message</p>
+      </div>
+
+      <div class="flex flex-col space-y-6">
+        <p class="opacity-50" v-if="loading">Loading...</p>
+
+        <div v-if="!submissions.length">
+          <p class="mb-5">No submissions yet! Share that link!</p>
+          <CopyShareLink />
+        </div>
+
+        <div v-else-if="!filteredSubmissions.length">
+          <BaseHeading class="text-red-500 mb-5" size="h3" tag="h2">
+            Uh oh!
+          </BaseHeading>
+          <BaseText> Looks like we couldn't find anything. </BaseText>
+          <BaseText size="small">Check for typos!</BaseText>
+        </div>
+
+        <template v-else>
+          <SubmissionCardLarge
             v-for="submission in filteredSubmissions"
             :key="submission.id"
             :submission="submission"
@@ -92,7 +138,9 @@ import { supabase } from "@/supabase";
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseText from "@/components/base/BaseText.vue";
-import CollectionSubmissionCard from "@/components/dashboard/SubmissionCard.vue";
+import BaseChecboxToggle from "@/components/base/BaseCheckboxToggle.vue";
+import SubmissionCard from "@/components/dashboard/SubmissionCard.vue";
+import SubmissionCardLarge from "@/components/dashboard/SubmissionCardLarge.vue";
 import CopyShareLink from "@/components/dashboard/CopyShareLink.vue";
 import KeywordSearch from "@/components/dashboard/KeywordSearch.vue";
 
@@ -107,7 +155,7 @@ import { storeToRefs } from "pinia";
 const route = useRoute();
 const router = useRouter();
 const global = useUserStore();
-const { currentCollection } = storeToRefs(global);
+const { currentCollection, currentUser } = storeToRefs(global);
 const { setCurrentCollection, setCollections, formatDate } = useUserStore();
 const { user } = useAuthUser();
 
