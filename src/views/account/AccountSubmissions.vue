@@ -19,14 +19,11 @@
         >
           <div class="flex space-x-2 items-center text-sm">
             <p class="text-blue-500">Message</p>
-            <label class="active-switch round" :for="viewMode">
-              <input
-                type="checkbox"
-                id="viewMode"
-                v-model="currentUser.default_view"
-              />
-              <span class="publish-dot round"></span>
-            </label>
+            <BaseChecboxToggle
+              id="`viewMode`"
+              v-model:checked="currentUser.default_view"
+              :modelValue="currentUser.default_view"
+            />
             <p class="text-blue-500">Info</p>
           </div>
 
@@ -141,6 +138,7 @@ import { supabase } from "@/supabase";
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseText from "@/components/base/BaseText.vue";
+import BaseChecboxToggle from "@/components/base/BaseCheckboxToggle.vue";
 import SubmissionCard from "@/components/dashboard/SubmissionCard.vue";
 import SubmissionCardLarge from "@/components/dashboard/SubmissionCardLarge.vue";
 import CopyShareLink from "@/components/dashboard/CopyShareLink.vue";
@@ -272,61 +270,3 @@ async function closeCollection() {
   }
 }
 </script>
-
-<style scoped>
-.active-switch {
-  position: relative;
-  display: inline-block;
-  width: 30px;
-  height: 20px;
-}
-
-.active-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.publish-dot {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #f0f0f0;
-  -webkit-transition: 0.3s;
-  transition: 0.3s;
-}
-
-.publish-dot:before {
-  @apply bg-gray-400;
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  bottom: 2px;
-  left: 4px;
-  -webkit-transition: 0.3s;
-  transition: 0.3s;
-}
-
-:before {
-  @apply bg-green-500;
-}
-
-.publish-dot.round {
-  border-radius: 24px;
-}
-
-.publish-dot.round:before {
-  @apply shadow-inner;
-  border-radius: 50%;
-}
-
-input:checked + .publish-dot:before {
-  -webkit-transform: translateX(7px);
-  -ms-transform: translateX(7px);
-  transform: translateX(7px);
-}
-</style>

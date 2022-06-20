@@ -52,14 +52,22 @@
               </div>
             </div>
 
-            <BaseInput inputType="tel" v-model="form.phone">Phone</BaseInput>
+            <div class="relative" :class="{ error: v$.phone.$errors.length }">
+              <BaseInput v-model="form.phone"> Phone * </BaseInput>
+              <div
+                class="input-errors"
+                v-for="error of v$.phone.$errors"
+                :key="error.$uid"
+              >
+                <p class="error-msg absolute text-xs text-red-500 mt-1">
+                  {{ error.$message }}
+                </p>
+              </div>
+            </div>
 
             <div class="relative" :class="{ error: v$.message.$errors.length }">
               <BaseRichText v-model="form.message">Message *</BaseRichText>
 
-              <!-- <BaseTextarea v-model="form.message" :rows="8">
-                Message *
-              </BaseTextarea> -->
               <div
                 class="input-errors"
                 v-for="error of v$.message.$errors"
@@ -209,6 +217,9 @@ export default {
           "This field must contain a valid email address",
           email
         ),
+      },
+      phone: {
+        required: helpers.withMessage(notEmpty, required),
       },
       message: {
         required: helpers.withMessage(notEmpty, required),
