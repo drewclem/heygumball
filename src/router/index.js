@@ -101,6 +101,22 @@ const routes = [
       requiresAuth: true,
     },
   },
+  {
+    path: "/terms-and-conditions",
+    name: "Terms and Conditions",
+    component: () => import("@/views/TermsAndConditions.vue"),
+    meta: {
+      layout: "AppLayoutDefault",
+    },
+  },
+  {
+    path: "/privacy-policy",
+    name: "Privacy Policy",
+    component: () => import("@/views/PrivacyPolicy.vue"),
+    meta: {
+      layout: "AppLayoutDefault",
+    },
+  },
 ];
 
 const router = createRouter({

@@ -7,9 +7,20 @@
     </main>
 
     <footer class="bg-gray-50 py-8" :inert="hasOpenModal || isMobileMenuOpen">
-      <a href="#top">
-        <GumballLogo class="w-56 mx-auto" />
-      </a>
+      <div class="flex justify-between items-center base-wrapper">
+        <a href="#top">
+          <GumballLogo class="w-56" />
+        </a>
+
+        <nav class="text-sm">
+          <ul class="flex flex-row items-center">
+            <router-link class="mr-4" to="/terms-and-conditions">
+              Terms and Conditions
+            </router-link>
+            <router-link to="/privacy-policy">Privacy Policy</router-link>
+          </ul>
+        </nav>
+      </div>
     </footer>
   </div>
 </template>

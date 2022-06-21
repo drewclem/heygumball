@@ -7,10 +7,10 @@
         <BaseHeading size="h4" tag="h1">
           Contact
           <span class="text-blue-500">
-            <span v-if="currentUser.full_name !== null">{{
+            <span v-if="currentUser.full_name !== ''">{{
               currentUser.full_name
             }}</span>
-            <span v-else>{{ currentUser.username }}</span>
+            <span v-else>@{{ username }}</span>
           </span>
         </BaseHeading>
 
@@ -79,6 +79,9 @@
               </div>
             </div>
 
+            <div></div>
+            <!------------ form ends here -------------->
+
             <div>
               <VueRecaptcha
                 :sitekey="siteKey"
@@ -97,7 +100,10 @@
               />
               <label for="toc">
                 I agree to the
-                <router-link to="/" class="text-blue-500 underline">
+                <router-link
+                  to="/terms-and-conditions"
+                  class="text-blue-500 underline"
+                >
                   terms and conditions
                 </router-link>
                 of Heygumball
@@ -133,7 +139,16 @@
             Thanks for submitting!
           </BaseHeading>
 
-          <BaseText>{{ currentUser.full_name }} will be in touch!</BaseText>
+          <BaseText>
+            <span>
+              {{
+                currentUser.full_name !== ""
+                  ? currentUser.full_name
+                  : `@${username}`
+              }}
+            </span>
+            will be in touch!</BaseText
+          >
         </div>
 
         <div v-else>
@@ -235,7 +250,6 @@ export default {
     const v$ = useVuelidate(rules, form);
 
     onMounted(async () => {
-      console.log(username);
       /**
        * get user profile from username in url
        */
@@ -288,6 +302,7 @@ export default {
 
     return {
       currentUser,
+      username,
       loading,
       activeForm,
       formState,
