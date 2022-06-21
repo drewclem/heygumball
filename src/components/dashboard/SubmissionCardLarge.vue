@@ -47,7 +47,7 @@
 
           <div
             v-if="!state.isOpen"
-            class="absolute w-full bottom-0 bg-gradient-to-t from-white to-transparent h-1/3 z-50"
+            class="absolute w-full bottom-0 bg-gradient-to-t from-white to-transparent h-1/3 z-10"
           />
 
           <div class="grid grid-cols-4 text-sm lg:text-base pb-1">

@@ -25,7 +25,7 @@
 
     <div v-if="currentUser.default_view">
       <div
-        class="grid grid-cols-6 card-padding text-sm lg:text-base opacity-40 mb-4"
+        class="grid grid-cols-6 gap-2 card-padding text-sm lg:text-base opacity-40 mb-4"
       >
         <p class="col-span-2">Name</p>
         <p class="col-span-2">Email</p>

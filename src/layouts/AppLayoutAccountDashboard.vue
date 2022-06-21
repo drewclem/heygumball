@@ -1,9 +1,9 @@
 <template>
-  <div class="here" :inert="hasOpenModal">
+  <div class="min-h-screen" :inert="hasOpenModal">
     <DashboardHeader :user="user" />
 
-    <main class="flex">
-      <div class="flex flex-col px-6 py-12 lg:w-[268.66px]">
+    <main class="flex relative">
+      <div class="hidden lg:flex flex-col px-6 py-12 lg:w-[268.66px]">
         <div class="flex-grow">
           <div class="flex flex-col space-y-5 mb-6 lg:mb-12">
             <BaseModal :disabled="!currentUser.subscription_active">
@@ -38,8 +38,8 @@
                   <IconLock
                     class="text-blue-500 group-hover:text-white w-3 lg:w-5 h-3 lg:h-5 opacity-50 mr-2"
                   />
-                  <span class="text-xs lg:text-base"
-                    >Open
+                  <span class="text-xs lg:text-base">
+                    Open
                     <span class="hidden lg:inline-block">requests</span></span
                   >
                 </div>
@@ -152,7 +152,7 @@
       </div>
 
       <div
-        class="px-12 py-6 lg:py-12 lg:px-20 bg-gray-50 flex-grow overflow-y-scroll"
+        class="px-6 py-12 lg:py-12 lg:px-20 bg-gray-50 flex-grow h-full overflow-y-scroll"
       >
         <Transition name="fade">
           <slot />
@@ -164,6 +164,7 @@
 
 <script setup>
 // utils
+import { ref } from "vue";
 import useAuthUser from "@/utils/useAuth";
 import { useUserStore } from "@/stores/user";
 import { useGlobalLayout } from "@/stores/global";
@@ -186,6 +187,9 @@ import IconHeart from "@/components/svg/IconHeart.vue";
 import IconForm from "@/components/svg/IconForm.vue";
 import IconUser from "@/components/svg/IconUser.vue";
 import IconInbox from "@/components/svg/IconInbox.vue";
+import IconChevronDown from "@/components/svg/IconChevronDown.vue";
+import IconClose from "@/components/svg/IconClose.vue";
+import MenuIcon from "@/components/icons/MenuIcon.vue";
 
 const { user, handleLogout } = useAuthUser();
 const userStore = useUserStore();
@@ -201,6 +205,7 @@ const {
 
 const global = useGlobalLayout();
 const { hasOpenModal } = storeToRefs(global);
+const mobileNavOpen = ref(false);
 
 setCurrentUserId(user.value.id);
 
@@ -228,5 +233,16 @@ main {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: 300ms ease-in-out;
+  transform: translateX(0);
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(-100%);
 }
 </style>

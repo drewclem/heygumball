@@ -6,7 +6,7 @@
       <BaseLink href="account/edit">Edit</BaseLink>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-10">
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-10">
       <div class="lg:col-span-2">
         <div class="h-24 w-24 bg-gray-400 rounded-full"></div>
       </div>

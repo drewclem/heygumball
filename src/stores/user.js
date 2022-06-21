@@ -2,6 +2,9 @@ import { defineStore } from "pinia";
 import { supabase } from "../supabase";
 
 export const useUserStore = defineStore("currentUser", {
+  persist: {
+    enabled: true,
+  },
   state: () => {
     return {
       userID: undefined,

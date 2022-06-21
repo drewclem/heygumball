@@ -58,7 +58,7 @@
 
     <div v-if="currentUser.default_view">
       <div
-        class="grid grid-cols-6 px-5 gap-4 py-3 lg:px-8 text-sm lg:text-base lg:py-4 opacity-40 mb-4"
+        class="grid grid-cols-6 px-5 gap-2 py-3 lg:px-8 text-sm lg:text-base lg:py-4 opacity-40 mb-4"
       >
         <p class="col-span-2">Name</p>
         <p class="col-span-2">Email</p>

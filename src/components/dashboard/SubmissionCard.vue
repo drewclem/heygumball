@@ -8,7 +8,7 @@
       class="absolute rounded-full bg-red-500 w-2 h-2 ml-3"
     />
     <div
-      class="grid grid-cols-6 card-padding text-sm lg:text-base bg-white rounded-lg w-full"
+      class="grid grid-cols-6 gap-2 card-padding text-sm lg:text-base bg-white rounded-lg w-full"
     >
       <div class="relative col-span-2">
         <p
@@ -19,9 +19,15 @@
         </p>
         <p>{{ submission.name }}</p>
       </div>
-      <p class="col-span-2 opacity-60">{{ submission.email }}</p>
-      <p class="opacity-60">{{ submission.phone }}</p>
-      <p class="opacity-60 ml-auto">{{ formatDate(submission.created_at) }}</p>
+      <p class="col-span-2 opacity-60 truncate">
+        {{ submission.email }}
+      </p>
+      <p class="opacity-60 truncate">
+        {{ submission.phone }}
+      </p>
+      <p class="opacity-60 ml-auto truncate">
+        {{ formatDate(submission.created_at) }}
+      </p>
     </div>
   </router-link>
 </template>

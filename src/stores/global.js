@@ -1,6 +1,9 @@
 import { defineStore } from "pinia";
 
 export const useGlobalLayout = defineStore("global", {
+  persist: {
+    enabled: true,
+  },
   state: () => {
     return {
       hasOpenModal: false,
