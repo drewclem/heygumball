@@ -271,6 +271,7 @@ const path = computed(() => {
 });
 watch(path, (newPath, oldPath) => {
   if (newPath) state.isOpen = false;
+  toggleMobileMenu(false);
 });
 
 const userStore = useUserStore();
