@@ -2,9 +2,16 @@
   <div
     class="relative bg-white card-shadow rounded-lg w-full px-5 py-4 lg:px-8 lg:py-5 text-sm lg:text-base"
   >
+    <p
+      v-if="submission.booked"
+      class="absolute left-0 bottom-0 ml-5 lg:ml-8 text-[8px] lg:text-[10px] text-blue-500"
+    >
+      Booked
+    </p>
+
     <div class="relative grid grid-cols-5 gap-4 overflow-hidden">
       <div class="col-span-1">
-        <div>
+        <div class="relative">
           <img
             v-if="submission.image"
             class="h-24 w-24 object-cover rounded-md"
@@ -24,7 +31,7 @@
             </a>
             <router-link
               class="border-2 border-blue-500 w-24 text-center block rounded-md"
-              :to="`collections/${submission.collection_id}/${submission.id}`"
+              :to="`/${currentUser.username}/collections/${submission.collection_id}/${submission.id}`"
               >View</router-link
             >
           </div>
@@ -46,12 +53,6 @@
           <div class="grid grid-cols-4 text-sm lg:text-base pb-1">
             <div class="relative">
               <p class="text-xs opacity-50">Name</p>
-              <p
-                v-if="submission.booked"
-                class="text-[8px] lg:text-[10px] text-blue-500 bottom-0 -mb-[12px] absolute"
-              >
-                Booked
-              </p>
               <p>{{ submission.name }}</p>
             </div>
 
@@ -88,12 +89,14 @@
 // utils
 import { reactive } from "vue";
 import { useRoute } from "vue-router";
+import { useUserStore } from "@/stores/user";
 
 // components
 import BaseButton from "@/components/base/BaseButton.vue";
 import IconChevronDown from "@/components/svg/IconChevronDown.vue";
 
 const route = useRoute();
+const { currentUser } = useUserStore();
 
 defineProps({
   submission: {
@@ -129,7 +132,7 @@ function formatDate(date) {
 }
 
 .collapsed {
-  max-height: 96px;
+  max-height: 100px;
   transition: max-height 300ms;
 }
 
