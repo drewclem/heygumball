@@ -100,7 +100,7 @@
         <p class="col-span-4">Message</p>
       </div>
 
-      <div class="flex flex-col space-y-6">
+      <div class="flex flex-col space-y-8">
         <p class="opacity-50" v-if="loading">Loading...</p>
 
         <div v-if="!submissions.length">

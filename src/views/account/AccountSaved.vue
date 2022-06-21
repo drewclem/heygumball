@@ -13,6 +13,7 @@
               id="`viewMode`"
               v-model:checked="currentUser.default_view"
               :modelValue="currentUser.default_view"
+              @update:checked="updateViewMode"
             />
             <p class="text-blue-500">Info</p>
           </div>
@@ -94,6 +95,7 @@
 import { ref, computed } from "vue";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
+import { supabase } from "@/supabase";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
@@ -137,4 +139,13 @@ const filteredSubmissions = computed(() => {
       return submission;
   });
 });
+
+async function updateViewMode(e) {
+  if (window.confirm("Would you like to set this as your default view?")) {
+    const { error } = await supabase
+      .from("profiles")
+      .update({ default_view: e })
+      .match({ id: currentUser.value?.id });
+  }
+}
 </script>
