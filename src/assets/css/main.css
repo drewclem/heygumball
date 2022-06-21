@@ -23,6 +23,10 @@ body {
   @apply container mx-auto px-6;
 }
 
+.card-padding {
+  @apply px-5 py-3 lg:px-8 lg:py-4;
+}
+
 .narrow-wrapper {
   @apply container max-w-5xl mx-auto px-6;
 }

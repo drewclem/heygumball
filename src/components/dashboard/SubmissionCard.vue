@@ -8,7 +8,7 @@
       class="absolute rounded-full bg-red-500 w-2 h-2 ml-3"
     />
     <div
-      class="grid grid-cols-6 px-5 py-3 lg:px-8 lg:py-4 text-sm lg:text-base bg-white rounded-lg w-full"
+      class="grid grid-cols-6 card-padding text-sm lg:text-base bg-white rounded-lg w-full"
     >
       <div class="relative col-span-2">
         <p

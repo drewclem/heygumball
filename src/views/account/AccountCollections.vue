@@ -8,7 +8,7 @@
 
     <div>
       <div
-        class="grid grid-cols-5 px-5 py-3 lg:px-8 lg:py-4 text-sm lg:text-base opacity-40 mb-4"
+        class="grid grid-cols-5 card-padding text-sm lg:text-base opacity-40 mb-4"
       >
         <p class="col-span-2">Open Dates</p>
         <p>Year</p>
