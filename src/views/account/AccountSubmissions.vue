@@ -23,6 +23,7 @@
               id="`viewMode`"
               v-model:checked="currentUser.default_view"
               :modelValue="currentUser.default_view"
+              @update:checked="updateViewMode"
             />
             <p class="text-blue-500">Info</p>
           </div>
@@ -267,6 +268,15 @@ async function closeCollection() {
         router.back();
       });
     }
+  }
+}
+
+async function updateViewMode(e) {
+  if (window.confirm("Would you like to set this as your default view?")) {
+    const { error } = await supabase
+      .from("profiles")
+      .update({ default_view: e })
+      .match({ id: currentUser.value?.id });
   }
 }
 </script>

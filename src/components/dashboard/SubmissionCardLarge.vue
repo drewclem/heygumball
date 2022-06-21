@@ -4,10 +4,11 @@
   >
     <div class="grid grid-cols-5 gap-4">
       <div class="col-span-1">
-        <img
+        <div class="h-24 w-24 rounded-lg bg-gray-300" />
+        <!-- <img
           class="h-24 w-24 object-cover rounded-md"
           src="https://source.unsplash.com/random"
-        />
+        /> -->
       </div>
       <div
         class="col-span-4 relative"
@@ -16,14 +17,14 @@
         <div v-html="submission.message" />
         <div
           v-if="!state.isOpen"
-          class="absolute bottom-0 w-full h-1/2 bg-gradient-to-t from-white to-transparent z-50"
+          class="absolute bottom-0 w-full h-1/3 bg-gradient-to-t from-white to-transparent z-50"
         />
       </div>
     </div>
 
     <div
       v-if="state.isOpen"
-      class="grid grid-cols-6 px-5 py-3 lg:px-8 lg:py-4 text-sm lg:text-base"
+      class="grid grid-cols-6 card-padding text-sm lg:text-base"
     >
       <div class="relative col-span-2">
         <p
