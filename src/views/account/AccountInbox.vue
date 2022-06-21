@@ -65,8 +65,6 @@
       </div>
 
       <div class="flex flex-col space-y-6">
-        <p class="opacity-50" v-if="loading">Loading...</p>
-
         <div v-if="!allSubmissions.length">
           <p class="mb-5">No submissions yet! Share that link!</p>
           <CopyShareLink />

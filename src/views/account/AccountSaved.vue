@@ -64,8 +64,6 @@
       </div>
 
       <div class="flex flex-col space-y-6">
-        <p class="opacity-50" v-if="loading">Loading...</p>
-
         <div v-if="!savedSubmissions.length">
           <p class="mb-5">No submissions yet! Share that link!</p>
           <CopyShareLink />
@@ -105,6 +103,7 @@ import SubmissionCard from "@/components/dashboard/SubmissionCard.vue";
 import SubmissionCardLarge from "@/components/dashboard/SubmissionCardLarge.vue";
 import KeywordSearch from "@/components/dashboard/KeywordSearch.vue";
 import IconSearch from "@/components/svg/IconSearch";
+import CopyShareLink from "@/components/dashboard/CopyShareLink.vue";
 
 const global = useUserStore();
 const { setSavedSubmissions, currentUser } = useUserStore();
