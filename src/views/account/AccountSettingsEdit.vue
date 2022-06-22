@@ -27,6 +27,7 @@
       <div class="lg:col-span-2">
         <div class="h-24 w-24 bg-gray-400 rounded-full overflow-hidden">
           <BaseImage
+            v-if="state.avatar_url !== null"
             class="h-24 w-24 object-cover"
             :src="state.avatar_url"
             :alt="currentUser.username"
