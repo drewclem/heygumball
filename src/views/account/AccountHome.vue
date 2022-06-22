@@ -8,8 +8,51 @@
 
     <div class="grid grid-cols-1 gap-4 lg:grid-cols-10">
       <div class="lg:col-span-2">
-        <div class="h-24 w-24 bg-gray-400 rounded-full"></div>
+        <div>
+          <div class="h-24 w-24 bg-gray-200 rounded-full overflow-hidden mb-2">
+            <IconUserCircle
+              v-if="currentUser.user_avatar === null && files.length === 0"
+              class="w-full h-full text-gray-400"
+            />
+
+            <BaseFilePreview
+              v-else-if="files.length > 0"
+              :file="files[0]"
+              tag="div"
+            />
+          </div>
+
+          <label v-if="files.length === 0" class="cursor-pointer underline">
+            Update avatar
+            <input
+              class="sr-only"
+              type="file"
+              accept="image/*"
+              @change="onInputChange"
+            />
+          </label>
+
+          <div v-else>
+            <button
+              class="underline text-green-500 mr-3"
+              type="button"
+              :disabled="state.uploading"
+              @click="uploadAvatar"
+            >
+              {{ state.avatarButtonText }}
+            </button>
+            <button
+              @click="removeFile(files[0])"
+              class="underline text-red-500"
+              type="button"
+              :disabled="state.uploading"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
       </div>
+
       <div class="lg:col-span-8">
         <div class="info-group info-list">
           <div>
@@ -105,20 +148,73 @@
 
 <script setup>
 // utility
-import { onMounted, computed } from "vue";
+import { reactive, onMounted, computed } from "vue";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
+import useFileList from "@/utils/file-list";
 
 // stripe
 import { loadStripe } from "@stripe/stripe-js";
+import { supabase } from "@/supabase";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseLink from "@/components/base/BaseLink.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
+import BaseDropzone from "@/components/base/BaseDropzone.vue";
+import BaseFilePreview from "@/components/base/BaseFilePreview.vue";
+import IconUserCircle from "@/components/svg/IconUserCircle.vue";
 
 const global = useUserStore();
 const { currentUser } = storeToRefs(global);
+
+/**
+ * Avatar upload
+ */
+const { files, addFiles, removeFile } = useFileList();
+
+const state = reactive({
+  avatarButtonText: "Save",
+  uploading: false,
+  avatar_url: null,
+});
+
+function onInputChange(e) {
+  addFiles(e.target.files);
+  e.target.value = null;
+}
+
+function randomNumber(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+async function uploadAvatar() {
+  const file = files.value[0];
+  const fileExt = file.name.split(".").pop();
+  const fileName = file.name.split(".");
+
+  const formattedName = `${fileName[0]}-${randomNumber(1, 10000)}.${fileExt}`;
+
+  state.uploading = true;
+  state.avatarButtonText = "Saving...";
+
+  try {
+    const { error } = await supabase.storage
+      .from("avatars")
+      .upload(`${formattedName}`, file.file);
+
+    state.avatarButtonText = "Save";
+    state.uploading = false;
+  } catch (error) {
+    state.avatarButtonText = "Save";
+    state.uploading = false;
+    if (error.statusCode === "23505") {
+      alert("Image already exists");
+    }
+  }
+}
 
 /**
  * Stripe
@@ -205,5 +301,9 @@ async function manageSubscription() {
 
 .info-grid {
   @apply grid lg:grid-cols-2 gap-6;
+}
+
+button:disabled {
+  @apply opacity-50;
 }
 </style>
