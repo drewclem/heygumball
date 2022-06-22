@@ -159,10 +159,12 @@ defineProps({
   user: {
     type: Object,
     required: true,
+    default: () => {},
   },
   currentUser: {
     type: Object,
     required: true,
+    default: () => {},
   },
 });
 

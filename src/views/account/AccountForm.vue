@@ -399,6 +399,11 @@ export default {
     };
   },
   methods: {
+    randomNumber(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min) + min);
+    },
     async submitForm() {
       const isFormValid = await this.v$.$validate();
 
@@ -420,12 +425,26 @@ export default {
         },
       ]);
 
-      const folderName = data[0].id;
+      const sumbissionId = data[0].id;
 
       this.files.forEach(async (file) => {
+        const fileExt = file.name.split(".").pop();
+        const fileName = file.name.split(".");
+        const formattedName = `${fileName[0]}-${this.randomNumber(
+          1,
+          10000
+        )}.${fileExt}`;
+
         await supabase.storage
           .from("submission-uploads")
-          .upload(`${folderName}/${file.name}`, file.file);
+          .upload(`${sumbissionId}/${formattedName}`, file.file);
+
+        await supabase.from("submission-uploads").insert([
+          {
+            submission_id: sumbissionId,
+            file_name: formattedName,
+          },
+        ]);
       });
 
       if (error) {
