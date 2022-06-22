@@ -10,23 +10,25 @@
       <div class="lg:col-span-2">
         <div>
           <div class="h-24 w-24 bg-gray-200 rounded-full overflow-hidden mb-2">
-            <BaseImage
-              class="h-24 w-24 object-cover"
-              v-if="state.avatar_url !== null"
-              :src="state.avatar_url"
-              :alt="`${currentUser.username}`"
-            />
+            <transition name="fade">
+              <BaseImage
+                class="h-24 w-24 object-cover"
+                v-if="state.avatar_url !== null && files.length === 0"
+                :src="state.avatar_url"
+                :alt="`${currentUser.username}`"
+              />
 
-            <IconUserCircle
-              v-else-if="currentUser.user_avatar === null && files.length === 0"
-              class="w-full h-full text-gray-400"
-            />
+              <IconUserCircle
+                v-else-if="state.avatar_url === null || files.length === 0"
+                class="w-full h-full text-gray-400"
+              />
 
-            <BaseFilePreview
-              v-else-if="files.length > 0"
-              :file="files[0]"
-              tag="div"
-            />
+              <BaseFilePreview
+                v-else-if="files.length > 0"
+                :file="files[0]"
+                tag="div"
+              />
+            </transition>
           </div>
 
           <label v-if="files.length === 0" class="cursor-pointer underline">
@@ -330,5 +332,16 @@ async function manageSubscription() {
 
 button:disabled {
   @apply opacity-50;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  opacity: 1;
+  transition: 150ms ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

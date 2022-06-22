@@ -25,13 +25,16 @@
 
     <div v-if="currentUser" class="grid grid-cols-1 lg:grid-cols-10">
       <div class="lg:col-span-2">
-        <div class="h-24 w-24 bg-gray-400 rounded-full overflow-hidden">
-          <BaseImage
-            v-if="state.avatar_url !== null"
-            class="h-24 w-24 object-cover"
-            :src="state.avatar_url"
-            :alt="currentUser.username"
-          />
+        <div class="h-24 w-24 bg-gray-200 rounded-full overflow-hidden">
+          <transition name="fade">
+            <BaseImage
+              v-if="state.avatar_url !== null"
+              class="h-24 w-24 object-cover"
+              :src="state.avatar_url"
+              :alt="currentUser.username"
+            />
+            <IconUserCircle v-else class="w-full h-full text-gray-400" />
+          </transition>
         </div>
       </div>
 
@@ -102,6 +105,7 @@ import BaseLink from "@/components/base/BaseLink.vue";
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
 import IconArrowLeft from "@/components/svg/IconArrowLeft.vue";
+import IconUserCircle from "@/components/svg/IconUserCircle.vue";
 
 const { user } = useAuthUser();
 const global = useUserStore();
@@ -188,5 +192,15 @@ onMounted(() => {
 
 .info-grid {
   @apply grid lg:grid-cols-2 gap-6;
+}
+.fade-enter-active,
+.fade-leave-active {
+  opacity: 1;
+  transition: 300ms ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
