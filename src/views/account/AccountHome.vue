@@ -10,8 +10,15 @@
       <div class="lg:col-span-2">
         <div>
           <div class="h-24 w-24 bg-gray-200 rounded-full overflow-hidden mb-2">
+            <BaseImage
+              class="h-24 w-24 object-cover"
+              v-if="state.avatar_url !== null"
+              :src="state.avatar_url"
+              :alt="`${currentUser.username}`"
+            />
+
             <IconUserCircle
-              v-if="currentUser.user_avatar === null && files.length === 0"
+              v-else-if="currentUser.user_avatar === null && files.length === 0"
               class="w-full h-full text-gray-400"
             />
 
@@ -158,6 +165,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { supabase } from "@/supabase";
 
 // components
+import BaseImage from "@/components/base/BaseImage.vue";
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseLink from "@/components/base/BaseLink.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
@@ -190,6 +198,16 @@ function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+async function downloadAvatar(fileName) {
+  const { error, data } = await supabase.storage
+    .from("avatars")
+    .createSignedUrl(fileName, 60);
+
+  console.log(data.signedURL);
+
+  state.avatar_url = data.signedURL;
+}
+
 async function uploadAvatar() {
   const file = files.value[0];
   const fileExt = file.name.split(".").pop();
@@ -204,6 +222,13 @@ async function uploadAvatar() {
     const { error } = await supabase.storage
       .from("avatars")
       .upload(`${formattedName}`, file.file);
+
+    const { data } = await supabase
+      .from("profiles")
+      .update({ user_avatar: formattedName })
+      .match({ id: currentUser.value.id });
+
+    downloadAvatar(formattedName);
 
     state.avatarButtonText = "Save";
     state.uploading = false;
@@ -227,6 +252,8 @@ onMounted(async () => {
   } catch (err) {
     alert(err);
   }
+
+  downloadAvatar(currentUser.value.user_avatar);
 });
 
 async function manageSubscription() {
