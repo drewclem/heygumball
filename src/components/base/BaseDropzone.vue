@@ -55,7 +55,7 @@ onUnmounted(() => {
 
 <style>
 .drop-area {
-  @apply w-full border-2 border-dashed border-gray-300 p-2 rounded-lg;
+  @apply text-center border border-dashed border-gray-300 p-2 rounded-lg;
 }
 
 .drop-area label input {

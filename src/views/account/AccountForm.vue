@@ -21,6 +21,7 @@
             <BaseImage
               v-if="state.avatar_url !== null"
               :src="state.avatar_url"
+              :alt="currentUser.username"
               class="h-16 w-16 object-cover"
             />
           </div>
@@ -91,8 +92,48 @@
                 </div>
               </div>
 
-              <div></div>
+              <div>
+                <p class="font-display text-sm">Reference media</p>
+                <p class="text-xs mb-4 opacity-50">
+                  Accepted file types: jpeg, jpg, png
+                </p>
+                <BaseDropzone
+                  @files-dropped="addFiles"
+                  #default="{ dropZoneActive }"
+                >
+                  <label class="text-sm" for="file-input">
+                    <span v-if="dropZoneActive">
+                      <span>Drop Them Here</span>
+                    </span>
+                    <span v-else>
+                      <span>Drag Your Files Here</span>
+                      <span class="text-sm">
+                        or <strong><em>click here</em></strong> to select files
+                      </span>
+                    </span>
+
+                    <input
+                      type="file"
+                      id="file-input"
+                      accept="image/*"
+                      multiple
+                      @change="onInputChange"
+                    />
+                  </label>
+
+                  <ul class="grid grid-cols-4 gap-2 mt-3" v-show="files.length">
+                    <BaseFilePreview
+                      v-for="file of files"
+                      :key="file.id"
+                      :file="file"
+                      tag="li"
+                      @remove="removeFile"
+                    />
+                  </ul>
+                </BaseDropzone>
+              </div>
               <!------------ form ends here -------------->
+              <div class="border-t-2 border-gray-100" />
 
               <div>
                 <VueRecaptcha
@@ -187,6 +228,7 @@ import { supabase } from "@/supabase";
 import useVuelidate from "@vuelidate/core";
 import { required, email, phone, helpers } from "@vuelidate/validators";
 import { useValidate } from "@/utils/validate";
+import useFileList from "@/utils/file-list";
 
 // recaptcha
 import { VueRecaptcha } from "vue-recaptcha";
@@ -198,10 +240,14 @@ import BaseInput from "@/components/base/BaseInput.vue";
 import BaseRichText from "@/components/base/BaseRichText.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 import BaseImage from "@/components/base/BaseImage.vue";
+import BaseDropzone from "@/components/base/BaseDropzone.vue";
+import BaseFilePreview from "@/components/base/BaseFilePreview.vue";
 
 export default {
   components: {
     BaseButton,
+    BaseDropzone,
+    BaseFilePreview,
     BaseHeading,
     BaseInput,
     BaseImage,
@@ -211,6 +257,8 @@ export default {
   },
   setup() {
     const { notEmpty } = useValidate();
+
+    const { files, addFiles, removeFile } = useFileList();
 
     const activeForm = ref({});
     const loading = ref(true);
@@ -336,6 +384,9 @@ export default {
     });
 
     return {
+      files,
+      addFiles,
+      removeFile,
       currentUser,
       username,
       loading,
@@ -355,24 +406,27 @@ export default {
 
       this.formState = "submitting";
 
-      const { error } = await supabase.from("submissions").insert(
-        [
-          {
-            collection_id: this.activeForm.id,
-            user_id: this.currentUser.id,
-            viewed: false,
-            booked: false,
-            approved: false,
-            name: this.form.name,
-            email: this.form.email,
-            phone: this.form.phone,
-            message: this.form.message,
-          },
-        ],
+      const { error, data } = await supabase.from("submissions").insert([
         {
-          returning: "minimal",
-        }
-      );
+          collection_id: this.activeForm.id,
+          user_id: this.currentUser.id,
+          viewed: false,
+          booked: false,
+          approved: false,
+          name: this.form.name,
+          email: this.form.email,
+          phone: this.form.phone,
+          message: this.form.message,
+        },
+      ]);
+
+      const folderName = data[0].id;
+
+      this.files.forEach(async (file) => {
+        await supabase.storage
+          .from("submission-uploads")
+          .upload(`${folderName}/${file.name}`, file.file);
+      });
 
       if (error) {
         console.log(error.message);
