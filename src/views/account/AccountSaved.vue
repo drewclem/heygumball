@@ -25,7 +25,7 @@
 
     <div v-if="currentUser.default_view">
       <div
-        class="grid grid-cols-6 card-padding text-sm lg:text-base opacity-40 mb-4"
+        class="grid grid-cols-6 gap-2 card-padding text-sm lg:text-base opacity-40 mb-4"
       >
         <p class="col-span-2">Name</p>
         <p class="col-span-2">Email</p>
@@ -64,7 +64,7 @@
         <p class="col-span-4">Message</p>
       </div>
 
-      <div class="flex flex-col space-y-6">
+      <div class="flex flex-col space-y-8">
         <div v-if="!savedSubmissions.length">
           <p class="mb-5">No submissions yet! Share that link!</p>
           <CopyShareLink />

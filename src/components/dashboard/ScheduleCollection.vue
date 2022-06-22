@@ -7,7 +7,7 @@
         </BaseHeading>
       </div>
 
-      <div class="flex space-x-6">
+      <div class="flex flex-col lg:flex-row space-6 gap-6">
         <div>
           <p class="font-display mb-2 text-sm">Start date</p>
           <Datepicker

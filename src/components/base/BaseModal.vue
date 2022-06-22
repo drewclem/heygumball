@@ -32,12 +32,12 @@ defineProps({
     default: false,
   },
 });
-import { ref } from "vue";
+import { nextTick, ref } from "vue";
 import { useGlobalLayout } from "@/stores/global";
 
 import IconClose from "@/components/svg/IconClose.vue";
 
-const { toggleModal } = useGlobalLayout();
+const { toggleModal, toggleMobileMenu } = useGlobalLayout();
 const isOpen = ref(false);
 const closeButtonRef = ref(null);
 const openButtonRef = ref(null);
@@ -50,8 +50,11 @@ function closeModal() {
   }, 50);
 }
 
-function openModal() {
+async function openModal() {
   isOpen.value = true;
+  toggleMobileMenu(false);
+  await nextTick();
+  await nextTick();
   toggleModal(true);
   setTimeout(() => {
     closeButtonRef.value.focus();
@@ -61,12 +64,13 @@ function openModal() {
 
 <style lang="postcss" scoped>
 .modal-wrapper {
+  @apply z-30;
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: rgba(1, 1, 1, 0.25);
+  background-color: rgba(1, 1, 1, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -75,7 +79,6 @@ function openModal() {
 .modal-content {
   @apply relative bg-white p-6 xl:p-10 rounded-lg mx-6;
   max-width: 540px;
-  min-width: 409.56px;
 }
 
 button:disabled {

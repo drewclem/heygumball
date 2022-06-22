@@ -4,7 +4,7 @@
     :class="`cursor-pointer ${classes} ${
       $slots.icon ? 'flex items-center' : ''
     } group`"
-    class="text-xs lg:text-base"
+    class="text-base"
     :href="href"
     v-bind="$attrs"
   >
@@ -20,7 +20,7 @@
     :class="`cursor-pointer  ${classes} ${
       $slots.icon ? 'flex items-center' : ''
     }`"
-    class="text-xs lg:text-base"
+    class="text-base"
     :to="href"
     v-bind="$attrs"
   >

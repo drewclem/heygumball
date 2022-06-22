@@ -266,7 +266,7 @@ export default {
       const { data } = await supabase
         .from("collections")
         .select()
-        .eq("user_id", currentUser.value.id);
+        .eq("user_id", currentUser.value?.id);
 
       const currentDate = new Date();
 
