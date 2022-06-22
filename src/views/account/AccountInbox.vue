@@ -65,7 +65,7 @@
         <p class="col-span-4">Message</p>
       </div>
 
-      <div class="flex flex-col space-y-6">
+      <div class="flex flex-col space-y-8">
         <div v-if="!allSubmissions.length">
           <p class="mb-5">No submissions yet! Share that link!</p>
           <CopyShareLink />
