@@ -17,7 +17,7 @@
         >
           Booked
         </p>
-        <p>{{ submission.name }}</p>
+        <p class="truncate">{{ submission.name }}</p>
       </div>
       <p class="col-span-2 opacity-60 truncate">
         {{ submission.email }}
