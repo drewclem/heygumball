@@ -203,8 +203,6 @@ async function downloadAvatar(fileName) {
     .from("avatars")
     .createSignedUrl(fileName, 60);
 
-  console.log(data.signedURL);
-
   state.avatar_url = data.signedURL;
 }
 
