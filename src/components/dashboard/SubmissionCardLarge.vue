@@ -4,7 +4,7 @@
   >
     <p
       v-if="submission.booked"
-      class="absolute left-0 bottom-0 ml-5 lg:ml-8 text-[8px] lg:text-[10px] text-blue-500"
+      class="absolute left-0 top-0 ml-5 lg:ml-8 text-[8px] lg:text-[10px] text-blue-500"
     >
       Booked
     </p>
