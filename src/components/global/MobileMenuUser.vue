@@ -65,7 +65,7 @@
       <li>
         <BaseModal
           class="px-6 py-3"
-          :disabled="!currentUser.subscription_active"
+          :disabled="currentUser && !currentUser.subscription_active"
         >
           <template #button>
             <div
@@ -84,7 +84,10 @@
       <li>
         <BaseModal
           class="px-6 py-3"
-          :disabled="hasActiveCollection || !currentUser.subscription_active"
+          :disabled="
+            hasActiveCollection ||
+            (currentUser && !currentUser.subscription_active)
+          "
         >
           <template #button>
             <div

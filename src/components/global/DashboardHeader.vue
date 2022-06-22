@@ -51,7 +51,9 @@
                 </button>
               </div>
 
-              <div class="flex flex-col justify-between h-full w-full bg-white">
+              <div
+                class="flex flex-col justify-between h-screen w-full bg-white"
+              >
                 <MobileMenuUser :user="user" :currentUser="currentUser" />
               </div>
             </div>
