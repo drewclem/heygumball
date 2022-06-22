@@ -32,7 +32,7 @@ defineProps({
     default: false,
   },
 });
-import { ref } from "vue";
+import { nextTick, ref } from "vue";
 import { useGlobalLayout } from "@/stores/global";
 
 import IconClose from "@/components/svg/IconClose.vue";
@@ -50,8 +50,11 @@ function closeModal() {
   }, 50);
 }
 
-function openModal() {
+async function openModal() {
   isOpen.value = true;
+  toggleMobileMenu(false);
+  await nextTick();
+  await nextTick();
   toggleModal(true);
   setTimeout(() => {
     closeButtonRef.value.focus();

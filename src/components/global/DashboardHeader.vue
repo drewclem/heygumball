@@ -25,16 +25,16 @@
         <Teleport to="body">
           <div
             :class="`z-50 fixed lg:hidden inset-0 bg-black transition duration-150 ${
-              state.isOpen
+              isMobileMenuOpen
                 ? 'bg-opacity-50'
                 : 'bg-opacity-0 pointer-events-none'
             }`"
-            :inert="!state.isOpen"
+            :inert="!isMobileMenuOpen"
             @keydown.esc="closeMenu"
           >
             <div
               :class="`flex transform transition-transform duration-150 ease-in-out ${
-                state.isOpen ? 'translate-x-0' : 'translate-x-full'
+                isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
               }`"
             >
               <div @click="closeMenu">
@@ -269,8 +269,8 @@ const route = useRoute();
 const path = computed(() => {
   return route.path;
 });
+
 watch(path, (newPath, oldPath) => {
-  if (newPath) state.isOpen = false;
   toggleMobileMenu(false);
 });
 
@@ -278,9 +278,10 @@ const userStore = useUserStore();
 const { currentUser, hasActiveCollection } = storeToRefs(userStore);
 const { user, handleLogout } = useAuthUser();
 const { toggleMobileMenu } = useGlobalLayout();
+const global = useGlobalLayout();
+const { isMobileMenuOpen } = storeToRefs(global);
 
 function openMenu() {
-  state.isOpen = true;
   toggleMobileMenu(true);
 
   setTimeout(() => {
@@ -289,7 +290,6 @@ function openMenu() {
 }
 
 function closeMenu() {
-  state.isOpen = false;
   toggleMobileMenu(false);
 
   setTimeout(() => {
