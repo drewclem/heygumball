@@ -74,7 +74,7 @@
               </div>
 
               <div class="h-screen w-full bg-white">
-                <div class="flex flex-col h-full justify-between">
+                <div class="flex flex-col h-full">
                   <div v-if="!user">
                     <nav role="navigation">
                       <ul class="nav">
