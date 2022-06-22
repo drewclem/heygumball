@@ -1,8 +1,8 @@
 <template>
-  <div class="min-h-screen" :inert="hasOpenModal">
+  <div class="min-h-screen">
     <DashboardHeader :user="user" />
 
-    <main class="flex relative">
+    <main class="flex relative" :inert="hasOpenModal || isMobileMenuOpen">
       <div class="hidden lg:flex flex-col px-6 py-12 lg:w-[268.66px]">
         <div class="flex-grow">
           <div class="flex flex-col space-y-5 mb-6 lg:mb-12">
@@ -129,7 +129,10 @@
           </nav>
         </div>
 
-        <footer class="flex flex-col space-y-3">
+        <footer
+          class="flex flex-col space-y-3"
+          :inert="hasOpenModal || isMobileMenuOpen"
+        >
           <BaseLink
             class="group"
             :class="{
@@ -204,7 +207,7 @@ const {
 } = useUserStore();
 
 const global = useGlobalLayout();
-const { hasOpenModal } = storeToRefs(global);
+const { hasOpenModal, isMobileMenuOpen } = storeToRefs(global);
 const mobileNavOpen = ref(false);
 
 setCurrentUserId(user.value.id);

@@ -6,6 +6,7 @@
       <router-link
         :to="`/${currentUser.username}/collections`"
         class="block w-40 lg:w-48"
+        :inert="hasOpenModal || isMobileMenuOpen"
       >
         <GumballLogo class="w-full" />
       </router-link>
@@ -19,6 +20,7 @@
         @click="openMenu"
         type="button"
         aria-label="Open menu"
+        :inert="hasOpenModal || isMobileMenuOpen"
       >
         <MenuIcon class="w-8 h-8" title="Open Menu" />
 
@@ -279,7 +281,7 @@ const { currentUser, hasActiveCollection } = storeToRefs(userStore);
 const { user, handleLogout } = useAuthUser();
 const { toggleMobileMenu } = useGlobalLayout();
 const global = useGlobalLayout();
-const { isMobileMenuOpen } = storeToRefs(global);
+const { isMobileMenuOpen, hasOpenModal } = storeToRefs(global);
 
 function openMenu() {
   toggleMobileMenu(true);
