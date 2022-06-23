@@ -38,6 +38,7 @@ export function useValidate() {
       process.env.VUE_APP_INVITE_MACON,
       process.env.VUE_APP_INVITE_INDIE,
       process.env.VUE_APP_INVITE_HERITAGE,
+      process.env.VUE_APP_INVITE_EMBODY,
     ];
 
     const passphrase = value.toLowerCase();
