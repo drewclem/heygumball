@@ -92,7 +92,10 @@
             <li v-for="(image, index) in images" :key="index">
               <BaseModal>
                 <template #button>
-                  <BaseImage class="img-list" :src="image" />
+                  <BaseImage
+                    class="img-list hover:scale-150 ease-in-out transform"
+                    :src="image"
+                  />
                 </template>
                 <template #content>
                   <BaseImage :src="image" />
@@ -258,6 +261,7 @@ onMounted(() => {
 }
 
 .img-list {
+  @apply rounded-lg shadow-md;
   aspect-ratio: 1/1;
   object-fit: cover;
 }
