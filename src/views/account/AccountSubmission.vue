@@ -75,9 +75,34 @@
 
       <!-- right side -->
       <div class="w-3/4">
-        <div class="card-shadow bg-white p-8 lg:p-12 rounded-lg">
+        <div class="card-shadow bg-white p-8 lg:p-12 rounded-lg mb-8">
           <BaseHeading size="h5" tag="h2" class="mb-5">Message</BaseHeading>
           <div class="richtext" v-html="submission.message" />
+        </div>
+
+        <div
+          v-if="images.length > 0"
+          class="card-shadow bg-white p-8 lg:p-12 rounded-lg"
+        >
+          <BaseHeading size="h5" tag="h2" class="mb-5"
+            >Reference media</BaseHeading
+          >
+
+          <ul class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
+            <li v-for="(image, index) in images" :key="index">
+              <BaseModal>
+                <template #button>
+                  <BaseImage
+                    class="img-list hover:scale-150 ease-in-out transform"
+                    :src="image"
+                  />
+                </template>
+                <template #content>
+                  <BaseImage :src="image" />
+                </template>
+              </BaseModal>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -86,7 +111,7 @@
 
 <script setup>
 // utils
-import { onBeforeMount, onMounted, ref, nextTick } from "vue";
+import { onBeforeMount, onMounted, ref, nextTick, reactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { supabase } from "@/supabase";
 import { useUserStore } from "@/stores/user";
@@ -94,6 +119,8 @@ import { useUserStore } from "@/stores/user";
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
+import BaseImage from "@/components/base/BaseImage.vue";
+import BaseModal from "@/components/base/BaseModal.vue";
 import IconHeart from "@/components/svg/IconHeart.vue";
 import IconArrowLeft from "@/components/svg/IconArrowLeft.vue";
 
@@ -103,8 +130,11 @@ const submission = ref({});
 
 const { setSavedSubmissions, setCollections } = useUserStore();
 
+const submissionId = route.params.submission_id;
+
 // init loading state to true
 const loading = ref(true);
+const images = ref([]);
 
 // fetch request to get the submission data
 async function fetchSubmission() {
@@ -141,7 +171,7 @@ async function markAsBooked() {
   const { error } = await supabase
     .from("submissions")
     .update({ booked: !submission.value.booked })
-    .match({ id: submission.value.id });
+    .match({ id: submissionId });
 
   if (error) {
     alert("Oops! Something went wrong.");
@@ -159,16 +189,43 @@ async function deleteSubmission() {
       "Are you sure you want to delete this submission? This is an irreversible action."
     )
   ) {
+    await supabase
+      .from("submission-uploads")
+      .delete()
+      .match({ submission_id: submissionId });
+
     const { error } = await supabase
       .from("submissions")
       .delete()
-      .match({ id: submission.value.id });
+      .match({ id: submissionId });
 
     if (error) {
       alert(error.message);
     } else {
       router.back();
     }
+  }
+}
+
+/**
+ * Submission images
+ */
+async function retrieveImages() {
+  const { data } = await supabase
+    .from("submission-uploads")
+    .select()
+    .match({ submission_id: submissionId });
+
+  if (data) {
+    data.forEach(async (image, index) => {
+      const imgData = await supabase.storage
+        .from(`submission-uploads/${submissionId}`)
+        .createSignedUrl(image.file_name, 60);
+
+      const img = await imgData.data;
+
+      images.value.push(img.signedURL);
+    });
   }
 }
 
@@ -180,12 +237,16 @@ onBeforeMount(async () => {
     const { error } = await supabase
       .from("submissions")
       .update({ viewed: true })
-      .match({ id: submission.value.id });
+      .match({ id: submissionId });
 
     if (error) {
       alert("Oops! Something went wrong.");
     }
   }
+});
+
+onMounted(() => {
+  retrieveImages();
 });
 </script>
 
@@ -197,5 +258,11 @@ onBeforeMount(async () => {
 .richtext ul {
   @apply list-disc;
   list-style-position: inside;
+}
+
+.img-list {
+  @apply rounded-lg shadow-md;
+  aspect-ratio: 1/1;
+  object-fit: cover;
 }
 </style>

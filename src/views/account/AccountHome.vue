@@ -8,8 +8,60 @@
 
     <div class="grid grid-cols-1 gap-4 lg:grid-cols-10">
       <div class="lg:col-span-2">
-        <div class="h-24 w-24 bg-gray-400 rounded-full"></div>
+        <div>
+          <div class="h-24 w-24 bg-gray-200 rounded-full overflow-hidden mb-2">
+            <transition name="fade">
+              <BaseImage
+                class="h-24 w-24 object-cover"
+                v-if="state.avatar_url !== null && files.length === 0"
+                :src="state.avatar_url"
+                :alt="`${currentUser.username}`"
+              />
+
+              <IconUserCircle
+                v-else-if="state.avatar_url === null || files.length === 0"
+                class="w-full h-full text-gray-400"
+              />
+
+              <BaseFilePreview
+                v-else-if="files.length > 0"
+                :file="files[0]"
+                tag="div"
+              />
+            </transition>
+          </div>
+
+          <label v-if="files.length === 0" class="cursor-pointer underline">
+            Update avatar
+            <input
+              class="sr-only"
+              type="file"
+              accept="image/*"
+              @change="onInputChange"
+            />
+          </label>
+
+          <div v-else>
+            <button
+              class="underline text-green-500 mr-3"
+              type="button"
+              :disabled="state.uploading"
+              @click="uploadAvatar"
+            >
+              {{ state.avatarButtonText }}
+            </button>
+            <button
+              @click="removeFile(files[0])"
+              class="underline text-red-500"
+              type="button"
+              :disabled="state.uploading"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
       </div>
+
       <div class="lg:col-span-8">
         <div class="info-group info-list">
           <div>
@@ -105,20 +157,89 @@
 
 <script setup>
 // utility
-import { onMounted, computed } from "vue";
+import { reactive, onMounted, computed } from "vue";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
+import useFileList from "@/utils/file-list";
 
 // stripe
 import { loadStripe } from "@stripe/stripe-js";
+import { supabase } from "@/supabase";
 
 // components
+import BaseImage from "@/components/base/BaseImage.vue";
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseLink from "@/components/base/BaseLink.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
+import BaseDropzone from "@/components/base/BaseDropzone.vue";
+import BaseFilePreview from "@/components/base/BaseFilePreview.vue";
+import IconUserCircle from "@/components/svg/IconUserCircle.vue";
 
 const global = useUserStore();
 const { currentUser } = storeToRefs(global);
+
+/**
+ * Avatar upload
+ */
+const { files, addFiles, removeFile } = useFileList();
+
+const state = reactive({
+  avatarButtonText: "Save",
+  uploading: false,
+  avatar_url: null,
+});
+
+function onInputChange(e) {
+  addFiles(e.target.files);
+  e.target.value = null;
+}
+
+function randomNumber(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+async function downloadAvatar(fileName) {
+  const { error, data } = await supabase.storage
+    .from("avatars")
+    .createSignedUrl(fileName, 60);
+
+  state.avatar_url = data.signedURL;
+}
+
+async function uploadAvatar() {
+  const file = files.value[0];
+  const fileExt = file.name.split(".").pop();
+  const fileName = file.name.split(".");
+
+  const formattedName = `${fileName[0]}-${randomNumber(1, 10000)}.${fileExt}`;
+
+  state.uploading = true;
+  state.avatarButtonText = "Saving...";
+
+  try {
+    const { error } = await supabase.storage
+      .from("avatars")
+      .upload(`${formattedName}`, file.file);
+
+    const { data } = await supabase
+      .from("profiles")
+      .update({ user_avatar: formattedName })
+      .match({ id: currentUser.value.id });
+
+    downloadAvatar(formattedName);
+
+    state.avatarButtonText = "Save";
+    state.uploading = false;
+  } catch (error) {
+    state.avatarButtonText = "Save";
+    state.uploading = false;
+    if (error.statusCode === "23505") {
+      alert("Image already exists");
+    }
+  }
+}
 
 /**
  * Stripe
@@ -131,6 +252,8 @@ onMounted(async () => {
   } catch (err) {
     alert(err);
   }
+
+  downloadAvatar(currentUser.value.user_avatar);
 });
 
 async function manageSubscription() {
@@ -205,5 +328,20 @@ async function manageSubscription() {
 
 .info-grid {
   @apply grid lg:grid-cols-2 gap-6;
+}
+
+button:disabled {
+  @apply opacity-50;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  opacity: 1;
+  transition: 150ms ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

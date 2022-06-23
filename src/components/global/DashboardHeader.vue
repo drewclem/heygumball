@@ -4,6 +4,7 @@
   >
     <div id="top">
       <router-link
+        v-if="currentUser"
         :to="`/${currentUser.username}/collections`"
         class="block w-40 lg:w-48"
         :inert="hasOpenModal || isMobileMenuOpen"

@@ -25,7 +25,17 @@
 
     <div v-if="currentUser" class="grid grid-cols-1 lg:grid-cols-10">
       <div class="lg:col-span-2">
-        <div class="h-24 w-24 bg-gray-400 rounded-full"></div>
+        <div class="h-24 w-24 bg-gray-200 rounded-full overflow-hidden">
+          <transition name="fade">
+            <BaseImage
+              v-if="state.avatar_url !== null"
+              class="h-24 w-24 object-cover"
+              :src="state.avatar_url"
+              :alt="currentUser.username"
+            />
+            <IconUserCircle v-else class="w-full h-full text-gray-400" />
+          </transition>
+        </div>
       </div>
 
       <div class="lg:col-span-8">
@@ -90,10 +100,12 @@ import { supabase } from "@/supabase";
 import { storeToRefs } from "pinia";
 
 // components
+import BaseImage from "@/components/base/BaseImage.vue";
 import BaseLink from "@/components/base/BaseLink.vue";
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
 import IconArrowLeft from "@/components/svg/IconArrowLeft.vue";
+import IconUserCircle from "@/components/svg/IconUserCircle.vue";
 
 const { user } = useAuthUser();
 const global = useUserStore();
@@ -112,6 +124,10 @@ const userForm = reactive({
   submitting: false,
 });
 
+const state = reactive({
+  avatar_url: null,
+});
+
 watchEffect(() => {
   (userForm.username = currentUser.value?.username),
     (userForm.full_name = currentUser.value?.full_name),
@@ -121,6 +137,14 @@ watchEffect(() => {
     (userForm.twitter_url = currentUser.value?.twitter_url),
     (userForm.facebook_url = currentUser.value?.facebook_url);
 });
+
+async function downloadAvatar(fileName) {
+  const { error, data } = await supabase.storage
+    .from("avatars")
+    .createSignedUrl(fileName, 60);
+
+  state.avatar_url = data.signedURL;
+}
 
 async function updateUserInfo() {
   userForm.submitting = true;
@@ -145,6 +169,12 @@ async function updateUserInfo() {
 
   setCurrentUserId(currentUser.value.id);
 }
+
+onMounted(() => {
+  if (currentUser.value.user_avatar !== null) {
+    downloadAvatar(currentUser.value.user_avatar);
+  }
+});
 </script>
 
 <style scoped>
@@ -162,5 +192,15 @@ async function updateUserInfo() {
 
 .info-grid {
   @apply grid lg:grid-cols-2 gap-6;
+}
+.fade-enter-active,
+.fade-leave-active {
+  opacity: 1;
+  transition: 300ms ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
