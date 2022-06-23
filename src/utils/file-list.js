@@ -16,13 +16,7 @@ export default function () {
   }
 
   function validType(fileType) {
-    const validTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/jpg",
-      "image/heic",
-      "image/heif",
-    ];
+    const validTypes = ["image/"];
 
     const isValid = validTypes.filter((type) => {
       return fileType.includes(type);
