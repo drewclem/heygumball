@@ -260,6 +260,11 @@ export default {
 
     const { files, addFiles, removeFile } = useFileList();
 
+    function onInputChange(e) {
+      addFiles(e.target.files);
+      e.target.value = null;
+    }
+
     const activeForm = ref({});
     const loading = ref(true);
     const form = reactive({
@@ -387,6 +392,7 @@ export default {
       files,
       addFiles,
       removeFile,
+      onInputChange,
       currentUser,
       username,
       loading,
