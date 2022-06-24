@@ -13,13 +13,13 @@
             <transition name="fade">
               <BaseImage
                 class="h-24 w-24 object-cover"
-                v-if="state.avatar_url !== null && files.length === 0"
-                :src="state.avatar_url"
+                v-if="currentUser.avatar_url && files.length === 0"
+                :src="currentUser.avatar_url"
                 :alt="`${currentUser.username}`"
               />
 
               <IconUserCircle
-                v-else-if="state.avatar_url === null || files.length === 0"
+                v-else-if="!currentUser.avatar_url || files.length === 0"
                 class="w-full h-full text-gray-400"
               />
 
@@ -176,7 +176,7 @@ import BaseFilePreview from "@/components/base/BaseFilePreview.vue";
 import IconUserCircle from "@/components/svg/IconUserCircle.vue";
 
 const global = useUserStore();
-const { currentUser } = storeToRefs(global);
+const { currentUser, setCurrentUserId } = storeToRefs(global);
 
 /**
  * Avatar upload
@@ -200,14 +200,6 @@ function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-async function downloadAvatar(fileName) {
-  const { error, data } = await supabase.storage
-    .from("avatars")
-    .createSignedUrl(fileName, 60);
-
-  state.avatar_url = data.signedURL;
-}
-
 async function uploadAvatar() {
   const file = files.value[0];
   const fileExt = file.name.split(".").pop();
@@ -228,13 +220,14 @@ async function uploadAvatar() {
       .update({ user_avatar: formattedName })
       .match({ id: currentUser.value.id });
 
-    downloadAvatar(formattedName);
-
     state.avatarButtonText = "Save";
     state.uploading = false;
+
+    setCurrentUserId(currentUser.id);
   } catch (error) {
     state.avatarButtonText = "Save";
     state.uploading = false;
+
     if (error.statusCode === "23505") {
       alert("Image already exists");
     }
@@ -252,8 +245,6 @@ onMounted(async () => {
   } catch (err) {
     alert(err);
   }
-
-  downloadAvatar(currentUser.value.user_avatar);
 });
 
 async function manageSubscription() {

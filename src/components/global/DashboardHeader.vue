@@ -63,7 +63,19 @@
 
     <!-- Desktop nav -->
     <div class="hidden lg:flex items-center space-x-6">
-      <p>{{ user.user_metadata.username }}</p>
+      <div class="flex items-center">
+        <div
+          v-if="currentUser.avatar_url"
+          class="h-10 w-10 rounded-full overflow-hidden mr-2"
+        >
+          <BaseImage
+            class="h-10 w-10 object-cover"
+            :src="currentUser.avatar_url"
+            :alt="currentUser.username"
+          />
+        </div>
+        <p>{{ currentUser.username }}</p>
+      </div>
 
       <BaseButton
         class="text-sm lg:text-base"
@@ -88,6 +100,7 @@ import GumballLogo from "@/components/global/GumballLogo.vue";
 import GumballLogoMark from "@/components/global/GumballLogoMark.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 import BaseLink from "@/components/base/BaseLink.vue";
+import BaseImage from "@/components/base/BaseImage.vue";
 import BaseModal from "@/components/base/BaseModal.vue";
 import MobileMenuUser from "@/components/global/MobileMenuUser.vue";
 
@@ -102,7 +115,7 @@ import IconUser from "@/components/svg/IconUser.vue";
 import IconLock from "@/components/svg/IconLock.vue";
 
 defineProps({
-  user: {
+  currentUser: {
     type: Object,
     required: true,
   },

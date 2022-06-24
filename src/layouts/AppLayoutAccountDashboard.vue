@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen">
-    <DashboardHeader :user="user" />
+    <DashboardHeader :currentUser="currentUser" />
 
     <main class="flex relative" :inert="hasOpenModal || isMobileMenuOpen">
       <div class="hidden lg:flex flex-col px-6 py-12 lg:w-[268.66px]">

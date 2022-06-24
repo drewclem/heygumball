@@ -28,9 +28,9 @@
         <div class="h-24 w-24 bg-gray-200 rounded-full overflow-hidden">
           <transition name="fade">
             <BaseImage
-              v-if="state.avatar_url !== null"
+              v-if="currentUser.avatar_url"
               class="h-24 w-24 object-cover"
-              :src="state.avatar_url"
+              :src="currentUser.avatar_url"
               :alt="currentUser.username"
             />
             <IconUserCircle v-else class="w-full h-full text-gray-400" />

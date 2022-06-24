@@ -78,7 +78,15 @@ export const useUserStore = defineStore("currentUser", {
         .eq("id", id)
         .single();
 
-      this.currentUser = data;
+      if (data.user_avatar !== null) {
+        const avatarData = await supabase.storage
+          .from("avatars")
+          .createSignedUrl(data.user_avatar, 60);
+
+        this.currentUser = { ...data, avatar_url: avatarData.signedURL };
+      } else {
+        this.currentUser = data;
+      }
     },
     async setCollections() {
       const { data } = await supabase

@@ -229,23 +229,37 @@ async function archiveCollection() {
 
 async function deleteCollection() {
   if (window.confirm("Are you sure you want to archive this collection?")) {
-    const deleteSubmissions = await supabase
-      .from("submissions")
-      .delete()
-      .match({ collection_id: collection_id });
+    let assetError = null;
+    submissions.value.forEach(async (submission) => {
+      const { error } = await supabase
+        .from("submission-uploads")
+        .delete()
+        .match({ submission_id: submission.id });
 
-    const { error } = await supabase
-      .from("collections")
-      .delete()
-      .match({ id: collection_id });
+      if (error) {
+        assetError = error;
+      }
+    });
 
-    if (error) {
-      alert(error.message);
+    if (assetError !== null) {
+      alert(assetError.message);
     } else {
-      setCollections();
-      nextTick(() => {
+      const deleteSubmissions = await supabase
+        .from("submissions")
+        .delete()
+        .match({ collection_id: collection_id });
+
+      const { error } = await supabase
+        .from("collections")
+        .delete()
+        .match({ id: collection_id });
+
+      if (error) {
+        alert(error.message);
+      } else {
+        setCollections();
         router.back();
-      });
+      }
     }
   }
 }
