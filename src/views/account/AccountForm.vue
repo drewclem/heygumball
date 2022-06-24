@@ -10,10 +10,7 @@
           <BaseHeading size="h4" tag="h1">
             Contact
             <span class="text-blue-500">
-              <span v-if="currentUser.full_name !== ''">{{
-                currentUser.full_name
-              }}</span>
-              <span v-else>@{{ username }}</span>
+              <span>@{{ username }}</span>
             </span>
           </BaseHeading>
 
