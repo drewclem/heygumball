@@ -18,7 +18,7 @@
 
     <p v-if="loading">Loading...</p>
 
-    <div v-else class="flex gap-12">
+    <div v-else class="flex flex-col lg:flex-row gap-12">
       <!-- left side -->
       <div class="text-sm w-44 flex flex-col space-y-5">
         <div>
@@ -74,7 +74,7 @@
       </div>
 
       <!-- right side -->
-      <div class="w-3/4">
+      <div class="order-first lg:order-last lg:w-3/4">
         <div class="card-shadow bg-white p-8 lg:p-12 rounded-lg mb-8">
           <BaseHeading size="h5" tag="h2" class="mb-5">Message</BaseHeading>
           <div class="richtext" v-html="submission.message" />
