@@ -97,6 +97,35 @@
               </div>
             </div>
 
+            <div class="relative" :class="{ error: v$.toc.$errors.length }">
+              <input
+                id="toc"
+                name="toc"
+                v-model="state.toc"
+                type="checkbox"
+                class="mr-1"
+              />
+              <label for="toc">
+                I agree to the
+                <router-link
+                  to="/terms-and-conditions"
+                  class="text-blue-500 underline"
+                >
+                  terms and conditions
+                </router-link>
+                of Heygumball
+              </label>
+              <div
+                class="input-errors"
+                v-for="error of v$.toc.$errors"
+                :key="error.$uid"
+              >
+                <p class="error-msg absolute text-xs text-red-500 mt-1">
+                  {{ error.$message }}
+                </p>
+              </div>
+            </div>
+
             <div class="w-full lg:w-auto ml-auto">
               <BaseButton
                 type="submit"
@@ -152,6 +181,7 @@ export default {
       username: "",
       email: "",
       password: "",
+      toc: "",
       invite: "",
       step: 0,
     });
@@ -177,6 +207,12 @@ export default {
       password: {
         required: helpers.withMessage(notEmpty, required),
         minLength: minLength(8),
+      },
+      toc: {
+        required: helpers.withMessage(
+          "You must aggree to the terms and conditions before proceeding",
+          required
+        ),
       },
     };
 

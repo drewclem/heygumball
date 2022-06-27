@@ -84,9 +84,9 @@
           v-if="images.length > 0"
           class="card-shadow bg-white p-8 lg:p-12 rounded-lg"
         >
-          <BaseHeading size="h5" tag="h2" class="mb-5"
-            >Reference media</BaseHeading
-          >
+          <BaseHeading size="h5" tag="h2" class="mb-5">
+            Reference media
+          </BaseHeading>
 
           <ul class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
             <li v-for="(image, index) in images" :key="index">
