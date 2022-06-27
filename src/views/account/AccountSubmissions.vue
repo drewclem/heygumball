@@ -1,21 +1,25 @@
 <template>
   <div class="max-w-4xl">
-    <div class="flex items-center justify-between mb-8">
-      <div class="flex items-baseline">
-        <BaseHeading size="h4" tag="h1">Collections</BaseHeading>
+    <div
+      class="flex flex-col lg:flex-row space-y-6 lg:space-y-0 items-end lg:items-center justify-between mb-8"
+    >
+      <div class="flex flex-col lg:flex-row w-full space-y-2 lg:space-y-0">
+        <div class="flex justify-between w-full lg:w-auto">
+          <BaseHeading size="h4" tag="h1">Collections</BaseHeading>
 
-        <button
-          class="ml-6 opacity-60"
-          type="button"
-          aria-label="Go back to account info page"
-          @click="router.back()"
-        >
-          <IconArrowLeft class="h-3 w-3 inline -mt-0.5" />
-          Back
-        </button>
+          <button
+            class="ml-6 opacity-60"
+            type="button"
+            aria-label="Go back to account info page"
+            @click="router.back()"
+          >
+            <IconArrowLeft class="h-3 w-3 inline -mt-0.5" />
+            Back
+          </button>
+        </div>
 
         <div
-          class="bg-white rounded-full px-4 py-2 shadow-inner flex space-x-6 text-sm ml-6"
+          class="bg-white rounded-full px-4 py-2 shadow-inner flex space-x-6 text-sm lg:ml-6"
         >
           <div class="flex space-x-2 items-center text-sm">
             <p class="text-blue-500">Message</p>
@@ -28,12 +32,6 @@
             <p class="text-blue-500">Info</p>
           </div>
 
-          <!-- <button
-            class="text-gray-500 opacity-75 hover:opacity-100"
-            @click="archiveCollection"
-          >
-            <IconArchive class="h-4 w-4 mr-2 inline-block -mt-1" />Archive
-          </button> -->
           <button
             class="flex space-x-1 text-red-500 opacity-75 hover:opacity-100"
             @click="deleteCollection"
@@ -53,7 +51,15 @@
         </div>
       </div>
 
-      <KeywordSearch v-model="searchPhrase" />
+      <KeywordSearch class="hidden lg:flex" v-model="searchPhrase" />
+
+      <input
+        ref="search"
+        class="lg:hidden py-2 px-4 border border-gray-300 rounded-full h-[34px] w-full bg-transparent focus:bg-white focus:border-gray-500"
+        type="text"
+        placeholder="Search"
+        v-model="searchPhrase"
+      />
     </div>
 
     <div v-if="currentUser.default_view">
@@ -96,8 +102,8 @@
       <div
         class="grid grid-cols-5 px-5 gap-4 py-3 lg:px-8 text-sm lg:text-base lg:py-4 opacity-40 mb-4"
       >
-        <p class="col-span-1">Thumbnail</p>
-        <p class="col-span-4">Message</p>
+        <p class="col-span-1 truncate">Thumbnail</p>
+        <p class="col-span-4 truncate">Message</p>
       </div>
 
       <div class="flex flex-col space-y-8">
@@ -228,7 +234,11 @@ async function archiveCollection() {
 }
 
 async function deleteCollection() {
-  if (window.confirm("Are you sure you want to archive this collection?")) {
+  if (
+    window.confirm(
+      "Are you sure you want to delete this collection? This is an irreversible action and all submissions will be lost permanently."
+    )
+  ) {
     let assetError = null;
     submissions.value.forEach(async (submission) => {
       const { error } = await supabase
