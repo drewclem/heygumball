@@ -136,6 +136,7 @@
 <script setup>
 // utils
 import { reactive } from "vue";
+import { useRoute } from "vue-router";
 import "wicg-inert";
 
 // components
@@ -144,6 +145,8 @@ import BaseButton from "@/components/base/BaseButton.vue";
 import BaseText from "@/components/base/BaseText.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
 import IconCheck from "@/components/svg/IconCheck.vue";
+
+const route = useRoute();
 
 const state = reactive({
   email: "",
@@ -216,6 +219,7 @@ function submitNetlifyForm() {
         state.responseMessage =
           "We appreciate you're interest! We'll be in contact soon.";
         state.responseStatus = "success";
+        route.push("/");
       } else {
         state.responseMessage =
           "Oops! Looks like something went wrong. Please try again!";
