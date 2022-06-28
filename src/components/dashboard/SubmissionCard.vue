@@ -1,15 +1,25 @@
 <template>
   <router-link
     :to="`/${user.user_metadata.username}/collections/${submission.collection_id}/${submission.id}`"
-    class="relative flex w-full items-center overflow-hidden card-shadow"
+    class="relative flex w-full items-center"
   >
     <div
       v-if="!submission.viewed"
       class="absolute rounded-full bg-red-500 w-2 h-2 ml-3"
     />
     <div
-      class="grid grid-cols-6 gap-2 card-padding text-sm lg:text-base bg-white rounded-lg w-full"
+      class="relative grid grid-cols-6 gap-2 card-padding card-shadow text-sm lg:text-base bg-white rounded-lg w-full overflow-hidden"
     >
+      <div
+        v-if="submission.is_liked === 1"
+        class="absolute bg-green-200 w-2 h-full left-0"
+      />
+
+      <div
+        v-if="submission.is_liked === -1"
+        class="absolute bg-red-200 w-2 h-full left-0"
+      />
+
       <div class="relative col-span-2">
         <p
           v-if="submission.booked"

@@ -141,6 +141,7 @@ import { useRoute, useRouter } from "vue-router";
 import useAuthUser from "@/utils/useAuth";
 import { useUserStore } from "@/stores/user";
 import { supabase } from "@/supabase";
+import { storeToRefs } from "pinia";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
@@ -157,7 +158,6 @@ import IconArrowLeft from "@/components/svg/IconArrowLeft.vue";
 import IconArchive from "@/components/svg/IconArchive.vue";
 import IconDelete from "@/components/svg/IconDelete.vue";
 import IconLockClosed from "@/components/svg/IconLockClosed.vue";
-import { storeToRefs } from "pinia";
 
 const route = useRoute();
 const router = useRouter();
