@@ -205,14 +205,17 @@ function encode(data) {
 }
 
 function submitNetlifyForm() {
+  const data = {
+    email: state.email,
+    newsletter: state.newsletter,
+  };
   try {
     fetch("/", {
       method: "post",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: encode({
         "form-name": "Early access",
-        email: state.email,
-        newsletter: state.newsletter,
+        ...data,
       }),
     }).then((res) => {
       if (res.status === 200) {
