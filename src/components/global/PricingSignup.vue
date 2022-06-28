@@ -241,7 +241,7 @@ function submitNetlifyForm() {
       state.responseMessage = null;
       state.responseStatus = null;
       state.email = "";
-    }, 3000);
+    }, 10000);
   } catch (err) {
     console.log(err.message);
   }
