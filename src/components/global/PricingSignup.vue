@@ -1,5 +1,5 @@
 <template>
-  <section class="narrow-wrapper my-24 lg:my-52">
+  <section class="narrow-wrapper my-32 lg:my-52">
     <div class="grid lg:grid-cols-5 gap-12 mb-12">
       <div class="flex flex-col space-y-6 lg:col-span-3">
         <BaseHeading size="h3">
