@@ -8,6 +8,13 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
+    <form name="Early access" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="email" />
+      <input type="checkbox" name="newsletter" />
+
+      <button type="submit">Send</button>
+    </form>
+
     <noscript>
       <strong
         >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
