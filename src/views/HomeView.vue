@@ -113,6 +113,8 @@
       </div>
     </section>
 
+    <PricingSignup />
+
     <section class="narrow-wrapper mb-20">
       <div
         class="grid grid-cols-1 lg:grid-cols-2 space-y-10 lg:space-y-0 items-center"
@@ -177,6 +179,7 @@ import SearchGraphic from "../components/svg/SearchGraphic.vue";
 import ReviewGraphic from "../components/svg/ReviewGraphic.vue";
 import IconSorting from "../components/svg/IconSorting.vue";
 import IconReply from "../components/svg/IconReply.vue";
+import PricingSignup from "../components/global/PricingSignup.vue";
 </script>
 
 <style scoped>
