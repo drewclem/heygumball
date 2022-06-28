@@ -41,8 +41,8 @@
             class="h-5 w-5 mr-2 -mt-px"
             :class="submission.saved ? 'text-red-500' : 'text-gray-300'"
           />
-          <span v-if="!submission.saved">Save</span>
-          <span v-else>Saved</span>
+          <span v-if="!submission.saved">Favorite</span>
+          <span v-else>Favorited</span>
         </button>
 
         <a
@@ -76,7 +76,37 @@
       <!-- right side -->
       <div class="order-first lg:order-last lg:w-3/4">
         <div class="card-shadow bg-white p-8 lg:p-12 rounded-lg mb-8">
-          <BaseHeading size="h5" tag="h2" class="mb-5">Message</BaseHeading>
+          <div class="flex justify-between" items-center>
+            <BaseHeading size="h5" tag="h2" class="mb-5">Message</BaseHeading>
+
+            <div class="flex flex-row space-x-4 mb-4">
+              <button class="flex text-base" @click="dislikeSubmission">
+                <IconThumbDown
+                  :class="
+                    submission.is_liked === -1
+                      ? 'text-red-500'
+                      : 'text-gray-300 hover:text-red-500'
+                  "
+                />
+                <span class="sr-only" v-if="submission.is_liked === -1">
+                  Disliked
+                </span>
+              </button>
+
+              <button class="flex text-base" @click="likeSubmission">
+                <IconThumbUp
+                  :class="
+                    submission.is_liked === 1
+                      ? 'text-green-500'
+                      : 'text-gray-300 hover:text-green-500'
+                  "
+                />
+                <span class="sr-only" v-if="submission.is_liked === 1"
+                  >Liked</span
+                >
+              </button>
+            </div>
+          </div>
           <div class="richtext" v-html="submission.message" />
         </div>
 
@@ -122,6 +152,8 @@ import BaseButton from "@/components/base/BaseButton.vue";
 import BaseImage from "@/components/base/BaseImage.vue";
 import BaseModal from "@/components/base/BaseModal.vue";
 import IconHeart from "@/components/svg/IconHeart.vue";
+import IconThumbDown from "@/components/svg/IconThumbDown.vue";
+import IconThumbUp from "@/components/svg/IconThumbUp.vue";
 import IconArrowLeft from "@/components/svg/IconArrowLeft.vue";
 
 const route = useRoute();
@@ -166,6 +198,35 @@ async function saveSubmission() {
   await setSavedSubmissions();
 }
 
+async function dislikeSubmission() {
+  const { error } = await supabase
+    .from("submissions")
+    .update({ is_liked: -1 })
+    .match({ id: submission.value.id });
+
+  if (error) {
+    alert("Oops! Something went wrong.");
+  }
+
+  await fetchSubmission();
+  await setCollections();
+  await setSavedSubmissions();
+}
+
+async function likeSubmission() {
+  const { error } = await supabase
+    .from("submissions")
+    .update({ is_liked: 1 })
+    .match({ id: submission.value.id });
+
+  if (error) {
+    alert("Oops! Something went wrong.");
+  }
+
+  await fetchSubmission();
+  await setCollections();
+  await setSavedSubmissions();
+}
 // toggle saving the submission
 async function markAsBooked() {
   const { error } = await supabase
