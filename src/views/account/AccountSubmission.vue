@@ -85,7 +85,7 @@
                   :class="
                     submission.is_liked === -1
                       ? 'text-red-500'
-                      : 'text-gray-300 hover:text-red-500'
+                      : 'text-gray-300 hover:text-gray-500'
                   "
                 />
                 <span class="sr-only" v-if="submission.is_liked === -1">
@@ -98,7 +98,7 @@
                   :class="
                     submission.is_liked === 1
                       ? 'text-green-500'
-                      : 'text-gray-300 hover:text-green-500'
+                      : 'text-gray-300 hover:text-gray-500'
                   "
                 />
                 <span class="sr-only" v-if="submission.is_liked === 1"
@@ -199,13 +199,24 @@ async function saveSubmission() {
 }
 
 async function dislikeSubmission() {
-  const { error } = await supabase
-    .from("submissions")
-    .update({ is_liked: -1 })
-    .match({ id: submission.value.id });
+  if (submission.value.is_liked !== -1) {
+    const { error } = await supabase
+      .from("submissions")
+      .update({ is_liked: -1 })
+      .match({ id: submission.value.id });
 
-  if (error) {
-    alert("Oops! Something went wrong.");
+    if (error) {
+      alert("Oops! Something went wrong.");
+    }
+  } else {
+    const { error } = await supabase
+      .from("submissions")
+      .update({ is_liked: 0 })
+      .match({ id: submission.value.id });
+
+    if (error) {
+      alert("Oops! Something went wrong.");
+    }
   }
 
   await fetchSubmission();
@@ -214,13 +225,24 @@ async function dislikeSubmission() {
 }
 
 async function likeSubmission() {
-  const { error } = await supabase
-    .from("submissions")
-    .update({ is_liked: 1 })
-    .match({ id: submission.value.id });
+  if (submission.value.is_liked !== 1) {
+    const { error } = await supabase
+      .from("submissions")
+      .update({ is_liked: 1 })
+      .match({ id: submission.value.id });
 
-  if (error) {
-    alert("Oops! Something went wrong.");
+    if (error) {
+      alert("Oops! Something went wrong.");
+    }
+  } else {
+    const { error } = await supabase
+      .from("submissions")
+      .update({ is_liked: 0 })
+      .match({ id: submission.value.id });
+
+    if (error) {
+      alert("Oops! Something went wrong.");
+    }
   }
 
   await fetchSubmission();

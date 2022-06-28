@@ -198,7 +198,23 @@ onMounted(() => {
 const searchPhrase = ref(null);
 
 const filteredSubmissions = computed(() => {
-  return submissions.value.filter((submission) => {
+  let likedSubmissions = [];
+  let midSubmissions = [];
+  let dislikedSubmissions = [];
+
+  submissions.value.filter((submission) => {
+    if (submission.is_liked === -1) dislikedSubmissions.push(submission);
+    if (submission.is_liked === 1) likedSubmissions.push(submission);
+    if (submission.is_liked === 0) midSubmissions.push(submission);
+  });
+
+  const sortedSubmissions = [
+    ...likedSubmissions,
+    ...midSubmissions,
+    ...dislikedSubmissions,
+  ];
+
+  return sortedSubmissions.filter((submission) => {
     if (searchPhrase.value === null) return submission;
     const filter = searchPhrase.value.toLowerCase();
 
