@@ -210,7 +210,7 @@ function submitNetlifyForm() {
       method: "post",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: encode({
-        "form-name": "Contact",
+        "form-name": "Early access",
         email: state.email,
         newsletter: state.newsletter,
       }),
