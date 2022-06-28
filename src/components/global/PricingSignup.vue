@@ -80,6 +80,7 @@
           data-netlify="true"
           data-netlify-honeypot="bot-field"
         >
+          <input type="hidden" name="form-name" value="Early access" />
           <div class="relative flex flex-col mb-2">
             <label class="font-display mb-2 text-sm ml-3" for="email"
               >Email *</label
@@ -125,6 +126,13 @@
               class="mt-16 lg:mt-8 text-sm"
             >
               {{ state.responseMessage }}
+            </p>
+
+            <p class="hidden">
+              <label>
+                Don’t fill this out if you're human:
+                <input name="bot-field" />
+              </label>
             </p>
           </div>
         </form>
@@ -222,7 +230,6 @@ function submitNetlifyForm() {
         state.responseMessage =
           "We appreciate you're interest! We'll be in contact soon.";
         state.responseStatus = "success";
-        route.push("/");
       } else {
         state.responseMessage =
           "Oops! Looks like something went wrong. Please try again!";
