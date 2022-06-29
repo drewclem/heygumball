@@ -82,9 +82,9 @@
 
             <BaseText>
               Navigating your requests has never been easier! Search by keyword,
-              name, date.. you name it, we find it.<br /><br />requests are
-              grouped by booking windows by default, making it easy for you to
-              see the most recent and relevant items.
+              name, date- you name it, we find it.<br /><br />Requests are
+              grouped by collections by default, making it easy for you to see
+              the most recent and relevant items.
             </BaseText>
           </div>
         </div>
