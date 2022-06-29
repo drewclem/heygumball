@@ -17,7 +17,7 @@
 
           <BaseText class="lg:w-3/4">
             Manage your appointment &amp; booking requests better with
-            Heygumball&apos;s calendar drop and management tool.
+            Heygumball&apos;s booking request management tools.
           </BaseText>
 
           <div>
