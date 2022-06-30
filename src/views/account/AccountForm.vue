@@ -25,189 +25,217 @@
         </div>
 
         <div class="card-shadow bg-white rounded-xl mx-6 lg:mx-0 p-6 lg:p-11">
-          <p v-if="loading">Loading...</p>
+          <div class="flex flex-col space-y-6" v-if="!showForm">
+            <BaseHeading size="h3" tag="h2"> Read first: </BaseHeading>
 
-          <div
-            v-else-if="
-              Object.keys(activeForm).length && formState !== 'submitted'
-            "
-          >
-            <form class="flex flex-col gap-8" @submit.prevent="submitForm">
-              <div class="relative" :class="{ error: v$.name.$errors.length }">
-                <BaseInput v-model="form.name"> Name * </BaseInput>
-                <div
-                  class="input-errors"
-                  v-for="error of v$.name.$errors"
-                  :key="error.$uid"
-                >
-                  <p class="error-msg absolute text-xs text-red-500 mt-1">
-                    {{ error.$message }}
-                  </p>
-                </div>
-              </div>
+            <div v-html="currentUser.prescreen" />
 
-              <div class="relative" :class="{ error: v$.email.$errors.length }">
-                <BaseInput v-model="form.email"> Email * </BaseInput>
-                <div
-                  class="input-errors"
-                  v-for="error of v$.email.$errors"
-                  :key="error.$uid"
-                >
-                  <p class="error-msg absolute text-xs text-red-500 mt-1">
-                    {{ error.$message }}
-                  </p>
-                </div>
-              </div>
-
-              <div class="relative" :class="{ error: v$.phone.$errors.length }">
-                <BaseInput v-model="form.phone"> Phone * </BaseInput>
-                <div
-                  class="input-errors"
-                  v-for="error of v$.phone.$errors"
-                  :key="error.$uid"
-                >
-                  <p class="error-msg absolute text-xs text-red-500 mt-1">
-                    {{ error.$message }}
-                  </p>
-                </div>
-              </div>
-
-              <div
-                class="relative"
-                :class="{ error: v$.message.$errors.length }"
-              >
-                <BaseRichText v-model="form.message">Message *</BaseRichText>
-
-                <div
-                  class="input-errors"
-                  v-for="error of v$.message.$errors"
-                  :key="error.$uid"
-                >
-                  <p class="error-msg absolute text-xs text-red-500 mt-1">
-                    {{ error.$message }}
-                  </p>
-                </div>
-              </div>
-
-              <div>
-                <p class="font-display text-sm">Reference media</p>
-                <p class="text-xs mb-4 opacity-50">
-                  Accepted file types: jpeg, jpg, png
-                </p>
-                <BaseDropzone
-                  @files-dropped="addFiles"
-                  #default="{ dropZoneActive }"
-                >
-                  <label class="text-sm" for="file-input">
-                    <span v-if="dropZoneActive">
-                      <span>Drop Them Here</span>
-                    </span>
-                    <span v-else>
-                      <span>Drag Your Files Here</span>
-                      <span class="text-sm">
-                        or <strong><em>click here</em></strong> to select files
-                      </span>
-                    </span>
-
-                    <input
-                      type="file"
-                      id="file-input"
-                      accept="image/*"
-                      multiple
-                      @change="onInputChange"
-                    />
-                  </label>
-
-                  <ul class="grid grid-cols-4 gap-2 mt-3" v-show="files.length">
-                    <BaseFilePreview
-                      v-for="file of files"
-                      :key="file.id"
-                      :file="file"
-                      tag="li"
-                      @remove="removeFile"
-                    />
-                  </ul>
-                </BaseDropzone>
-              </div>
-              <!------------ form ends here -------------->
-              <div class="border-t-2 border-gray-100" />
-
-              <div>
-                <VueRecaptcha
-                  :sitekey="siteKey"
-                  :load-recaptcha-script="true"
-                  @verify="form.recaptcha = true"
-                />
-              </div>
-
-              <div class="relative" :class="{ error: v$.toc.$errors.length }">
-                <input
-                  id="toc"
-                  name="toc"
-                  v-model="form.toc"
-                  type="checkbox"
-                  class="mr-1"
-                />
-                <label for="toc">
-                  I agree to the
-                  <router-link
-                    to="/terms-and-conditions"
-                    class="text-blue-500 underline"
-                  >
-                    terms and conditions
-                  </router-link>
-                  of Heygumball
-                </label>
-                <div
-                  class="input-errors"
-                  v-for="error of v$.toc.$errors"
-                  :key="error.$uid"
-                >
-                  <p class="error-msg absolute text-xs text-red-500 mt-1">
-                    {{ error.$message }}
-                  </p>
-                </div>
-              </div>
-
-              <div class="lg:ml-auto">
-                <BaseButton
-                  class="w-full"
-                  theme="tertiary"
-                  type="submit"
-                  :disabled="
-                    formState === 'submitting' || !form.toc || !form.recaptcha
-                  "
-                >
-                  {{ formState === "submitting" ? "Submitting..." : "Send" }}
-                </BaseButton>
-              </div>
-            </form>
-          </div>
-
-          <div v-else-if="formState === 'submitted'">
-            <BaseHeading tag="h2" size="h3" class="text-green-500 mb-5">
-              Thanks for submitting!
-            </BaseHeading>
-
-            <BaseText>
-              <span>
-                {{
-                  currentUser.full_name !== ""
-                    ? currentUser.full_name
-                    : `@${username}`
-                }}
-              </span>
-              will be in touch!</BaseText
-            >
+            <div>
+              <BaseButton @click="showForm = true" theme="tertiary">
+                Confirm
+              </BaseButton>
+            </div>
           </div>
 
           <div v-else>
-            <BaseHeading tag="h2" size="h3" class="text-red-500 mb-5">
-              Uh oh!
-            </BaseHeading>
+            <p v-if="loading">Loading...</p>
+            <div
+              v-else-if="
+                Object.keys(activeForm).length && formState !== 'submitted'
+              "
+            >
+              <form class="flex flex-col gap-8" @submit.prevent="submitForm">
+                <div
+                  class="relative"
+                  :class="{ error: v$.name.$errors.length }"
+                >
+                  <BaseInput v-model="form.name"> Name * </BaseInput>
+                  <div
+                    class="input-errors"
+                    v-for="error of v$.name.$errors"
+                    :key="error.$uid"
+                  >
+                    <p class="error-msg absolute text-xs text-red-500 mt-1">
+                      {{ error.$message }}
+                    </p>
+                  </div>
+                </div>
 
-            <BaseText>It looks like their books are currently closed.</BaseText>
-            <BaseText>Please try again later.</BaseText>
+                <div
+                  class="relative"
+                  :class="{ error: v$.email.$errors.length }"
+                >
+                  <BaseInput v-model="form.email"> Email * </BaseInput>
+                  <div
+                    class="input-errors"
+                    v-for="error of v$.email.$errors"
+                    :key="error.$uid"
+                  >
+                    <p class="error-msg absolute text-xs text-red-500 mt-1">
+                      {{ error.$message }}
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  class="relative"
+                  :class="{ error: v$.phone.$errors.length }"
+                >
+                  <BaseInput v-model="form.phone"> Phone * </BaseInput>
+                  <div
+                    class="input-errors"
+                    v-for="error of v$.phone.$errors"
+                    :key="error.$uid"
+                  >
+                    <p class="error-msg absolute text-xs text-red-500 mt-1">
+                      {{ error.$message }}
+                    </p>
+                  </div>
+                </div>
+
+                <div
+                  class="relative"
+                  :class="{ error: v$.message.$errors.length }"
+                >
+                  <BaseRichText v-model="form.message">Message *</BaseRichText>
+
+                  <div
+                    class="input-errors"
+                    v-for="error of v$.message.$errors"
+                    :key="error.$uid"
+                  >
+                    <p class="error-msg absolute text-xs text-red-500 mt-1">
+                      {{ error.$message }}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <p class="font-display text-sm">Reference media</p>
+                  <p class="text-xs mb-4 opacity-50">
+                    Accepted file types: jpeg, jpg, png
+                  </p>
+                  <BaseDropzone
+                    @files-dropped="addFiles"
+                    #default="{ dropZoneActive }"
+                  >
+                    <label class="text-sm" for="file-input">
+                      <span v-if="dropZoneActive">
+                        <span>Drop Them Here</span>
+                      </span>
+                      <span v-else>
+                        <span>Drag Your Files Here</span>
+                        <span class="text-sm">
+                          or <strong><em>click here</em></strong> to select
+                          files
+                        </span>
+                      </span>
+
+                      <input
+                        type="file"
+                        id="file-input"
+                        accept="image/*"
+                        multiple
+                        @change="onInputChange"
+                      />
+                    </label>
+
+                    <ul
+                      class="grid grid-cols-4 gap-2 mt-3"
+                      v-show="files.length"
+                    >
+                      <BaseFilePreview
+                        v-for="file of files"
+                        :key="file.id"
+                        :file="file"
+                        tag="li"
+                        @remove="removeFile"
+                      />
+                    </ul>
+                  </BaseDropzone>
+                </div>
+                <!------------ form ends here -------------->
+                <div class="border-t-2 border-gray-100" />
+
+                <div>
+                  <VueRecaptcha
+                    :sitekey="siteKey"
+                    :load-recaptcha-script="true"
+                    @verify="form.recaptcha = true"
+                  />
+                </div>
+
+                <div class="relative" :class="{ error: v$.toc.$errors.length }">
+                  <input
+                    id="toc"
+                    name="toc"
+                    v-model="form.toc"
+                    type="checkbox"
+                    class="mr-1"
+                  />
+                  <label for="toc">
+                    I agree to the
+                    <router-link
+                      to="/terms-and-conditions"
+                      class="text-blue-500 underline"
+                    >
+                      terms and conditions
+                    </router-link>
+                    of Heygumball
+                  </label>
+                  <div
+                    class="input-errors"
+                    v-for="error of v$.toc.$errors"
+                    :key="error.$uid"
+                  >
+                    <p class="error-msg absolute text-xs text-red-500 mt-1">
+                      {{ error.$message }}
+                    </p>
+                  </div>
+                </div>
+
+                <div class="lg:ml-auto">
+                  <BaseButton
+                    class="w-full"
+                    theme="tertiary"
+                    type="submit"
+                    :disabled="
+                      formState === 'submitting' || !form.toc || !form.recaptcha
+                    "
+                  >
+                    {{ formState === "submitting" ? "Submitting..." : "Send" }}
+                  </BaseButton>
+                </div>
+              </form>
+            </div>
+
+            <div v-else-if="formState === 'submitted'">
+              <BaseHeading tag="h2" size="h3" class="text-green-500 mb-5">
+                Thanks for submitting!
+              </BaseHeading>
+
+              <BaseText>
+                <span>
+                  {{
+                    currentUser.full_name !== ""
+                      ? currentUser.full_name
+                      : `@${username}`
+                  }}
+                </span>
+                will be in touch!</BaseText
+              >
+            </div>
+
+            <div v-else>
+              <BaseHeading tag="h2" size="h3" class="text-red-500 mb-5">
+                Uh oh!
+              </BaseHeading>
+
+              <BaseText
+                >It looks like their books are currently closed.</BaseText
+              >
+              <BaseText>Please try again later.</BaseText>
+            </div>
           </div>
         </div>
       </div>
@@ -217,7 +245,14 @@
 
 <script>
 // utils
-import { defineComponent, onMounted, reactive, ref, computed } from "vue";
+import {
+  defineComponent,
+  onMounted,
+  reactive,
+  ref,
+  computed,
+  watch,
+} from "vue";
 import { useRoute } from "vue-router";
 import { supabase } from "@/supabase";
 
@@ -284,7 +319,7 @@ export default {
     async function downloadAvatar(fileName) {
       const { error, data } = await supabase.storage
         .from("avatars")
-        .createSignedUrl(fileName, 60);
+        .createSignedUrl(fileName, 60000);
 
       state.avatar_url = data.signedURL;
     }
@@ -299,6 +334,12 @@ export default {
 
     const route = useRoute();
     const username = route.params.id;
+
+    const showForm = ref(true);
+
+    watch(currentUser, (newVal, oldVal) => {
+      if (newVal.prescreen !== null) showForm.value = false;
+    });
 
     /**
      * form validation
@@ -391,6 +432,7 @@ export default {
       removeFile,
       onInputChange,
       currentUser,
+      showForm,
       username,
       loading,
       state,

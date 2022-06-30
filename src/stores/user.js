@@ -81,7 +81,7 @@ export const useUserStore = defineStore("currentUser", {
       if (data.user_avatar !== null) {
         const avatarData = await supabase.storage
           .from("avatars")
-          .createSignedUrl(data.user_avatar, 60);
+          .createSignedUrl(data.user_avatar, 6000);
 
         this.currentUser = { ...data, avatar_url: avatarData.signedURL };
       } else {
