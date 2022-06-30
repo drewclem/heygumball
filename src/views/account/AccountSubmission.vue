@@ -36,7 +36,11 @@
           <p>{{ submission.phone }}</p>
         </div>
 
-        <button class="flex text-base" @click="saveSubmission">
+        <button
+          class="flex text-base"
+          @click="saveSubmission"
+          :disabled="submission.is_declined"
+        >
           <IconHeart
             class="h-5 w-5 mr-2 -mt-px"
             :class="submission.saved ? 'text-red-500' : 'text-gray-300'"
@@ -59,9 +63,21 @@
           class="py-0.5 border-2 border-blue-500 hover:bg-blue-500 hover:text-white text-center rounded-md"
           :class="`${submission.booked ? 'bg-blue-500 text-white' : ''}`"
           @click="markAsBooked"
+          :disabled="submission.is_declined"
         >
           <span v-if="!submission.booked">Mark as booked</span>
           <span v-else>Booked</span>
+        </button>
+
+        <button
+          type="button"
+          class="py-0.5 border-2 border-gray-300 text-center rounded-md"
+          :class="{ 'hover:border-gray-400': !submission.is_declined }"
+          @click="declineSubmission"
+          :disabled="submission.is_declined"
+        >
+          <span v-if="!submission.is_declined">Decline</span>
+          <span v-else>Declined</span>
         </button>
 
         <button
@@ -128,7 +144,7 @@
                   />
                 </template>
                 <template #content>
-                  <BaseImage :src="image" />
+                  <BaseImage class="rounded-lg" :src="image" />
                 </template>
               </BaseModal>
             </li>
@@ -160,7 +176,7 @@ const route = useRoute();
 const router = useRouter();
 const submission = ref({});
 
-const { setSavedSubmissions, setCollections } = useUserStore();
+const { currentUser, setSavedSubmissions, setCollections } = useUserStore();
 
 const submissionId = route.params.submission_id;
 
@@ -312,6 +328,44 @@ async function retrieveImages() {
   }
 }
 
+/**
+ * Decline submission
+ */
+
+async function declineSubmission() {
+  const data = {
+    sender: currentUser.email,
+    receiver: submission.value.email,
+    subject: "Thank you for contacting me. However...",
+    text: currentUser.decline_response,
+  };
+
+  try {
+    const message = await fetch("/.netlify/functions/send-user-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const mailgunData = await message;
+
+    // if (mailgunData.status === 200) {
+    //   const { error } = await supabase
+    //     .from("submissions")
+    //     .update({ is_declined: true })
+    //     .match({ id: submissionId });
+    // }
+  } catch (error) {
+    console.log(error.message);
+  }
+
+  await fetchSubmission();
+  await setCollections();
+  await setSavedSubmissions();
+}
+
 onBeforeMount(async () => {
   await fetchSubmission();
 
@@ -347,5 +401,9 @@ onMounted(() => {
   @apply rounded-lg shadow-md;
   aspect-ratio: 1/1;
   object-fit: cover;
+}
+
+button:disabled {
+  @apply opacity-50 pointer-events-none;
 }
 </style>
