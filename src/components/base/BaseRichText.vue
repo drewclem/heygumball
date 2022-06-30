@@ -1,8 +1,16 @@
 <template>
   <div>
-    <label class="block font-display mb-2 text-sm"><slot /></label>
+    <label
+      class="block font-display text-sm"
+      :class="$slots.helper ? 'mb-1' : 'mb-2'"
+      ><slot
+    /></label>
+    <p class="text-xs mb-4 lg:w-3/4 opacity-50" v-if="$slots.helper">
+      <slot name="helper" />
+    </p>
     <QuillEditor
       theme="snow"
+      class="bg-white"
       :content="modelValue"
       contentType="html"
       v-model:content="body"

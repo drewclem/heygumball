@@ -85,6 +85,20 @@
             <BaseInput v-model="userForm.facebook_url">Facebook</BaseInput>
           </div>
         </div>
+
+        <div class="info-group info-list">
+          <div>
+            <BaseRichText v-model="userForm.prescreen">
+              Pre-form Screen
+              <template v-slot:helper
+                >Use this to let people know specific info about you before
+                filling out your contact form. Style preference, timeframe,
+                whatever it is- put it here and they'll be notified about it
+                before submitting a request.</template
+              >
+            </BaseRichText>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -103,6 +117,7 @@ import { storeToRefs } from "pinia";
 import BaseImage from "@/components/base/BaseImage.vue";
 import BaseLink from "@/components/base/BaseLink.vue";
 import BaseHeading from "@/components/base/BaseHeading.vue";
+import BaseRichText from "@/components/base/BaseRichText.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
 import IconArrowLeft from "@/components/svg/IconArrowLeft.vue";
 import IconUserCircle from "@/components/svg/IconUserCircle.vue";
@@ -121,6 +136,7 @@ const userForm = reactive({
   tiktok_url: null,
   twitter_url: null,
   facebook_url: null,
+  prescreen: null,
   submitting: false,
 });
 
@@ -136,6 +152,7 @@ watchEffect(() => {
     (userForm.tiktok_url = currentUser.value?.tiktok_url),
     (userForm.twitter_url = currentUser.value?.twitter_url),
     (userForm.facebook_url = currentUser.value?.facebook_url);
+  userForm.prescreen = currentUser.value?.prescreen;
 });
 
 async function downloadAvatar(fileName) {
@@ -157,6 +174,7 @@ async function updateUserInfo() {
     tiktok_url: userForm.tiktok_url === "" ? null : userForm.tiktok_url,
     twitter_url: userForm.twitter_url === "" ? null : userForm.twitter_url,
     facebook_url: userForm.facebook_url === "" ? null : userForm.facebook_url,
+    prescreen: userForm.prescreen === "" ? null : userForm.prescreen,
   });
   if (error) {
     alert("Oops! Something went wrong.");
