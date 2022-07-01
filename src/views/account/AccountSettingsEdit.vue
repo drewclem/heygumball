@@ -90,13 +90,23 @@
           <div>
             <BaseRichText v-model="userForm.prescreen">
               Pre-form Screen
-              <template v-slot:helper
-                >Use this to let people know specific info about you before
+              <template v-slot:helper>
+                Use this to let people know specific info about you before
                 filling out your contact form. Style preference, timeframe,
                 whatever it is- put it here and they'll be notified about it
-                before submitting a request.</template
-              >
+                before submitting a request.
+              </template>
             </BaseRichText>
+          </div>
+
+          <div>
+            <BaseTextarea v-model="userForm.decline_response" rows="6">
+              Decline Reponse
+              <template v-slot:helper>
+                The email that will be sent to prospective clients when using
+                the one-click decline button
+              </template>
+            </BaseTextarea>
           </div>
         </div>
       </div>
@@ -118,6 +128,7 @@ import BaseImage from "@/components/base/BaseImage.vue";
 import BaseLink from "@/components/base/BaseLink.vue";
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseRichText from "@/components/base/BaseRichText.vue";
+import BaseTextarea from "@/components/base/BaseTextarea.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
 import IconArrowLeft from "@/components/svg/IconArrowLeft.vue";
 import IconUserCircle from "@/components/svg/IconUserCircle.vue";
@@ -137,6 +148,7 @@ const userForm = reactive({
   twitter_url: null,
   facebook_url: null,
   prescreen: null,
+  decline_response: null,
   submitting: false,
 });
 
@@ -153,6 +165,7 @@ watchEffect(() => {
     (userForm.twitter_url = currentUser.value?.twitter_url),
     (userForm.facebook_url = currentUser.value?.facebook_url);
   userForm.prescreen = currentUser.value?.prescreen;
+  userForm.decline_response = currentUser.value?.decline_response;
 });
 
 async function downloadAvatar(fileName) {
@@ -175,7 +188,10 @@ async function updateUserInfo() {
     twitter_url: userForm.twitter_url === "" ? null : userForm.twitter_url,
     facebook_url: userForm.facebook_url === "" ? null : userForm.facebook_url,
     prescreen: userForm.prescreen === "" ? null : userForm.prescreen,
+    decline_response:
+      userForm.decline_response === "" ? null : userForm.decline_response,
   });
+
   if (error) {
     alert("Oops! Something went wrong.");
   }

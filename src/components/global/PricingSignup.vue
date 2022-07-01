@@ -16,11 +16,11 @@
         <ul class="grid lg:grid-cols-2 gap-y-4">
           <li>
             <IconCheck class="h-5 w-5 text-green-500" />
-            <p>Open, close, &amp; schedule your books</p>
+            <p>Unlimited collections &amp; submissions!</p>
           </li>
           <li>
             <IconCheck class="h-5 w-5 text-green-500" />
-            <p>Instant search and filtering</p>
+            <p>Open, close, &amp; schedule your books</p>
           </li>
           <li>
             <IconCheck class="h-5 w-5 text-green-500" />
@@ -28,14 +28,16 @@
           </li>
           <li>
             <IconCheck class="h-5 w-5 text-green-500" />
-            <p class="relative line-through">
+            <p>Instant search and filtering</p>
+            <!-- <p class="relative line-through">
               Custom tagging/sorting
               <span
                 class="block absolute left-0 bottom-0 text-xs text-red-500 -mb-4"
               >
                 In development
               </span>
-            </p>
+            </p> -->
+            <p></p>
           </li>
         </ul>
       </div>
