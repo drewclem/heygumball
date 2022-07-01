@@ -1,23 +1,25 @@
 require("dotenv").config();
-const mailgun = require("mailgun-js");
+const formData = require("form-data");
+const Mailgun = require("mailgun.js");
 
 exports.handler = async (req, res) => {
   const apiKey = process.env.MAILGUN_PRIVATE_KEY;
   const domain = process.env.MAILGUN_DOMAIN;
 
-  const mg = mailgun({ apiKey: apiKey, domain: domain });
+  const mailgun = new Mailgun(formData);
+  const mg = mailgun.client({ username: "api", key: apiKey });
 
   const initReq = JSON.parse(req.body);
 
   const data = {
-    from: `Heygumball <${initReq.sender}>`,
+    from: initReq.sender,
     to: initReq.receiver,
     subject: initReq.subject,
     text: initReq.text,
   };
 
   try {
-    const message = await mg.messages().send(data);
+    const { error } = await mg.messages.create(domain, data);
 
     return {
       statusCode: 200,

@@ -69,16 +69,29 @@
           <span v-else>Booked</span>
         </button>
 
-        <button
-          type="button"
-          class="py-0.5 border-2 border-gray-300 text-center rounded-md"
-          :class="{ 'hover:border-gray-400': !submission.is_declined }"
-          @click="declineSubmission"
-          :disabled="submission.is_declined"
-        >
-          <span v-if="!submission.is_declined">Decline</span>
-          <span v-else>Declined</span>
-        </button>
+        <div class="relative">
+          <p class="text-xs opacity-50 mb-3">
+            Automatically sends an email notifying your client they won't be
+            selected this round.
+          </p>
+          <button
+            type="button"
+            class="py-0.5 border-2 border-gray-300 text-center rounded-md w-full mb-6"
+            :class="{ 'hover:border-gray-400': !submission.is_declined }"
+            @click="declineSubmission"
+            :disabled="submission.is_declined || isSubmitting"
+          >
+            <span v-if="isSubmitting">Sending...</span>
+            <span v-else-if="submission.is_declined">Declined</span>
+            <span v-else>Decline</span>
+          </button>
+          <p
+            class="absolute bottom-0 text-xs mt-8"
+            :class="isError ? 'text-red-500' : 'text-green-500'"
+          >
+            {{ resMessage }}
+          </p>
+        </div>
 
         <button
           type="button"
@@ -332,7 +345,13 @@ async function retrieveImages() {
  * Decline submission
  */
 
+const isError = ref(false);
+const resMessage = ref();
+const isSubmitting = ref(false);
+
 async function declineSubmission() {
+  isSubmitting.value = true;
+
   const data = {
     sender: currentUser.email,
     receiver: submission.value.email,
@@ -351,15 +370,27 @@ async function declineSubmission() {
 
     const mailgunData = await message;
 
-    // if (mailgunData.status === 200) {
-    //   const { error } = await supabase
-    //     .from("submissions")
-    //     .update({ is_declined: true })
-    //     .match({ id: submissionId });
-    // }
+    if (mailgunData.status === 200) {
+      const { error } = await supabase
+        .from("submissions")
+        .update({ is_declined: true })
+        .match({ id: submissionId });
+
+      resMessage.value = "Email sent!";
+    }
+    isSubmitting.value = false;
   } catch (error) {
     console.log(error.message);
+
+    isError.value = true;
+    resMessage.value = "Error sending.";
+    isSubmitting.value = false;
   }
+
+  setTimeout(() => {
+    resMessage.value = null;
+    isError.value = false;
+  }, 6000);
 
   await fetchSubmission();
   await setCollections();
