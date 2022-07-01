@@ -79,6 +79,7 @@ async function openModal() {
 .modal-content {
   @apply relative bg-white p-6 xl:p-10 rounded-lg mx-6;
   max-width: 540px;
+  max-height: 95vh;
 }
 
 button:disabled {

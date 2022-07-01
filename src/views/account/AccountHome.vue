@@ -122,6 +122,26 @@
         </div>
 
         <div class="info-group info-list">
+          <div class="">
+            <h2 class="info-heading">Pre-screen</h2>
+            <div
+              v-if="currentUser && currentUser.prescreen"
+              v-html="currentUser && currentUser.prescreen"
+            />
+            <p v-else>--</p>
+          </div>
+
+          <div>
+            <h2 class="info-heading">Decline Response</h2>
+            <div
+              v-if="currentUser && currentUser.decline_response"
+              v-html="currentUser && currentUser.decline_response"
+            />
+            <p v-else>--</p>
+          </div>
+        </div>
+
+        <div class="info-group info-list">
           <p v-if="currentUser">
             Subscription status:
             <span
