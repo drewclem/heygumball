@@ -121,7 +121,29 @@ setAllSubmissions();
  */
 
 const filteredSubmissions = computed(() => {
-  return allSubmissions.value.filter((submission) => {
+  let likedSubmissions = [];
+  let midSubmissions = [];
+  let dislikedSubmissions = [];
+  let declinedSubmissions = [];
+
+  allSubmissions.value.filter((submission) => {
+    if (submission.is_declined) declinedSubmissions.push(submission);
+    if (submission.is_liked === -1 && !submission.is_declined)
+      dislikedSubmissions.push(submission);
+    if (submission.is_liked === 1 && !submission.is_declined)
+      likedSubmissions.push(submission);
+    if (submission.is_liked === 0 && !submission.is_declined)
+      midSubmissions.push(submission);
+  });
+
+  const sortedSubmissions = [
+    ...likedSubmissions,
+    ...midSubmissions,
+    ...dislikedSubmissions,
+    ...declinedSubmissions,
+  ];
+
+  return sortedSubmissions.filter((submission) => {
     if (searchPhrase.value === null) return submission;
     const filter = searchPhrase.value.toLowerCase();
 

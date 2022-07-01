@@ -11,15 +11,16 @@
       class="relative grid grid-cols-6 gap-2 card-padding card-shadow text-sm lg:text-base bg-white rounded-lg w-full overflow-hidden"
     >
       <div class="absolute left-0 flex items-center h-full ml-1">
+        <IconDecline
+          v-if="submission.is_declined"
+          class="transform scale-75 text-gray-300"
+        />
         <IconThumbDown
-          v-if="submission.is_liked === -1"
+          v-else-if="submission.is_liked === -1 && !submission.is_declined"
           class="transform scale-75 text-red-200"
         />
-      </div>
-
-      <div class="absolute left-0 flex items-center h-full ml-1">
         <IconThumbUp
-          v-if="submission.is_liked === 1"
+          v-if="submission.is_liked === 1 && !submission.is_declined"
           class="transform scale-75 text-green-200"
         />
       </div>
@@ -55,6 +56,7 @@ import { useRoute } from "vue-router";
 import AccountCardGrid from "@/components/dashboard/AccountCardGrid.vue";
 import IconThumbDown from "@/components/svg/IconThumbDown.vue";
 import IconThumbUp from "@/components/svg/IconThumbUp.vue";
+import IconDecline from "@/components/svg/IconDecline.vue";
 
 const { user } = useAuthUser();
 const route = useRoute();

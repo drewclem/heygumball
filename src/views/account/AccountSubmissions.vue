@@ -201,17 +201,23 @@ const filteredSubmissions = computed(() => {
   let likedSubmissions = [];
   let midSubmissions = [];
   let dislikedSubmissions = [];
+  let declinedSubmissions = [];
 
   submissions.value.filter((submission) => {
-    if (submission.is_liked === -1) dislikedSubmissions.push(submission);
-    if (submission.is_liked === 1) likedSubmissions.push(submission);
-    if (submission.is_liked === 0) midSubmissions.push(submission);
+    if (submission.is_declined) declinedSubmissions.push(submission);
+    if (submission.is_liked === -1 && !submission.is_declined)
+      dislikedSubmissions.push(submission);
+    if (submission.is_liked === 1 && !submission.is_declined)
+      likedSubmissions.push(submission);
+    if (submission.is_liked === 0 && !submission.is_declined)
+      midSubmissions.push(submission);
   });
 
   const sortedSubmissions = [
     ...likedSubmissions,
     ...midSubmissions,
     ...dislikedSubmissions,
+    ...declinedSubmissions,
   ];
 
   return sortedSubmissions.filter((submission) => {
