@@ -174,6 +174,7 @@ import { onBeforeMount, onMounted, ref, nextTick, reactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { supabase } from "@/supabase";
 import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
 
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
@@ -189,7 +190,9 @@ const route = useRoute();
 const router = useRouter();
 const submission = ref({});
 
-const { currentUser, setSavedSubmissions, setCollections } = useUserStore();
+const { setSavedSubmissions, setCollections } = useUserStore();
+const global = useUserStore();
+const { currentUser } = storeToRefs(global);
 
 const submissionId = route.params.submission_id;
 
@@ -353,10 +356,10 @@ async function declineSubmission() {
   isSubmitting.value = true;
 
   const data = {
-    sender: currentUser.email,
+    sender: currentUser.value.email,
     receiver: submission.value.email,
     subject: "Thank you for contacting me. However...",
-    text: currentUser.decline_response,
+    text: currentUser.value.decline_response,
   };
 
   try {
