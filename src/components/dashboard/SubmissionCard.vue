@@ -10,18 +10,18 @@
     <div
       class="relative grid grid-cols-6 gap-2 card-padding card-shadow text-sm lg:text-base bg-white rounded-lg w-full overflow-hidden"
     >
-      <div class="absolute left-0 flex items-center h-full ml-1">
+      <div class="absolute left-0 flex items-center h-full ml-0.5 lg:ml-1">
         <IconDecline
           v-if="submission.is_declined"
-          class="transform scale-75 text-gray-300"
+          class="transform scale-50 lg:scale-75 text-gray-300"
         />
         <IconThumbDown
           v-else-if="submission.is_liked === -1 && !submission.is_declined"
-          class="transform scale-75 text-red-200"
+          class="transform scale-50 lg:scale-75 text-red-200"
         />
         <IconThumbUp
           v-if="submission.is_liked === 1 && !submission.is_declined"
-          class="transform scale-75 text-green-200"
+          class="transform scale-50 lg:scale-75 text-green-200"
         />
       </div>
 

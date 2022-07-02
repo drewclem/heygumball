@@ -2,6 +2,21 @@
   <div
     class="relative bg-white card-shadow rounded-lg w-full px-5 pt-4 pb-6 lg:px-8 lg:py-5 text-sm lg:text-base"
   >
+    <div class="absolute left-0 top-0 flex items-center h-full ml-0.5 lg:ml-1">
+      <IconDecline
+        v-if="submission.is_declined"
+        class="transform scale-50 lg:scale-75 text-gray-300"
+      />
+      <IconThumbDown
+        v-else-if="submission.is_liked === -1 && !submission.is_declined"
+        class="transform scale-50 lg:scale-75 text-red-200"
+      />
+      <IconThumbUp
+        v-if="submission.is_liked === 1 && !submission.is_declined"
+        class="transform scale-50 lg:scale-75 text-green-200"
+      />
+    </div>
+
     <p
       v-if="submission.booked"
       class="absolute left-0 top-0 ml-5 lg:ml-8 text-[8px] lg:text-[10px] text-blue-500"
@@ -13,14 +28,16 @@
       <div class="col-span-1">
         <div class="relative">
           <img
-            v-if="submission.image"
+            v-if="state.thumbnailUrl"
             class="h-12 w-12 lg:h-24 lg:w-24 object-cover rounded-md"
-            src="https://source.unsplash.com/random"
+            :src="state.thumbnailUrl"
           />
           <div
             v-else
-            class="h-12 w-12 lg:h-24 lg:w-24 rounded-lg bg-gray-300"
-          />
+            class="flex justify-center items-center h-12 w-12 lg:h-24 lg:w-24 rounded-lg bg-gray-300"
+          >
+            <p class="text-sm text-gray-500 text-center">No images provided</p>
+          </div>
         </div>
 
         <transition name="fade" opacity>
@@ -109,18 +126,22 @@
 
 <script setup>
 // utils
-import { reactive } from "vue";
+import { onMounted, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { useUserStore } from "@/stores/user";
+import { supabase } from "@/supabase";
 
 // components
 import BaseButton from "@/components/base/BaseButton.vue";
 import IconChevronDown from "@/components/svg/IconChevronDown.vue";
+import IconThumbDown from "@/components/svg/IconThumbDown.vue";
+import IconThumbUp from "@/components/svg/IconThumbUp.vue";
+import IconDecline from "@/components/svg/IconDecline.vue";
 
 const route = useRoute();
 const { currentUser } = useUserStore();
 
-defineProps({
+const props = defineProps({
   submission: {
     type: Object,
     required: true,
@@ -129,6 +150,7 @@ defineProps({
 
 const state = reactive({
   isOpen: false,
+  thumbnailUrl: null,
 });
 
 // simple function to take the date returned from Supbase (yyyy-mm-dd) and format it to MMM-YY
@@ -145,6 +167,30 @@ function formatDate(date) {
     day: "numeric",
   })}`;
 }
+
+async function retrieveImages() {
+  const { data } = await supabase
+    .from("submission-uploads")
+    .select()
+    .limit(1)
+    .match({ submission_id: props.submission.id });
+
+  console.log(data);
+
+  if (data.length) {
+    const imgData = await supabase.storage
+      .from(`submission-uploads/${props.submission.id}`)
+      .createSignedUrl(data[0].file_name, 60);
+
+    const img = await imgData.data;
+
+    state.thumbnailUrl = img.signedURL;
+  }
+}
+
+onMounted(() => {
+  retrieveImages();
+});
 </script>
 
 <style scoped>
