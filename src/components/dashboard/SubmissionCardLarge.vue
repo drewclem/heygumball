@@ -40,23 +40,6 @@
             <p class="text-sm text-gray-500 text-center">No images provided</p>
           </div>
         </div>
-
-        <transition name="fade" opacity>
-          <div v-if="state.isOpen" class="hidden lg:block mt-6">
-            <a
-              class="border-2 border-transparent bg-green-500 text-white text-center w-24 block rounded-md mb-4"
-              v-if="submission.phone"
-              :href="`tel:${submission.phone}`"
-            >
-              Quick Call
-            </a>
-            <router-link
-              class="border-2 border-blue-500 w-24 text-center block rounded-md"
-              :to="`/${currentUser.username}/collections/${submission.collection_id}/${submission.id}`"
-              >View</router-link
-            >
-          </div>
-        </transition>
       </div>
 
       <div class="col-span-4">
