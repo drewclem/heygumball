@@ -1,5 +1,6 @@
 <template>
-  <div
+  <router-link
+    :to="`/${user.user_metadata.username}/collections/${submission.collection_id}/${submission.id}`"
     class="relative bg-white card-shadow rounded-lg w-full px-5 pt-4 pb-6 lg:px-8 lg:py-5 text-sm lg:text-base"
   >
     <div class="absolute left-0 top-0 flex items-center h-full ml-0.5 lg:ml-1">
@@ -9,11 +10,11 @@
       />
       <IconThumbDown
         v-else-if="submission.is_liked === -1 && !submission.is_declined"
-        class="transform scale-50 lg:scale-75 text-red-200"
+        class="transform scale-50 lg:scale-75 text-red-300"
       />
       <IconThumbUp
         v-if="submission.is_liked === 1 && !submission.is_declined"
-        class="transform scale-50 lg:scale-75 text-green-200"
+        class="transform scale-50 lg:scale-75 text-green-300"
       />
     </div>
 
@@ -59,10 +60,7 @@
       </div>
 
       <div class="col-span-4">
-        <div
-          class="relative overflow-hidden"
-          :class="state.isOpen ? 'expanded' : 'collapsed'"
-        >
+        <div class="relative overflow-hidden collapsed">
           <div v-html="submission.message" class="mb-4" />
 
           <div
@@ -106,22 +104,7 @@
         </div>
       </div>
     </div>
-
-    <div
-      class="absolute w-full bottom-0 left-0 right-0 text-blue-500 mb-1 z-20"
-    >
-      <button
-        class="block mx-auto border border-blue-500 lg:border-transparent lg:bg-transparent bg-white rounded-full p-1 -mb-4 lg:mb-0"
-        @click="state.isOpen = !state.isOpen"
-        aria-label="Expand card"
-      >
-        <IconChevronDown
-          class="h-4 w-4 transition duration-150 ease-in-out"
-          :class="state.isOpen ? 'rotate-180' : ''"
-        />
-      </button>
-    </div>
-  </div>
+  </router-link>
 </template>
 
 <script setup>
@@ -130,6 +113,7 @@ import { onMounted, reactive } from "vue";
 import { useRoute } from "vue-router";
 import { useUserStore } from "@/stores/user";
 import { supabase } from "@/supabase";
+import useAuthUser from "@/utils/useAuth";
 
 // components
 import BaseButton from "@/components/base/BaseButton.vue";
@@ -140,6 +124,8 @@ import IconDecline from "@/components/svg/IconDecline.vue";
 
 const route = useRoute();
 const { currentUser } = useUserStore();
+
+const { user } = useAuthUser();
 
 const props = defineProps({
   submission: {

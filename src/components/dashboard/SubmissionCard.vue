@@ -17,11 +17,11 @@
         />
         <IconThumbDown
           v-else-if="submission.is_liked === -1 && !submission.is_declined"
-          class="transform scale-50 lg:scale-75 text-red-200"
+          class="transform scale-50 lg:scale-75 text-red-300"
         />
         <IconThumbUp
           v-if="submission.is_liked === 1 && !submission.is_declined"
-          class="transform scale-50 lg:scale-75 text-green-200"
+          class="transform scale-50 lg:scale-75 text-green-300"
         />
       </div>
 
