@@ -25,7 +25,7 @@
         </div>
 
         <div class="card-shadow bg-white rounded-xl mx-6 lg:mx-0 p-6 lg:p-11">
-          <div class="flex flex-col space-y-6" v-if="!showForm">
+          <div class="flex flex-col space-y-6" v-if="!showForm && isActive">
             <BaseHeading size="h3" tag="h2"> Read first: </BaseHeading>
 
             <div v-html="currentUser.prescreen" />
@@ -216,11 +216,7 @@
 
               <BaseText>
                 <span>
-                  {{
-                    currentUser.full_name !== ""
-                      ? currentUser.full_name
-                      : `@${username}`
-                  }}
+                  {{ `@${username}` }}
                 </span>
                 will be in touch!</BaseText
               >
@@ -231,9 +227,9 @@
                 Uh oh!
               </BaseHeading>
 
-              <BaseText
-                >It looks like their books are currently closed.</BaseText
-              >
+              <BaseText>
+                It looks like their books are currently closed.
+              </BaseText>
               <BaseText>Please try again later.</BaseText>
             </div>
           </div>
@@ -336,6 +332,7 @@ export default {
     const username = route.params.id;
 
     const showForm = ref(true);
+    const isActive = ref(false);
 
     watch(currentUser, (newVal, oldVal) => {
       if (newVal.prescreen !== null) showForm.value = false;
@@ -421,6 +418,7 @@ export default {
 
         if (Object.keys(activeCollection).length) {
           activeForm.value = activeCollection[0];
+          isActive.value = true;
         }
       }
       loading.value = false;
@@ -433,6 +431,7 @@ export default {
       onInputChange,
       currentUser,
       showForm,
+      isActive,
       username,
       loading,
       state,

@@ -45,8 +45,8 @@
             class="h-5 w-5 mr-2 -mt-px"
             :class="submission.saved ? 'text-red-500' : 'text-gray-300'"
           />
-          <span v-if="!submission.saved">Favorite</span>
-          <span v-else>Favorited</span>
+          <span v-if="!submission.saved">Save</span>
+          <span v-else>Saved</span>
         </button>
 
         <a
