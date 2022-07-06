@@ -113,7 +113,7 @@
       </div>
     </section>
 
-    <PricingSignup />
+    <PricingSignup showPricing="true" />
 
     <section class="narrow-wrapper mb-20">
       <div

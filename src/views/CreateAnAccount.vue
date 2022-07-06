@@ -146,6 +146,8 @@
         <CreateAccount class="w-full" />
       </div>
     </div>
+
+    <PricingSignup />
   </section>
 </template>
 
@@ -165,6 +167,7 @@ import BaseInput from "@/components/base/BaseInput.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 import BaseText from "@/components/base/BaseText.vue";
 import CreateAccount from "@/components/svg/CreateAccount.vue";
+import PricingSignup from "@/components/global/PricingSignup.vue";
 
 export default {
   components: {
@@ -173,6 +176,7 @@ export default {
     BaseInput,
     BaseButton,
     CreateAccount,
+    PricingSignup,
   },
   setup() {
     const usernames = ref();
