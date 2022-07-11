@@ -36,6 +36,51 @@
           <p>{{ submission.phone }}</p>
         </div>
 
+        <hr />
+
+        <div class="bg-white rounded-lg p-4 shadow-inner">
+          <ul class="flex flex-col">
+            <li
+              class="bg-gray-50 py-1 px-3 rounded-full flex space-x-2 items-center"
+              v-for="tag in tags"
+              :key="tag.id"
+            >
+              <p>
+                {{ tag.label }}
+              </p>
+
+              <button class="border border-gray-400 rounded-full p-1">
+                <span class="sr-only">Delete tag {{ tag.label }}</span>
+                <IconClose class="h-3 w-3" />
+              </button>
+            </li>
+
+            <li>
+              <button
+                class="opacity-50"
+                @click="() => (showTagList = !showTagList)"
+              >
+                <span v-if="!showTagList">Add a tag...</span>
+                <span v-else>Cancel</span>
+              </button>
+
+              <div v-if="showTagList" class="bg-white">
+                <ul>
+                  <li v-for="tag in currentUser.tags" :key="tag.id">
+                    <button class="bg-gray-50 py-1 px-3 rounded-full">
+                      {{ tag.label }}
+                    </button>
+                  </li>
+
+                  <button class="text-green-700">
+                    Create<span class="sr-only">new tag</span>
+                  </button>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+
         <button
           class="flex text-base"
           @click="saveSubmission"
@@ -48,6 +93,8 @@
           <span v-if="!submission.saved">Save</span>
           <span v-else>Saved</span>
         </button>
+
+        <hr />
 
         <a
           :href="`mailto:${submission.email}`"
@@ -93,6 +140,8 @@
           </p>
         </div>
 
+        <hr />
+
         <button
           type="button"
           class="text-red-500 underline text-left"
@@ -130,9 +179,9 @@
                       : 'text-gray-300 hover:text-gray-500'
                   "
                 />
-                <span class="sr-only" v-if="submission.is_liked === 1"
-                  >Liked</span
-                >
+                <span class="sr-only" v-if="submission.is_liked === 1">
+                  Liked
+                </span>
               </button>
             </div>
           </div>
@@ -154,6 +203,7 @@
                   <BaseImage
                     class="img-list hover:scale-150 ease-in-out transform"
                     :src="image"
+                    alt="Img thumbnail"
                   />
                 </template>
                 <template #content>
@@ -185,10 +235,13 @@ import IconHeart from "@/components/svg/IconHeart.vue";
 import IconThumbDown from "@/components/svg/IconThumbDown.vue";
 import IconThumbUp from "@/components/svg/IconThumbUp.vue";
 import IconArrowLeft from "@/components/svg/IconArrowLeft.vue";
+import IconClose from "@/components/svg/IconClose.vue";
 
 const route = useRoute();
 const router = useRouter();
 const submission = ref({});
+const tags = ref([]);
+const showTagList = ref(false);
 
 const { setSavedSubmissions, setCollections } = useUserStore();
 const global = useUserStore();
@@ -210,8 +263,23 @@ async function fetchSubmission() {
 
   submission.value = data[0];
 
+  await fetchTags();
+
   // set loading to false
   if (data) loading.value = false;
+}
+
+async function fetchTags() {
+  const { data } = await supabase
+    .from("tag_relations")
+    .select()
+    .eq("submission_id", route.params.submission_id);
+
+  data.forEach(async (tag) => {
+    const { data } = await supabase.from("tags").select().eq("id", tag.tag_id);
+
+    tags.value.push(data[0]);
+  });
 }
 
 // toggle saving the submission

@@ -78,6 +78,8 @@ export const useUserStore = defineStore("currentUser", {
         .eq("id", id)
         .single();
 
+      const tags = await supabase.from("tags").select().eq("id", id);
+
       if (data.user_avatar !== null) {
         const avatarData = await supabase.storage
           .from("avatars")
@@ -87,6 +89,8 @@ export const useUserStore = defineStore("currentUser", {
       } else {
         this.currentUser = data;
       }
+
+      this.setTags();
     },
     async setCollections() {
       const { data } = await supabase
@@ -141,6 +145,17 @@ export const useUserStore = defineStore("currentUser", {
         .eq("user_id", this.userID);
 
       this.allSubmissions = data;
+    },
+    async setTags() {
+      const { data } = await supabase
+        .from("tags")
+        .select()
+        .eq("user_id", this.userID);
+
+      this.currentUser = {
+        ...this.currentUser,
+        tags: data,
+      };
     },
     formatDate(date) {
       const dateObj = new Date(date);
