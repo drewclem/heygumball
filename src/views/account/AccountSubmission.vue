@@ -38,44 +38,55 @@
 
         <hr />
 
-        <div class="bg-white rounded-lg p-4 shadow-inner">
-          <ul class="flex flex-col">
-            <li
-              class="bg-gray-50 py-1 px-3 rounded-full flex space-x-2 items-center"
-              v-for="tag in tags"
-              :key="tag.id"
-            >
-              <p>
-                {{ tag.label }}
-              </p>
+        <div class="bg-white rounded-lg p-2 shadow-inner">
+          <ul>
+            <li>
+              <input
+                type="text"
+                class="p-2"
+                placeholder="Add a tag"
+                v-model="newTag"
+              />
 
-              <button class="border border-gray-400 rounded-full p-1">
-                <span class="sr-only">Delete tag {{ tag.label }}</span>
-                <IconClose class="h-3 w-3" />
+              <button
+                class="bg-green-100 text-green-700 p-1 rounded-full mt-2 ml-auto"
+                v-if="newTag.length > 0 && isUnique"
+                @click="createTag"
+              >
+                Create
               </button>
+
+              <ul
+                v-if="matchedTags.length > 0"
+                class="mt-2 flex flex-col space-y-2"
+              >
+                <li v-for="tag in matchedTags" :key="tag.id">
+                  <button
+                    class="tag border border-blue-300"
+                    type="button"
+                    @click="applyTag(tag.id)"
+                  >
+                    {{ tag.label }}
+                  </button>
+                </li>
+              </ul>
             </li>
 
-            <li>
-              <button
-                class="opacity-50"
-                @click="() => (showTagList = !showTagList)"
+            <li class="inline-block my-1" v-for="tag in tags" :key="tag.id">
+              <div
+                class="bg-gray-50 py-1 px-3 rounded-full flex space-x-2 items-center"
               >
-                <span v-if="!showTagList">Add a tag...</span>
-                <span v-else>Cancel</span>
-              </button>
+                <span>
+                  {{ tag.label }}
+                </span>
 
-              <div v-if="showTagList" class="bg-white">
-                <ul>
-                  <li v-for="tag in currentUser.tags" :key="tag.id">
-                    <button class="bg-gray-50 py-1 px-3 rounded-full">
-                      {{ tag.label }}
-                    </button>
-                  </li>
-
-                  <button class="text-green-700">
-                    Create<span class="sr-only">new tag</span>
-                  </button>
-                </ul>
+                <button
+                  class="border border-gray-400 rounded-full p-0.5"
+                  @click="deleteTag(tag.relation_id)"
+                >
+                  <span class="sr-only">Delete tag {{ tag.label }}</span>
+                  <IconClose class="h-3 w-3" />
+                </button>
               </div>
             </li>
           </ul>
@@ -220,7 +231,14 @@
 
 <script setup>
 // utils
-import { onBeforeMount, onMounted, ref, nextTick, reactive } from "vue";
+import {
+  onBeforeMount,
+  onMounted,
+  ref,
+  nextTick,
+  reactive,
+  computed,
+} from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { supabase } from "@/supabase";
 import { useUserStore } from "@/stores/user";
@@ -230,7 +248,10 @@ import { storeToRefs } from "pinia";
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseButton from "@/components/base/BaseButton.vue";
 import BaseImage from "@/components/base/BaseImage.vue";
+import BaseInput from "@/components/base/BaseInput.vue";
 import BaseModal from "@/components/base/BaseModal.vue";
+import AccountCreateTag from "@/components/dashboard/AccountCreateTag.vue";
+
 import IconHeart from "@/components/svg/IconHeart.vue";
 import IconThumbDown from "@/components/svg/IconThumbDown.vue";
 import IconThumbUp from "@/components/svg/IconThumbUp.vue";
@@ -240,8 +261,10 @@ import IconClose from "@/components/svg/IconClose.vue";
 const route = useRoute();
 const router = useRouter();
 const submission = ref({});
+
 const tags = ref([]);
-const showTagList = ref(false);
+const newTag = ref("");
+const isUnique = ref(true);
 
 const { setSavedSubmissions, setCollections } = useUserStore();
 const global = useUserStore();
@@ -263,23 +286,98 @@ async function fetchSubmission() {
 
   submission.value = data[0];
 
-  await fetchTags();
+  fetchTags();
 
   // set loading to false
   if (data) loading.value = false;
 }
 
+/**
+ */
 async function fetchTags() {
+  tags.value = [];
+
   const { data } = await supabase
     .from("tag_relations")
     .select()
-    .eq("submission_id", route.params.submission_id);
+    .eq("submission_id", route.params.submission_id)
+    .order("created_at", { ascending: true });
 
   data.forEach(async (tag) => {
     const { data } = await supabase.from("tags").select().eq("id", tag.tag_id);
 
-    tags.value.push(data[0]);
+    const tagObj = {
+      relation_id: tag.id,
+      ...data[0],
+    };
+
+    tags.value.push(tagObj);
   });
+}
+
+// check against new tag input to see if current phrase already exists as a tag
+const matchedTags = computed(() => {
+  const input = newTag.value.toLowerCase();
+  const filteredTags = [];
+
+  currentUser.value.tags.filter((tag) => {
+    const formatted = tag.label?.toLowerCase();
+
+    if (input.length > 0 && formatted.includes(input)) {
+      filteredTags.push(tag);
+
+      input.length === formatted.length
+        ? (isUnique.value = false)
+        : (isUnique.value = true);
+    }
+  });
+
+  return filteredTags;
+});
+
+async function createTag() {
+  const { data, error } = await supabase.from("tags").insert([
+    {
+      label: newTag.value,
+      user_id: currentUser.value.id,
+    },
+  ]);
+
+  if (error) {
+    alert("Oops! Something went wrong. Please try again.");
+  } else {
+    applyTag(data[0].id);
+    newTag.value = "";
+  }
+}
+
+async function applyTag(tagId) {
+  const { error } = await supabase.from("tag_relations").insert([
+    {
+      tag_id: tagId,
+      submission_id: submission.value.id,
+    },
+  ]);
+
+  if (error) {
+    alert("Oops! Something went wrong. Please try again.");
+  } else {
+    newTag.value = "";
+    fetchSubmission();
+  }
+}
+
+async function deleteTag(relationId) {
+  const { error } = await supabase
+    .from("tag_relations")
+    .delete()
+    .match({ id: relationId });
+
+  if (error) {
+    alert("Oops! Something went wrong. Please try again.");
+  } else {
+    fetchSubmission();
+  }
 }
 
 // toggle saving the submission
@@ -507,5 +605,9 @@ onMounted(() => {
 
 button:disabled {
   @apply opacity-50 pointer-events-none;
+}
+
+.tag {
+  @apply bg-gray-100 rounded-full px-2 py-1;
 }
 </style>

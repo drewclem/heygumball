@@ -35,7 +35,7 @@
           />
           <div
             v-else
-            class="flex justify-center items-center h-12 w-12 lg:h-24 lg:w-24 rounded-lg bg-gray-300"
+            class="flex justify-center items-center h-12 w-12 lg:h-24 lg:w-24 rounded-lg bg-gray-100"
           >
             <p class="text-sm text-gray-500 text-center">No images provided</p>
           </div>
