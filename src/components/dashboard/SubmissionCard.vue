@@ -8,41 +8,56 @@
       class="absolute rounded-full bg-red-500 w-2 h-2 ml-3"
     />
     <div
-      class="relative grid grid-cols-6 gap-2 card-padding card-shadow text-sm lg:text-base bg-white rounded-lg w-full overflow-hidden"
+      class="card-padding card-shadow text-sm lg:text-base bg-white rounded-lg w-full overflow-hidden"
     >
-      <div class="absolute left-0 flex items-center h-full ml-0.5 lg:ml-1">
-        <IconDecline
-          v-if="submission.is_declined"
-          class="transform scale-50 lg:scale-75 text-gray-300"
-        />
-        <IconThumbDown
-          v-else-if="submission.is_liked === -1 && !submission.is_declined"
-          class="transform scale-50 lg:scale-75 text-red-300"
-        />
-        <IconThumbUp
-          v-if="submission.is_liked === 1 && !submission.is_declined"
-          class="transform scale-50 lg:scale-75 text-green-300"
-        />
+      <div class="relative grid grid-cols-6 gap-2">
+        <div class="absolute left-0 flex items-center h-full ml-0.5 lg:ml-1">
+          <IconDecline
+            v-if="submission.is_declined"
+            class="transform scale-50 lg:scale-75 text-gray-300"
+          />
+          <IconThumbDown
+            v-else-if="submission.is_liked === -1 && !submission.is_declined"
+            class="transform scale-50 lg:scale-75 text-red-300"
+          />
+          <IconThumbUp
+            v-if="submission.is_liked === 1 && !submission.is_declined"
+            class="transform scale-50 lg:scale-75 text-green-300"
+          />
+        </div>
+
+        <div class="relative col-span-2">
+          <p
+            v-if="submission.booked"
+            class="text-[8px] lg:text-[10px] text-blue-500 bottom-0 -mb-[12px] absolute"
+          >
+            Booked
+          </p>
+          <p class="truncate">{{ submission.name }}</p>
+        </div>
+        <p class="col-span-2 opacity-60 truncate">
+          {{ submission.email }}
+        </p>
+        <p class="opacity-60 truncate">
+          {{ submission.phone }}
+        </p>
+        <p class="opacity-60 ml-auto truncate">
+          {{ formatDate(submission.created_at) }}
+        </p>
       </div>
 
-      <div class="relative col-span-2">
-        <p
-          v-if="submission.booked"
-          class="text-[8px] lg:text-[10px] text-blue-500 bottom-0 -mb-[12px] absolute"
+      <ul
+        v-if="submission.tags && submission.tags.length > 0"
+        class="flex space-x-3 mt-2"
+      >
+        <li
+          v-for="tag in submission.tags"
+          class="px-2 py-0.5 bg-blue-100 text-blue-500 text-xs rounded-full"
+          :key="tag.id"
         >
-          Booked
-        </p>
-        <p class="truncate">{{ submission.name }}</p>
-      </div>
-      <p class="col-span-2 opacity-60 truncate">
-        {{ submission.email }}
-      </p>
-      <p class="opacity-60 truncate">
-        {{ submission.phone }}
-      </p>
-      <p class="opacity-60 ml-auto truncate">
-        {{ formatDate(submission.created_at) }}
-      </p>
+          {{ tag.label }}
+        </li>
+      </ul>
     </div>
   </router-link>
 </template>
@@ -61,7 +76,7 @@ import IconDecline from "@/components/svg/IconDecline.vue";
 const { user } = useAuthUser();
 const route = useRoute();
 
-defineProps({
+const props = defineProps({
   submission: {
     type: Object,
     required: true,

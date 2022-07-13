@@ -338,7 +338,7 @@ const matchedTags = computed(() => {
 async function createTag() {
   const { data, error } = await supabase.from("tags").insert([
     {
-      label: newTag.value,
+      label: newTag.value.toLowerCase(),
       user_id: currentUser.value.id,
     },
   ]);
