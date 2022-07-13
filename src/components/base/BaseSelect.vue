@@ -11,7 +11,7 @@
       :disabled="disabled"
       @input="$emit('update:modelValue', $event.target.value)"
     >
-      <option value="" selected disabled>Select</option>
+      <option :value="null" selected>Select</option>
 
       <option v-for="option in options" :key="option.id" :value="option.label">
         {{ option.label }}

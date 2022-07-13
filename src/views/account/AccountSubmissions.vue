@@ -254,15 +254,16 @@ const filteredSubmissions = computed(() => {
   ];
 
   return sortedSubmissions.filter((submission) => {
+    let matched = false;
+
     if (searchPhrase.value === null && filterWord.value === null)
       return submission;
 
-    let search;
-    let filter;
-
-    if (searchPhrase.value !== null) {
-      search = searchPhrase.value.toLowerCase();
-
+    /**
+     * This doesn't quite work as needed. needs more checks?
+     */
+    if (searchPhrase.value && searchPhrase.value.length > 0) {
+      let search = searchPhrase.value.toLowerCase();
       const email = submission.email?.toLowerCase();
       const name = submission.name?.toLowerCase();
       const message = submission.message?.toLowerCase();
@@ -273,21 +274,25 @@ const filteredSubmissions = computed(() => {
         message.includes(search) ||
         submission.phone.includes(search)
       ) {
-        return submission;
+        matched = true;
+
+        if (filterWord.value !== null) {
+          const filter = filterWord.value.toLowerCase();
+
+          submission.tags.filter((tag) => {
+            if (tag.label.includes(filter)) matched = true;
+          });
+        }
       }
-    }
-
-    if (filterWord.value !== null) {
-      filter = filterWord.value.toLowerCase();
-
-      let match;
+    } else if (filterWord.value !== null) {
+      const filter = filterWord.value.toLowerCase();
 
       submission.tags.filter((tag) => {
-        if (tag.label.includes(filter)) match = submission;
+        if (tag.label.includes(filter)) matched = true;
       });
-
-      return match;
     }
+
+    if (matched) return submission;
   });
 });
 
