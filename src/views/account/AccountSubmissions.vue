@@ -256,14 +256,36 @@ const filteredSubmissions = computed(() => {
   return sortedSubmissions.filter((submission) => {
     let matched = false;
 
-    if (searchPhrase.value === null && filterWord.value === null)
+    if (
+      (searchPhrase.value === null || searchPhrase.value === "") &&
+      (filterWord.value === null || filterWord.value === "null")
+    )
       return submission;
 
-    /**
-     * This doesn't quite work as needed. needs more checks?
-     */
-    if (searchPhrase.value && searchPhrase.value.length > 0) {
-      let search = searchPhrase.value.toLowerCase();
+    if (searchPhrase.value !== null && filterWord.value !== null) {
+      const search = searchPhrase.value.toLowerCase();
+      const filter = filterWord.value.toLowerCase();
+
+      const email = submission.email?.toLowerCase();
+      const name = submission.name?.toLowerCase();
+      const message = submission.message?.toLowerCase();
+
+      submission.tags.filter((tag) => {
+        const label = tag.label.toLowerCase();
+        if (
+          label.includes(filter) &&
+          (email.includes(search) ||
+            name.includes(search) ||
+            message.includes(search) ||
+            submission.phone.includes(search))
+        )
+          matched = true;
+      });
+    } else if (
+      (searchPhrase.value === null || searchPhrase.value === "") &&
+      (filterWord.value === null || filterWord.value === "null")
+    ) {
+      const search = searchPhrase.value.toLowerCase();
       const email = submission.email?.toLowerCase();
       const name = submission.name?.toLowerCase();
       const message = submission.message?.toLowerCase();
@@ -275,20 +297,13 @@ const filteredSubmissions = computed(() => {
         submission.phone.includes(search)
       ) {
         matched = true;
-
-        if (filterWord.value !== null) {
-          const filter = filterWord.value.toLowerCase();
-
-          submission.tags.filter((tag) => {
-            if (tag.label.includes(filter)) matched = true;
-          });
-        }
       }
-    } else if (filterWord.value !== null) {
+    } else {
       const filter = filterWord.value.toLowerCase();
 
       submission.tags.filter((tag) => {
-        if (tag.label.includes(filter)) matched = true;
+        const label = tag.label.toLowerCase();
+        if (label.includes(filter)) matched = true;
       });
     }
 
