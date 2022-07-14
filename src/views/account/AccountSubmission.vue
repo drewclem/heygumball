@@ -46,6 +46,7 @@
                 class="p-2"
                 placeholder="Add a tag"
                 v-model="newTag"
+                @focus="showAllTags = true"
               />
 
               <button
@@ -265,6 +266,7 @@ const submission = ref({});
 const tags = ref([]);
 const newTag = ref("");
 const isUnique = ref(true);
+const showAllTags = ref(false);
 
 const { setSavedSubmissions, setCollections } = useUserStore();
 const global = useUserStore();
@@ -321,14 +323,18 @@ const matchedTags = computed(() => {
   const filteredTags = [];
 
   currentUser.value.tags.filter((tag) => {
-    const formatted = tag.label?.toLowerCase();
-
-    if (input.length > 0 && formatted.includes(input)) {
+    if (showAllTags.value && input.length === 0) {
       filteredTags.push(tag);
+    } else {
+      const formatted = tag.label?.toLowerCase();
 
-      input.length === formatted.length
-        ? (isUnique.value = false)
-        : (isUnique.value = true);
+      if (input.length > 0 && formatted.includes(input)) {
+        filteredTags.push(tag);
+
+        input.length === formatted.length
+          ? (isUnique.value = false)
+          : (isUnique.value = true);
+      }
     }
   });
 

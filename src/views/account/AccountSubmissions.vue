@@ -51,11 +51,24 @@
         </div>
       </div>
 
-      <BaseSelect :options="currentUser.tags" class="mr-4" v-model="filterWord">
+      <div class="relative hidden lg:block">
+        <div
+          class="absolute top-0 right-0 flex justify-center items-center -mt-4"
+        >
+          <KeywordSearch class="flex mr-4" v-model="searchPhrase" />
+          <BaseSelect :options="currentUser.tags" v-model="filterWord">
+            Filter
+          </BaseSelect>
+        </div>
+      </div>
+
+      <BaseSelect
+        class="w-full lg:hidden"
+        :options="currentUser.tags"
+        v-model="filterWord"
+      >
         Filter
       </BaseSelect>
-
-      <KeywordSearch class="hidden lg:flex" v-model="searchPhrase" />
 
       <input
         ref="search"

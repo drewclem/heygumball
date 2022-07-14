@@ -1,12 +1,12 @@
 <template>
   <div class="relative flex flex-col">
-    <label class="absolute text-sm -mt-5 ml-3 text-gray-500" :for="id">
+    <label class="absolute text-xs -mt-5 ml-3 text-gray-500" :for="id">
       <slot>Select an option</slot> <span v-if="isRequired">*</span>
     </label>
 
     <select
       :id="id"
-      class="border border-gray-300 rounded-md px-2 py-1"
+      class="border border-gray-300 rounded-md px-2 py-1 text-sm"
       :required="isRequired"
       :disabled="disabled"
       @input="$emit('update:modelValue', $event.target.value)"
