@@ -58,7 +58,7 @@
               </button>
 
               <ul
-                v-if="matchedTags.length > 0"
+                v-if="matchedTags.length > 0 && newTag.length > 0"
                 class="mt-2 flex flex-col space-y-2"
               >
                 <li v-for="tag in matchedTags" :key="tag.id">

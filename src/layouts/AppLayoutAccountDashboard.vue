@@ -118,6 +118,19 @@
               <li>
                 <BaseLink
                   class="group"
+                  :href="`/${user.user_metadata.username}/tags`"
+                >
+                  <template #icon>
+                    <IconTag
+                      class="text-gray-200 group-hover:text-gray-300 w-3 lg:w-5 h-3 lg:h-5"
+                    />
+                  </template>
+                  Tags
+                </BaseLink>
+              </li>
+              <li>
+                <BaseLink
+                  class="group"
                   :href="`/${user.user_metadata.username}`"
                 >
                   <template #icon>
@@ -195,6 +208,7 @@ import IconUser from "@/components/svg/IconUser.vue";
 import IconInbox from "@/components/svg/IconInbox.vue";
 import IconChevronDown from "@/components/svg/IconChevronDown.vue";
 import IconClose from "@/components/svg/IconClose.vue";
+import IconTag from "@/components/svg/IconTag.vue";
 import MenuIcon from "@/components/icons/MenuIcon.vue";
 
 const { user, handleLogout } = useAuthUser();

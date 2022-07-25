@@ -102,6 +102,15 @@ const routes = [
     },
   },
   {
+    path: "/:id/tags",
+    name: "User Tags",
+    component: () => import("@/views/account/AccountTags.vue"),
+    meta: {
+      layout: "AppLayoutAccountDashboard",
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/terms-and-conditions",
     name: "Terms and Conditions",
     component: () => import("@/views/TermsAndConditions.vue"),
