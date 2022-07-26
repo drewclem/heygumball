@@ -1,52 +1,48 @@
 <template>
-  <div class="flex flex-col">
-    <label class="text-sm mb-2" :for="id">
+  <div class="relative flex flex-col">
+    <label class="absolute text-xs -mt-5 ml-3 text-gray-500" :for="id">
       <slot>Select an option</slot> <span v-if="isRequired">*</span>
     </label>
 
     <select
       :id="id"
-      class="border border-gray-300 rounded-md px-2 py-1"
-      v-bind="$attrs"
-      v-on="listeners"
+      class="border border-gray-300 rounded-md px-2 py-1 text-sm"
       :required="isRequired"
       :disabled="disabled"
-      @input="$emit('input', $event.target.value)"
+      @input="$emit('update:modelValue', $event.target.value)"
     >
-      <option value="" selected disabled>Select</option>
+      <option value="null" selected>None</option>
 
-      <option v-for="option in options" :key="option.id" :value="option.title">
-        {{ option.title }}
+      <option v-for="option in options" :key="option.id" :value="option.label">
+        {{ option.label }}
       </option>
     </select>
   </div>
 </template>
 
-<script>
-// export default {
-//   inheritAttrs: false,
-//   props: {
-//     options: {
-//       type: Array,
-//       required: true,
-//     },
-//     isRequired: {
-//       type: Boolean,
-//       default: false,
-//     },
-//     disabled: {
-//       type: Boolean,
-//       default: false,
-//     },
-//   },
-//   computed: {
-//     ui() {
-//       return this._uid;
-//     },
-//     listeners() {
-//       const { input, ...listeners } = this.$listeners;
-//       return listeners;
-//     },
-//   },
-// };
+<script setup>
+import { ref } from "vue";
+import { v4 as uuidv4 } from "uuid";
+
+const id = uuidv4();
+
+defineEmits(["update:modelValue"]);
+
+const props = defineProps({
+  modelValue: {
+    type: String,
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+  isRequired: {
+    type: Boolean,
+    default: false,
+  },
+  options: {
+    type: Array,
+    default: () => [],
+  },
+});
 </script>

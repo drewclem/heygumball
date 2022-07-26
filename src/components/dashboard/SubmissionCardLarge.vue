@@ -35,7 +35,7 @@
           />
           <div
             v-else
-            class="flex justify-center items-center h-12 w-12 lg:h-24 lg:w-24 rounded-lg bg-gray-300"
+            class="flex justify-center items-center h-12 w-12 lg:h-24 lg:w-24 rounded-lg bg-gray-100"
           >
             <p class="text-sm text-gray-500 text-center">No images provided</p>
           </div>
@@ -43,47 +43,27 @@
       </div>
 
       <div class="col-span-4">
-        <div class="relative overflow-hidden collapsed">
-          <div v-html="submission.message" class="mb-4" />
+        <div class="relative collapsed">
+          <div class="relative h-[100px] overflow-hidden">
+            <div v-html="submission.message" class="mb-4" />
 
-          <div
-            v-if="!state.isOpen"
-            class="absolute w-full bottom-0 bg-gradient-to-t from-white to-transparent h-1/3 z-10"
-          />
-
-          <div class="grid grid-cols-4 gap-2 text-sm lg:text-base pb-1">
-            <div class="relative">
-              <p class="text-xs opacity-50">Name</p>
-              <p>{{ submission.name }}</p>
-            </div>
-
-            <div class="col-span-2">
-              <p class="text-xs opacity-50">Email</p>
-              <p class="opacity-60 truncate">{{ submission.email }}</p>
-            </div>
-
-            <div>
-              <p class="text-xs opacity-50">Phone</p>
-              <p class="opacity-60">{{ submission.phone }}</p>
-            </div>
+            <div
+              class="absolute w-full bottom-0 bg-gradient-to-t from-white to-transparent h-1/3 z-10"
+            />
           </div>
 
-          <div class="mt-4 lg:hidden flex space-x-4">
-            <a
-              class="border-2 border-transparent bg-green-500 text-white text-center w-24 block rounded-md mb-4"
-              v-if="submission.phone"
-              :href="`tel:${submission.phone}`"
+          <ul
+            v-if="submission && submission.tags.length > 0"
+            class="flex space-x-3 mt-2"
+          >
+            <li
+              v-for="tag in submission.tags"
+              class="px-3 py-1 bg-blue-100 text-blue-500 text-xs rounded-full"
+              :key="tag.id"
             >
-              Quick Call
-            </a>
-            <div>
-              <router-link
-                class="border-2 border-blue-500 w-24 text-center block rounded-md"
-                :to="`/${currentUser.username}/collections/${submission.collection_id}/${submission.id}`"
-                >View</router-link
-              >
-            </div>
-          </div>
+              {{ tag.label }}
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -144,8 +124,6 @@ async function retrieveImages() {
     .limit(1)
     .match({ submission_id: props.submission.id });
 
-  console.log(data);
-
   if (data.length) {
     const imgData = await supabase.storage
       .from(`submission-uploads/${props.submission.id}`)
@@ -163,16 +141,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.expanded {
-  max-height: 1000px;
-  transition: max-height 300ms;
-}
-
-.collapsed {
-  max-height: 100px;
-  transition: max-height 300ms;
-}
-
 .fade-ender-active,
 .fade-leave-active {
   opacity: 1;

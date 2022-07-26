@@ -51,7 +51,24 @@
         </div>
       </div>
 
-      <KeywordSearch class="hidden lg:flex" v-model="searchPhrase" />
+      <div class="relative hidden lg:block">
+        <div
+          class="absolute top-0 right-0 flex justify-center items-center -mt-4"
+        >
+          <KeywordSearch class="flex mr-4" v-model="searchPhrase" />
+          <BaseSelect :options="currentUser.tags" v-model="filterWord">
+            Filter
+          </BaseSelect>
+        </div>
+      </div>
+
+      <BaseSelect
+        class="w-full lg:hidden"
+        :options="currentUser.tags"
+        v-model="filterWord"
+      >
+        Filter
+      </BaseSelect>
 
       <input
         ref="search"
@@ -147,6 +164,7 @@ import { storeToRefs } from "pinia";
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseText from "@/components/base/BaseText.vue";
 import BaseChecboxToggle from "@/components/base/BaseCheckboxToggle.vue";
+import BaseSelect from "@/components/base/BaseSelect.vue";
 import SubmissionCard from "@/components/dashboard/SubmissionCard.vue";
 import SubmissionCardLarge from "@/components/dashboard/SubmissionCardLarge.vue";
 import CopyShareLink from "@/components/dashboard/CopyShareLink.vue";
@@ -180,7 +198,34 @@ async function setSubmissions() {
     .eq("collection_id", collection_id)
     .order("created_at", { ascending: false });
 
-  submissions.value = data;
+  data.forEach(async (sub, index) => {
+    const tags = [];
+
+    const tagRelations = await supabase
+      .from("tag_relations")
+      .select()
+      .eq("submission_id", sub.id)
+      .order("created_at", { ascending: true });
+
+    const rawData = await tagRelations.data;
+
+    rawData.forEach(async (tag) => {
+      const tagInfo = await supabase.from("tags").select().eq("id", tag.tag_id);
+
+      const tagObj = {
+        relation_id: tag.id,
+        ...tagInfo.data[0],
+      };
+
+      tags.push(tagObj);
+    });
+
+    submissions.value[index] = {
+      ...sub,
+      tags: tags,
+    };
+  });
+
   loading.value = false;
 }
 
@@ -196,6 +241,7 @@ onMounted(() => {
  * Submission filtering
  */
 const searchPhrase = ref(null);
+const filterWord = ref(null);
 
 const filteredSubmissions = computed(() => {
   let likedSubmissions = [];
@@ -221,21 +267,60 @@ const filteredSubmissions = computed(() => {
   ];
 
   return sortedSubmissions.filter((submission) => {
-    if (searchPhrase.value === null) return submission;
-    const filter = searchPhrase.value.toLowerCase();
-
-    const email = submission.email?.toLowerCase();
-    const name = submission.name?.toLowerCase();
-    const message = submission.message?.toLowerCase();
+    let matched = false;
 
     if (
-      searchPhrase.value !== null &&
-      (email.includes(filter) ||
-        name.includes(filter) ||
-        message.includes(filter) ||
-        submission.phone.includes(filter))
+      (searchPhrase.value === null || searchPhrase.value === "") &&
+      (filterWord.value === null || filterWord.value === "null")
     )
       return submission;
+
+    if (searchPhrase.value !== null && filterWord.value !== null) {
+      const search = searchPhrase.value.toLowerCase();
+      const filter = filterWord.value.toLowerCase();
+
+      const email = submission.email?.toLowerCase();
+      const name = submission.name?.toLowerCase();
+      const message = submission.message?.toLowerCase();
+
+      submission.tags.filter((tag) => {
+        const label = tag.label.toLowerCase();
+        if (
+          label.includes(filter) &&
+          (email.includes(search) ||
+            name.includes(search) ||
+            message.includes(search) ||
+            submission.phone.includes(search))
+        )
+          matched = true;
+      });
+    } else if (
+      (searchPhrase.value === null || searchPhrase.value === "") &&
+      (filterWord.value === null || filterWord.value === "null")
+    ) {
+      const search = searchPhrase.value.toLowerCase();
+      const email = submission.email?.toLowerCase();
+      const name = submission.name?.toLowerCase();
+      const message = submission.message?.toLowerCase();
+
+      if (
+        email.includes(search) ||
+        name.includes(search) ||
+        message.includes(search) ||
+        submission.phone.includes(search)
+      ) {
+        matched = true;
+      }
+    } else {
+      const filter = filterWord.value.toLowerCase();
+
+      submission.tags.filter((tag) => {
+        const label = tag.label.toLowerCase();
+        if (label.includes(filter)) matched = true;
+      });
+    }
+
+    if (matched) return submission;
   });
 });
 

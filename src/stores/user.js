@@ -78,6 +78,8 @@ export const useUserStore = defineStore("currentUser", {
         .eq("id", id)
         .single();
 
+      const tags = await supabase.from("tags").select().eq("id", id);
+
       if (data.user_avatar !== null) {
         const avatarData = await supabase.storage
           .from("avatars")
@@ -87,6 +89,8 @@ export const useUserStore = defineStore("currentUser", {
       } else {
         this.currentUser = data;
       }
+
+      this.setTags(id);
     },
     async setCollections() {
       const { data } = await supabase
@@ -140,7 +144,58 @@ export const useUserStore = defineStore("currentUser", {
         .select()
         .eq("user_id", this.userID);
 
-      this.allSubmissions = data;
+      data.forEach(async (sub, index) => {
+        const tags = [];
+
+        const tagRelations = await supabase
+          .from("tag_relations")
+          .select()
+          .eq("submission_id", sub.id)
+          .order("created_at", { ascending: true });
+
+        const rawData = await tagRelations.data;
+
+        rawData.forEach(async (tag) => {
+          const tagInfo = await supabase
+            .from("tags")
+            .select()
+            .eq("id", tag.tag_id);
+
+          const tagObj = {
+            relation_id: tag.id,
+            ...tagInfo.data[0],
+          };
+
+          tags.push(tagObj);
+        });
+
+        this.allSubmissions[index] = {
+          ...sub,
+          tags: tags,
+        };
+      });
+    },
+    async setTags(id) {
+      const { data } = await supabase.from("tags").select().eq("user_id", id);
+
+      let tagArray = [];
+
+      data.forEach(async (tag, index) => {
+        const timesUsed = await supabase
+          .from("tag_relations")
+          .select("id")
+          .match({ tag_id: tag.id });
+
+        tagArray[index] = {
+          ...tag,
+          number_of_references: timesUsed.data.length,
+        };
+      });
+
+      this.currentUser = {
+        ...this.currentUser,
+        tags: tagArray,
+      };
     },
     formatDate(date) {
       const dateObj = new Date(date);

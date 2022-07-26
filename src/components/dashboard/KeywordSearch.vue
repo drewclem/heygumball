@@ -1,10 +1,10 @@
 <template>
-  <div class="flex items-center" @keydown.esc="closeSearch">
+  <div class="relative flex items-center" @keydown.esc="closeSearch">
     <transition name="search" appear>
       <input
         ref="search"
         v-if="state.isOpen"
-        class="py-2 px-4 border border-gray-500 rounded-full mr-3 h-[34px] lg:w-72"
+        class="py-2 px-4 border border-gray-500 rounded-full mr-3 h-[34px] lg:w-64"
         type="text"
         placeholder="Search"
         :value="modelValue"
