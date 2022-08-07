@@ -20,7 +20,30 @@
         </div>
       </div>
 
-      <KeywordSearch v-model="searchPhrase" />
+      <div class="relative hidden lg:block">
+        <div
+          class="absolute top-0 right-0 flex justify-center items-center -mt-4"
+        >
+          <KeywordSearch class="flex mr-4" v-model="searchPhrase" />
+          <BaseSelect :options="currentUser.tags" v-model="filterWord">
+            Filter
+          </BaseSelect>
+        </div>
+      </div>
+
+      <BaseSelect
+        class="w-full lg:hidden"
+        :options="currentUser.tags"
+        v-model="filterWord"
+      >
+        Filter
+      </BaseSelect>
+
+      <KeywordSearch
+        class="lg:hidden"
+        v-model="searchPhrase"
+        :value="searchPhrase"
+      />
     </div>
 
     <div v-if="currentUser.default_view">
@@ -100,6 +123,7 @@ import { supabase } from "@/supabase";
 // components
 import BaseHeading from "@/components/base/BaseHeading.vue";
 import BaseText from "@/components/base/BaseText.vue";
+import BaseSelect from "@/components/base/BaseSelect.vue";
 import BaseCheckboxToggle from "@/components/base/BaseCheckboxToggle.vue";
 import SubmissionCard from "@/components/dashboard/SubmissionCard.vue";
 import SubmissionCardLarge from "@/components/dashboard/SubmissionCardLarge.vue";
@@ -119,6 +143,7 @@ setSavedSubmissions();
  */
 
 const searchPhrase = ref(null);
+const filterWord = ref(null);
 
 const filteredSubmissions = computed(() => {
   let likedSubmissions = [];

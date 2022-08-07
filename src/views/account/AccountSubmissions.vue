@@ -275,9 +275,47 @@ const filteredSubmissions = computed(() => {
     )
       return submission;
 
-    if (searchPhrase.value !== null && filterWord.value !== null) {
+    if (
+      searchPhrase.value !== null &&
+      (filterWord.value === null || filterWord.value === "null")
+    ) {
       const search = searchPhrase.value.toLowerCase();
+
+      const email = submission.email?.toLowerCase();
+      const name = submission.name?.toLowerCase();
+      const message = submission.message?.toLowerCase();
+
+      if (
+        email.includes(search) ||
+        name.includes(search) ||
+        message.includes(search) ||
+        submission.phone.includes(search)
+      ) {
+        matched = true;
+      }
+    }
+
+    if (
+      filterWord.value !== null &&
+      (searchPhrase.value === null || searchPhrase.value === "")
+    ) {
       const filter = filterWord.value.toLowerCase();
+      const email = submission.email?.toLowerCase();
+      const name = submission.name?.toLowerCase();
+      const message = submission.message?.toLowerCase();
+
+      submission.tags.filter((tag) => {
+        const label = tag.label.toLowerCase();
+        if (label.includes(filter)) matched = true;
+      });
+    }
+
+    if (
+      (filterWord.value !== null || filterWord.value !== "null") &&
+      (searchPhrase.value !== null || searchPhrase.value !== "")
+    ) {
+      const search = searchPhrase?.value?.toLowerCase();
+      const filter = filterWord?.value?.toLowerCase();
 
       const email = submission.email?.toLowerCase();
       const name = submission.name?.toLowerCase();
@@ -293,30 +331,6 @@ const filteredSubmissions = computed(() => {
             submission.phone.includes(search))
         )
           matched = true;
-      });
-    } else if (
-      (searchPhrase.value === null || searchPhrase.value === "") &&
-      (filterWord.value === null || filterWord.value === "null")
-    ) {
-      const search = searchPhrase.value.toLowerCase();
-      const email = submission.email?.toLowerCase();
-      const name = submission.name?.toLowerCase();
-      const message = submission.message?.toLowerCase();
-
-      if (
-        email.includes(search) ||
-        name.includes(search) ||
-        message.includes(search) ||
-        submission.phone.includes(search)
-      ) {
-        matched = true;
-      }
-    } else {
-      const filter = filterWord.value.toLowerCase();
-
-      submission.tags.filter((tag) => {
-        const label = tag.label.toLowerCase();
-        if (label.includes(filter)) matched = true;
       });
     }
 

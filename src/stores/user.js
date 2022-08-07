@@ -136,7 +136,36 @@ export const useUserStore = defineStore("currentUser", {
         .eq("saved", true)
         .eq("user_id", this.userID);
 
-      this.savedSubmissions = data;
+      data.forEach(async (sub, index) => {
+        const tags = [];
+
+        const tagRelations = await supabase
+          .from("tag_relations")
+          .select()
+          .eq("submission_id", sub.id)
+          .order("created_at", { ascending: true });
+
+        const rawData = await tagRelations.data;
+
+        rawData.forEach(async (tag) => {
+          const tagInfo = await supabase
+            .from("tags")
+            .select()
+            .eq("id", tag.tag_id);
+
+          const tagObj = {
+            relation_id: tag.id,
+            ...tagInfo.data[0],
+          };
+
+          tags.push(tagObj);
+        });
+
+        this.savedSubmissions[index] = {
+          ...sub,
+          tags: tags,
+        };
+      });
     },
     async setAllSubmissions() {
       const { data } = await supabase
