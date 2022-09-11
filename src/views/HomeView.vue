@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <section class="hero base-wrapper flex">
+    <section class="my-16 xl:my-24 base-wrapper flex">
       <div class="grid lg:grid-cols-2 gap-12 items-center">
         <div class="rounded-2xl overflow-hidden lg:order-last">
           <BaseImage
@@ -181,11 +181,3 @@ import IconSorting from "../components/svg/IconSorting.vue";
 import IconReply from "../components/svg/IconReply.vue";
 import PricingSignup from "../components/global/PricingSignup.vue";
 </script>
-
-<style scoped>
-@screen lg {
-  .hero {
-    height: calc(100vh - 96px);
-  }
-}
-</style>
