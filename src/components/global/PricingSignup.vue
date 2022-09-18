@@ -48,7 +48,7 @@
       >
         <p class="relative text-green-500 text-9xl font-bold">
           <span class="text-3xl absolute left-0 -ml-4 mt-8">$</span>
-          10
+          2
           <span
             class="text-base font-normal text-black absolute bottom-0 left-0 right-0 ml-8 -mb-2"
             >/month</span
