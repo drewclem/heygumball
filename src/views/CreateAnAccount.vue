@@ -3,39 +3,7 @@
     <div
       class="max-w-3xl mx-auto px-6 xl:px-0 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center"
     >
-      <transition v-if="state.step === 0" name="fade" appear>
-        <div class="flex flex-col space-y-6">
-          <BaseHeading size="h4" tag="h1"> Create an account </BaseHeading>
-          <BaseText size="small">
-            We're invite only during testing. If the man in the hat gave you a
-            password, please provide it now.
-          </BaseText>
-
-          <div
-            class="relative"
-            :class="{ error: invite$.invite.$errors.length }"
-          >
-            <BaseInput v-model="state.invite">Invite Password</BaseInput>
-            <div class="input-errors">
-              <p
-                v-for="error of invite$.invite.$errors"
-                :key="error.$uid"
-                class="error-msg absolute text-xs text-red-500 mt-1"
-              >
-                {{ error.$message }}
-              </p>
-            </div>
-          </div>
-
-          <div class="w-full lg:w-auto ml-auto">
-            <BaseButton class="w-full" @click="verifyPassword">
-              Verify
-            </BaseButton>
-          </div>
-        </div>
-      </transition>
-
-      <transition v-else name="fade" appear>
+      <transition name="fade" appear>
         <form @submit.prevent="handleFormSubmission">
           <BaseHeading class="mb-5" size="h4" tag="h1">
             Create an account

@@ -16,14 +16,17 @@
           </BaseHeading>
 
           <BaseText class="lg:w-3/4">
-            Manage your appointment &amp; booking requests better with
-            Heygumball&apos;s booking request management tools.
+            A single point of contact for all of your appointment inquiries with
+            tools to manage them all!
           </BaseText>
 
           <div>
             <BaseButton href="/create-an-account" theme="primary">
               Get Started
             </BaseButton>
+            <p class="text-xs mt-4 opacity-50">
+              Unlock the entirety of Heygumball for only $10/mo!
+            </p>
           </div>
         </div>
       </div>

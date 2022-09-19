@@ -24,7 +24,7 @@
           </li>
           <li>
             <IconCheck class="h-5 w-5 text-green-500" />
-            <p>Reference photo collection</p>
+            <p>Collect reference photos</p>
           </li>
           <li>
             <IconCheck class="h-5 w-5 text-green-500" />
@@ -43,8 +43,7 @@
       </div>
 
       <div
-        class="lg:col-span-2 bg-gray-50 flex flex-col space-y-6 justify-center items-center rounded-lg opacity-50 pointer-events-none w-full py-6"
-        inert
+        class="lg:col-span-2 bg-gray-50 flex flex-col space-y-6 justify-center items-center rounded-lg w-full py-6"
       >
         <p class="relative text-green-500 text-9xl font-bold">
           <span class="text-3xl absolute left-0 -ml-4 mt-8">$</span>
@@ -61,7 +60,7 @@
       </div>
     </div>
 
-    <div class="grid lg:grid-cols-3 gap-6 lg:gap-12">
+    <!-- <div class="grid lg:grid-cols-3 gap-6 lg:gap-12">
       <div>
         <BaseHeading class="mb-4" size="h4" tag="h3">
           Release stage:<span class="text-red-500"> Alpha testing </span>
@@ -73,9 +72,9 @@
           request early access at our early bird rate, provide your email here
           and we’ll reach out to you!
         </BaseText>
-      </div>
+      </div> -->
 
-      <div class="lg:col-span-2">
+    <!-- <div class="lg:col-span-2">
         <form
           @submit.prevent="submitAccessForm"
           name="Early access"
@@ -138,8 +137,8 @@
             </p>
           </div>
         </form>
-      </div>
-    </div>
+      </div> -->
+    <!-- </div> -->
   </section>
 </template>
 
