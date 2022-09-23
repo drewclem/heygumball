@@ -111,7 +111,7 @@
                 </div>
 
                 <div>
-                  <p class="font-display text-sm">Reference media</p>
+                  <p class="font-display text-sm">Add images</p>
                   <p class="text-xs mb-4 opacity-50">
                     Accepted file types: jpeg, jpg, png
                   </p>
@@ -126,8 +126,11 @@
                       <span v-else>
                         <span>Drag Your Files Here</span>
                         <span class="text-sm">
-                          or <strong><em>click here</em></strong> to select
-                          files
+                          or
+                          <strong class="text-red-500"
+                            ><em>click here</em></strong
+                          >
+                          to select files
                         </span>
                       </span>
 
