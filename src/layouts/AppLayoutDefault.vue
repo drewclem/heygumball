@@ -7,8 +7,8 @@
     </main>
 
     <footer class="bg-gray-50 py-8" :inert="hasOpenModal || isMobileMenuOpen">
-      <div class="flex justify-between items-center base-wrapper">
-        <a href="#top">
+      <div class="flex flex-col lg:flex-row space-y-6 lg:justify-between items-center base-wrapper">
+        <a href="block #top ">
           <GumballLogo class="w-56" />
         </a>
 
