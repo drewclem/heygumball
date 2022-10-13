@@ -3,15 +3,8 @@
     :to="`/${user.user_metadata.username}/collections/${submission.collection_id}/${submission.id}`"
     class="relative flex w-full items-center"
   >
-    <div
-      v-if="!submission.viewed"
-      class="absolute rounded-full bg-red-500 w-2 h-2 ml-3"
-    />
-    <div
-      class="card-padding card-shadow text-sm lg:text-base bg-white rounded-lg w-full overflow-hidden"
-    >
-      <div class="relative grid grid-cols-6 gap-2">
-        <div class="absolute left-0 flex items-center h-full ml-0.5 lg:ml-1">
+
+   <div class="absolute left-0 flex items-center h-full ml-0.5 lg:ml-1">
           <IconDecline
             v-if="submission.is_declined"
             class="transform scale-50 lg:scale-75 text-gray-300"
@@ -25,6 +18,15 @@
             class="transform scale-50 lg:scale-75 text-green-300"
           />
         </div>
+    <div
+      v-if="!submission.viewed"
+      class="absolute rounded-full bg-red-500 w-2 h-2 ml-3"
+    />
+    <div
+      class="card-padding card-shadow text-sm lg:text-base bg-white rounded-lg w-full overflow-hidden"
+    >
+      <div class="relative grid grid-cols-6 gap-2">
+       
 
         <div class="relative col-span-2">
           <p

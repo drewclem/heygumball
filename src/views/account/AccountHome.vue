@@ -124,6 +124,10 @@
         <div class="info-group info-list">
           <div class="">
             <h2 class="info-heading">Pre-screen</h2>
+            <p class="text-xs mb-4 lg:w-3/4 opacity-50">Use this to let people know specific info about you before
+                filling out your contact form. Style preference, timeframe,
+                whatever it is- put it here and they'll be notified about it
+                before submitting a request.</p>
             <div
               v-if="currentUser && currentUser.prescreen"
               v-html="currentUser && currentUser.prescreen"
