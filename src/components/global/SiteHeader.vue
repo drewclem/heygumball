@@ -22,7 +22,7 @@
             <BaseButton href="/sign-in" theme="secondary"> Sign in </BaseButton>
 
             <BaseButton class="ml-6" href="/create-an-account" theme="primary">
-              Create an Account
+              Create Free Account
             </BaseButton>
           </div>
         </div>
@@ -83,7 +83,7 @@
                         </li>
                         <li>
                           <router-link to="/create-an-account">
-                            Create an Account
+                            Create Free Account
                           </router-link>
                         </li>
                         <li>

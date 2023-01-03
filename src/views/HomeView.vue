@@ -16,17 +16,15 @@
           </BaseHeading>
 
           <BaseText class="lg:w-3/4">
-            A single point of contact for all of your appointment inquiries with
-            tools to manage them all!
+            Your central hub for booking requests and appointment management-
+            built with you in mind.
           </BaseText>
 
           <div>
             <BaseButton href="/create-an-account" theme="primary">
-              Get Started
+              Create Account
             </BaseButton>
-            <p class="text-xs mt-4 opacity-50">
-              Unlock the entirety of Heygumball for only $10/mo!
-            </p>
+            <p class="mt-4 text-green-500">Get started for free!</p>
           </div>
         </div>
       </div>
@@ -162,7 +160,7 @@
 
           <div>
             <BaseButton href="/create-an-account">
-              Create an Account
+              Create free account
             </BaseButton>
           </div>
         </div>
