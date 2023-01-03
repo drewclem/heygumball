@@ -28,7 +28,7 @@
               </template>
             </BaseModal>
 
-            <BaseModal
+            <!-- <BaseModal
               :disabled="
                 hasActiveCollection ||
                 (currentUser && !currentUser.subscription_active)
@@ -51,7 +51,7 @@
               <template #content>
                 <OpenCollection />
               </template>
-            </BaseModal>
+            </BaseModal> -->
 
             <span
               class="text-xs text-red-500"
@@ -69,7 +69,7 @@
 
           <nav>
             <ul class="flex flex-col space-y-3">
-              <li>
+              <li v-if="currentUser && currentUser.subscription_active">
                 <BaseLink
                   class="group"
                   :class="{
