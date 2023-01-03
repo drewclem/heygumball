@@ -69,7 +69,7 @@
 
           <nav>
             <ul class="flex flex-col space-y-3">
-              <li v-if="currentUser && currentUser.subscription_active">
+              <li>
                 <BaseLink
                   class="group"
                   :class="{
