@@ -237,7 +237,7 @@
         </div>
         <iframe
           class="video md:col-span-2"
-          src="https://www.youtube.com/embed/Im_AJhA29DQ?controls=0"
+          src="https://www.youtube.com/embed/bIIAcLp0-NQ?controls=0"
           title="YouTube video player"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
