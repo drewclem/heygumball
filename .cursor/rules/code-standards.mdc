@@ -1,0 +1,68 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+- Leverage PHP features when appropriate (e.g., typed properties, match expressions, constructor property promotion).
+- Adhere to PSR-12 coding standards for consistent code style.
+- Always use typed properties and return types.
+- Utilize Laravel's built-in features and helpers to maximize efficiency.
+- Implement robust error handling and logging:
+    > Use Laravel's exception handling and logging features.
+    > Create custom exceptions when necessary.
+    > Employ try-catch blocks for expected exceptions.
+- Implement middleware for request filtering and modification.
+- Utilize Laravel's Eloquent ORM for database interactions.
+- Use Laravel's query builder for complex database operations.
+- Create and maintain proper database migrations and seeders:
+    > Never use the enum() field type in migrations.
+    > Always use UUID primary keys.
+- Use Enums values instead of magic strings wherever possible
+- Always use PHPs native string helpers first, then Laravel's `Str` class if no equivelant method exists.
+- Always use PHPs native array helpers first, then Laravel's `collect` class if no equivelant method exists.
+- Always eager load relationship to avoid N+1 queries.
+  Laravel Best Practices
+- Use Eloquent ORM and Query Builder over raw SQL queries when possible
+- Implement Repository and Service patterns for better code organization and reusability
+- Utilize Laravel's built-in authentication and authorization features (Sanctum, Policies)
+- Leverage Laravel's caching mechanisms (Redis) for improved performance
+- Use job queues and Laravel Horizon for handling long-running tasks and background processing
+- Implement comprehensive testing using PHPUnit and Laravel Dusk for unit, feature, and browser tests
+- Use API resources and versioning for building robust and maintainable APIs
+- Implement proper error handling and logging using Laravel's exception handler.
+- Utilize Laravel's validation features, including Form Requests, for data integrity
+- Implement database indexing and use Laravel's query optimization features for better performance
+- Leverage Laravel Nova for rapid admin panel development
+- Implement proper security measures, including CSRF protection, XSS prevention, and input sanitization
+
+## Code Architecture
+
+### Naming Conventions:
+
+- Use consistent naming conventions for folders, classes, and files.
+- Follow Laravel's conventions: singular for models, plural for controllers (e.g., User.php, UsersController.php).
+- Use PascalCase for class names, camelCase for method names and variables, and snake_case for database columns.
+
+## Controller Design:
+
+- Controllers should be single action and use the invokable pattern
+- Controllers should be final classes to prevent inheritance.
+- Make controllers read-only (i.e., no property mutations).
+- Avoid injecting dependencies directly into controllers. Instead, use method injection or service classes.
+- All controllers should have a separate request. (i.e.: IndexCandidatesController should have IndexCanidatesRequest)
+- Web controllers should return Inertia views instead of blade views.
+    > Any props that do not need to be visibe on page load, use Inertia's deferred props.
+
+### Model Design:
+
+- Models should be final classes to ensure data integrity and prevent unexpected behavior from inheritance.
+- When creating a new data model, ask what domain it should reside in using the folders inside the `app` directory.
+- All new models should have a standard set of related classes that are Always created.
+    > Database migration
+    > Policy
+    > Factory
+- All new models should have the following structure:
+    > `SoftDeletes` trait unless it is a pivot model
+    > Use `$guarded`
+    > Always cast appropriate field types
